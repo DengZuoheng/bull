@@ -23,17 +23,18 @@
 ## 目录结构 ##
 
 ```
-- master/                   主分支
-    +- bull/                 源文件
-        +- setup.py         py2exe的setup
-        +- main.py          主程序入口
-        +- build.bat        py2exe批处理, 生成运行文件
-        +- images/           图片
-        +- view/            view层代码
-        +- controller/      controller层代码
-        +- service/         service层代码
-        +- dao/             dao层代码
-        +- model/           model层代码
-    +- docs/                文档
-        +- task/            任务描述
+- master/                      主分支
+    +- bull/                   源文件
+        +- setup.py            py2exe的setup
+        +- main.py             主程序入口
+        +- build.bat           py2exe批处理, 生成运行文件
+        +- images/             图片
+        +- view/               view层代码
+        +- controller/         controller层代码
+        +- service/            service层代码
+        +- dao/                dao层代码
+        +- model/              model层代码
+    +- docs/                   文档
+        +- task/               任务描述
+        +- backlog/            backlog
 ```
