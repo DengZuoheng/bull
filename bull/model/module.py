@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-class Iwencai():
+class Module():
     def __init__(self,cursor):
         self.code = cursor[0]
         self.name = cursor[1]
@@ -29,37 +29,4 @@ class Iwencai():
         string = 'total: '
         string = string + self.total +'\n'
         return string
-    def get_code(self):
-        return self.code;
-    def get_name(self):
-        return self.name;
-    def get_increase(self):
-        return self.increase;
-    def get_price(self):
-        return self.price;
-    def get_pe(self):
-        return self.pe;
-    def get_forcast(self):
-        return self.forcast;
-    def get_pbv(self):
-        return self.pbv;
-    def get_total(self):
-        return self.total;
-        
-    def set_code(self,code):
-        self.code = code;
-    def set_name(self,name):
-        self.name = name;
-    def set_increase(self,increase):
-        self.increase = increase;
-    def set_price(self,price):
-        self.price = price;
-    def set_pe(self,pe):
-        self.pe = pe;
-    def set_forcast(self,forcast):
-        self.forcast = forcast;
-    def set_pbv(self,pbv):
-        self.pbv = pbv;
-    def set_total(self,total):
-        self.total = total
-     
+  

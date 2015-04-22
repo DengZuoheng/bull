@@ -1,30 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
-import sys
-path = os.getcwd() 
-parent_path = os.path.dirname(path) 
-sys.path.insert(0,(parent_path))
+import spider
 import pycurl
 import StringIO
 import urllib
 import re
 import json
-import model
-class Crawler():
-    def __init__(self,base_url):
-        self.base_url = base_url
-        self.buf_1 = StringIO.StringIO()
-        self.buf_2 = StringIO.StringIO()
-        self.curl = pycurl.Curl()
-        self.curl.setopt(pycurl.CONNECTTIMEOUT,5)
-        self.curl.setopt(pycurl.TIMEOUT,8)
-        self.curl.setopt(pycurl.COOKIEFILE,'')
-        self.curl.setopt(pycurl.FAILONERROR,True)
-    
-    def get_data
-    def wencai_crawler(self):
-        self.values = {
+from model.module import Module
+from spider import Spider
+class WencaiSpider(Spider):
+    def spider(self):
+        values = {
         'typed':'1',
         'preParams':'',
         'ts':'1',
@@ -38,7 +24,7 @@ class Crawler():
         }
         
         #第一次请求获取含token的JSON
-        url = base_url+'/search?%s'%(urllib.urlencode(values))
+        url = self.base_url+'/search?%s'%(urllib.urlencode(values))
         self.curl.setopt(pycurl.URL, url)
         self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_1.write)#设置回调
         self.curl.perform()
@@ -53,7 +39,7 @@ class Crawler():
         'p':1,#第几页
         'perpage':token_obj['total'],#每页多少股票
         }
-        url = base_url+'/cache?%s'%(urllib.urlencode(args))
+        url = self.base_url+'/cache?%s'%(urllib.urlencode(args))
         self.curl.setopt(pycurl.URL, url)
         self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#设置回调
         self.curl.perform()
@@ -61,8 +47,6 @@ class Crawler():
         response = self.buf_2.getvalue()
         all_result = json.loads(response)
         data = all_result['list']
-        
-        self.save = []
         for item in data:
             arr = []
             item[0] = item[0].split('.')[0]
@@ -71,16 +55,5 @@ class Crawler():
                 if cmp('--',item[id]) == 0:
                     item[id] = -9999999
                 arr.append(item[id])
-            self.save.append(Iwencai(arr))
-        for item in self.save:
-            print item.code
-            print item.name
-            print item.get_increase()
-            print item.get_price()
-            print item.get_pe()
-            print item.get_forcast()
-            print item.get_pbv()
-            print item.get_total()
-            print '\n'
-        print len(save)
-        
+            self.save.append(Module(arr))
+        return self.save
