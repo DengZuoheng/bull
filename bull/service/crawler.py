@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
+import sys
+path = os.getcwd() 
+parent_path = os.path.dirname(path) 
+sys.path.insert(0,(parent_path))
 import pycurl
 import StringIO
 import urllib
@@ -32,25 +37,25 @@ class Crawler():
         'w':'pe',
         }
         
-        #µÚÒ»´ÎÇëÇó»ñÈ¡º¬tokenµÄJSON
+        #ç¬¬ä¸€æ¬¡è¯·æ±‚è·å–å«tokençš„JSON
         url = base_url+'/search?%s'%(urllib.urlencode(values))
         self.curl.setopt(pycurl.URL, url)
-        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_1.write)#ÉèÖÃ»Øµ÷
+        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_1.write)#è®¾ç½®å›è°ƒ
         self.curl.perform()
         
         res = re.findall(u'var allResult = (.*)?;',self.buf_1.getvalue())
-        assert 1 == len(res)#Ó¦¸ÃÖ»ÓĞÒ»¸ö·ûºÏ½á¹û
+        assert 1 == len(res)#åº”è¯¥åªæœ‰ä¸€ä¸ªç¬¦åˆç»“æœ
         token_obj = json.loads(res[0])
         
-        #»ñÈ¡º¬tokenºóÇëÇóÒ»´ÎÀ­È¡ËùÓĞ¹ÉÆ±
+        #è·å–å«tokenåè¯·æ±‚ä¸€æ¬¡æ‹‰å–æ‰€æœ‰è‚¡ç¥¨
         args = {
         'token': token_obj['token'],#token
-        'p':1,#µÚ¼¸Ò³
-        'perpage':token_obj['total'],#Ã¿Ò³¶àÉÙ¹ÉÆ±
+        'p':1,#ç¬¬å‡ é¡µ
+        'perpage':token_obj['total'],#æ¯é¡µå¤šå°‘è‚¡ç¥¨
         }
         url = base_url+'/cache?%s'%(urllib.urlencode(args))
         self.curl.setopt(pycurl.URL, url)
-        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#ÉèÖÃ»Øµ÷
+        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#è®¾ç½®å›è°ƒ
         self.curl.perform()
         
         response = self.buf_2.getvalue()
