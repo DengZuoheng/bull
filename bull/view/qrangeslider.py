@@ -89,11 +89,12 @@ class QRangeSlider(QtGui.QWidget):
 
     def __initUI(self):
         self.setMinimumSize(self.width,self.height)
+        self.setMouseTracking(True)
         pass
 
     def __calposx_by_value(self):
-        self.lposx = int((self.width-self._lw-self._rw)*self.lvalue)
-        self.rposx = int(self.width*self.rvalue - float(self._rw)/2)
+        self.lposx = int(self.width*self.lvalue)
+        self.rposx = self._lw+int((self.width - self._rw -self._lw)*self.rvalue)
 
     def __calvalue_by_posx(self):
         _lm = float(self.lposx)
@@ -116,7 +117,7 @@ class QRangeSlider(QtGui.QWidget):
         painter.end()
 
     def __drawRail(self,painter):
-        _recty = int(self.height/2)-1
+        _recty = int(self.height/2)-2
         rec_pen = QtGui.QPen(self.rail_line_color)
         rec_brush = QtGui.QBrush(self.rail_fill_color)
         rec_brush_selected = QtGui.QBrush(self.rail_selected_fill_color)
@@ -145,8 +146,8 @@ class QRangeSlider(QtGui.QWidget):
 
 
     def __drawBtn(self,painter):
-        _lh = int(self.height/2) - self._lh/2 +1
-        _rh = int(self.height/2) - self._rh/2 +1
+        _lh = int(self.height/2) - self._lh/2 
+        _rh = int(self.height/2) - self._rh/2 
         if(self.btn_left_press):
             painter.drawImage(
                 QtCore.QPoint(self.lposx, _lh),
@@ -174,11 +175,11 @@ class QRangeSlider(QtGui.QWidget):
         _len = self.width - self._lw - self._rw
         _max = float(max(self.distribution))
         for i in range(_len):
-            index = int((float(i)/_len)*len(self.distribution))
+            index = int((float(i)/_len)*len(self.distribution))+1
             h = int(self.height*(float(self.distribution[index])/_max))
             y = self.height - h
             x = self._lw + i
-            painter.drawLine(x, y, x, self.height)
+            painter.drawLine(x, y-1, x, self.height-1)
 
     def __drawPointer(self,painter):
         pen  = QtGui.QPen(self.pointer_color)
@@ -208,6 +209,7 @@ class QRangeSlider(QtGui.QWidget):
 
     def mousePressEvent(self, event):
         p = QtCore.QPointF(event.pos())
+
         if(self.__in_rbtn_area(p)):
             self.btn_right_press = True
             self.btn_left_press = False
@@ -217,6 +219,22 @@ class QRangeSlider(QtGui.QWidget):
             self.btn_left_press = True
             self.__mousep = p
         self.update()
+        event = QtGui.QFocusEvent(
+            QtCore.QEvent.FocusIn,
+            QtCore.Qt.MouseFocusReason)
+        self.emit(QtCore.SIGNAL('focusIn(QFocusEvent)'),event)
+
+    def __btn_press(self):
+        if self.btn_left_press or self.btn_right_press:
+            return True
+        else:
+            return False
+
+    def __in_btn_area(self,point):
+        if self.__in_lbtn_area(point) or self.__in_rbtn_area(point):
+            return True
+        else:
+            return False
 
     def __in_lbtn_area(self, point):
         if(self.lposx <= point.x() <= self.lposx + self._lw):
@@ -262,6 +280,11 @@ class QRangeSlider(QtGui.QWidget):
 
     def mouseMoveEvent(self, event):
         p = QtCore.QPointF(event.pos())
+        if self.__in_btn_area(p) or self.__btn_press():
+            self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        else:
+            self.unsetCursor()
+
         if(self.btn_left_press):
             new_x = self.lposx - (self.__mousep.x() - p.x())
             new_p = QtCore.QPoint(new_x, p.y())
