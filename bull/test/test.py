@@ -15,14 +15,10 @@ import unittest
 class spidertest(unittest.TestCase):
     def testWencaiSpider(self):
         spider = WencaiSpider('http://www.iwencai.com/stockpick')
-        item = []
-        item = spider.results()
-        if(len(item)<2000):
-            raise Excetion('wrong total')
-        """
-        for item in self.save:
-            print(item)
-        """
+        r = []
+        r = spider.results()
+        if(len(r)<2000):
+            raise Exception('wrong total')
 
 if __name__ =='__main__':  
     unittest.main()  
