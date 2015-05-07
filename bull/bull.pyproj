@@ -55,7 +55,6 @@
   <ItemGroup>
     <Content Include="images\drag_btn.png" />
     <Content Include="images\drag_btn_active.png" />
-    <Content Include="view\qrangeslider.pyc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

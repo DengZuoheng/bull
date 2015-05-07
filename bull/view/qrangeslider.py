@@ -175,7 +175,7 @@ class QRangeSlider(QtGui.QWidget):
         _len = self.width - self._lw - self._rw
         _max = float(max(self.distribution))
         for i in range(_len):
-            index = int((float(i)/_len)*len(self.distribution))+1
+            index = int((float(i)/_len)*len(self.distribution))
             h = int(self.height*(float(self.distribution[index])/_max))
             y = self.height - h
             x = self._lw + i
