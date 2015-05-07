@@ -32,7 +32,6 @@
     <Compile Include="service\spider.py" />
     <Compile Include="service\wencaispider.py" />
     <Compile Include="service\__init__.py" />
-    <Compile Include="test\test.py" />
     <Compile Include="test\test_wencaispider.py">
       <SubType>Code</SubType>
     </Compile>
@@ -56,11 +55,6 @@
   <ItemGroup>
     <Content Include="images\drag_btn.png" />
     <Content Include="images\drag_btn_active.png" />
-    <Content Include="model\stock.pyc" />
-    <Content Include="model\__init__.pyc" />
-    <Content Include="service\spider.pyc" />
-    <Content Include="service\wencaispider.pyc" />
-    <Content Include="service\__init__.pyc" />
     <Content Include="view\qrangeslider.pyc" />
   </ItemGroup>
   <PropertyGroup>
