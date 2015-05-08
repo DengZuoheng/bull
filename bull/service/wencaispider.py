@@ -27,7 +27,10 @@ class WencaiSpider(Spider):
         self.curl.setopt(pycurl.COOKIEFILE,'')
         self.curl.setopt(pycurl.FAILONERROR,True)
         self.save = []
-
+    def store_title(self,str):
+        import json
+        with open('title.json', 'w') as f:
+            f.write(json.dumps(str))
     def results(self):
         values = {
             'typed':'1',
@@ -66,13 +69,29 @@ class WencaiSpider(Spider):
         response = self.buf_2.getvalue()
         all_result = json.loads(response)
         data = all_result['list']
+        title = all_result['title']
+        self.store_title(title)
         for item in data:
             arr = []
             item[0] = item[0].split('.')[0]
             arr.append(item[0])
             for id in range(1,8):
                 if cmp('--',item[id]) == 0:
-                    item[id] = -9999999
+                    item[id] = None
                 arr.append(item[id])
             self.save.append(Stock(*arr))
         return self.save
+        
+        def detail(ticker):
+            url = 'http://stockpage.10jqka.com.cn/spService/%s/Header/realHeader'%ticker
+            detail_curl = pycurl.curl()
+            curl.setopt(pycurl.CONNECTTIMEOUT,5)
+            curl.setopt(pycurl.TIMEOUT,50)
+            curl.setopt(pycurl.COOKIEFILE,'')
+            curl.setopt(pycurl.FAILONERROR,True)
+            curl.setopt(pycurl.URL,url)
+            print url
+            
+        def load_title():
+            f = open('title.json','r')
+            return json.load(f)
