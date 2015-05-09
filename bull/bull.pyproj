@@ -36,8 +36,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="test\__init__.py" />
+    <Compile Include="view\qconditionwrapper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="view\qdistributionslider.py" />
     <Compile Include="view\qhoverbutton.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="view\qidcheckbox.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="view\qindexlist.py">

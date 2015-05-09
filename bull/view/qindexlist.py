@@ -19,7 +19,7 @@ class QIndexList(QtGui.QWidget):
         
     def initUI(self):
         self.title_label = QtGui.QLabel(self.title,self)
-        self.title_label.setStyleSheet('font-weight: bold;padding-bottom: 20px')
+        self.title_label.setStyleSheet('font-weight: bold;padding-bottom: 20px;border-right: 1px solid #ccc;')
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.title_label)
         #init ui
@@ -43,7 +43,7 @@ class QIndexList(QtGui.QWidget):
                 self.button_list[i].setStyleSheet("""
                 .QListItem{
                     border: 1px solid #ccc;
-                    border-right: 1px solid transparent;
+                    border-right: none;
                     background: #ffffff;
                     border-top-left-radius: 5px;
                     border-bottom-left-radius: 5px;
@@ -52,7 +52,7 @@ class QIndexList(QtGui.QWidget):
             else:
                 self.button_list[i].setStyleSheet("""
                 .QListItem{
-                    border: 1px solid transparent;
+                    border-right: 1px solid #ccc;
                     }
                     """)
 
