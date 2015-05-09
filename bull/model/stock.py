@@ -11,7 +11,13 @@ class Stock():
             peg=0, 
             pbv=0, 
             capital=0, 
-            trade=0):
+            trade=None,
+            business_volume=None,
+            turnover=None,
+            market_value=None,
+            aggregate_market_value=None,
+            circulation_market_value=None
+            ):
         #股票代码
         self.ticker = ticker
         #股票简称
@@ -30,7 +36,32 @@ class Stock():
         self.capital = capital
         #行业
         self.trade = trade
-
+        #成交价
+        self.business_volume = business_volume
+        #成交额
+        self.turnover = turnover
+        #总市值
+        self.market_value=market_value
+        #总市值
+        self.aggregate_market_value = aggregate_market_value
+        #流通市值
+        self.circulation_market_value = circulation_market_value
+        
+        self.attr = (
+        self.ticker,
+        self.title,
+        self.change,
+        self.price,
+        self.pe,
+        self.peg,
+        self.pbv,
+        self.capital,
+        self.trade,
+        self.business_volume,
+        self.turnover,
+        self.market_value,
+        self.aggregate_market_value,
+        self.circulation_market_value)
     def __str__(self):
         ret = {
             'ticker':self.ticker,
@@ -42,6 +73,11 @@ class Stock():
             'pbv':self.pbv,
             'capital':self.capital,
             'trade':self.trade,
+            'business_volume':self.business_volume,
+            'turn_over':self.turnover,
+            'market_value':self.market_value,
+            'aggregate_market_value':self.aggregate_market_value,
+            'circulation_market_value':self.circulation_market_value
         }
         return str(ret)
   
