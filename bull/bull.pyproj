@@ -37,6 +37,15 @@
     </Compile>
     <Compile Include="test\__init__.py" />
     <Compile Include="view\qdistributionslider.py" />
+    <Compile Include="view\qhoverbutton.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="view\qindexlist.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="view\qlistitem.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="view\qrangeslider.py" />
     <Compile Include="view\__init__.py" />
   </ItemGroup>
