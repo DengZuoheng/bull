@@ -3,7 +3,7 @@
 import sys
 from PyQt4 import QtCore,QtGui
 
-class QRangeSlider(QtGui.QWidget):
+class QRangeSlider(QtGui.QFrame):
     def __init__(self,
             width,
             height,

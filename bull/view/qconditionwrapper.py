@@ -9,29 +9,6 @@ from qidcheckbox import QIDCheckBox
 class QConditionWrapper(QtGui.QFrame):
     def __init__(self,parent,title,title_list):
         super(QConditionWrapper,self).__init__(parent)
-        
-        """
-        self.scroll_area = QtGui.QScrollArea(self)
-
-        self.scroll_area.setWidgetResizable(True)
-
-        
-
-        self.scroll_area.setWidget(self)
-
-        vbox = QtGui.QVBoxLayout(self)
-
-        
-
-        for i in range(len(title_list)):
-            check_box = QIDCheckBox(title_list[i],self.container,i)
-            self.connect(check_box,
-                         QtCore.SIGNAL('changed(int,int)'),
-                         self.on_nth_checkbox_changed)
-            self.checkbox_list.append(check_box)
-            vbox.addWidget(check_box)
-
-        """
         self.checkbox_list = []
         val = 10
         inner_frame = QtGui.QWidget()

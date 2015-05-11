@@ -14,6 +14,7 @@ class QHoverButton(QtGui.QWidget):
         self.height = height
         self.setMouseTracking(True)
         self.setMaximumSize(width,height)
+        self.setMinimumSize(width,height)
         self.installEventFilter(self)
          
     def paintEvent(self,e):
@@ -47,3 +48,6 @@ class QHoverButton(QtGui.QWidget):
         if 0 <= point.x() <= self.width and 0 <= point.y() <= self.height:
             return True
         return False
+
+    def sizeHint( self ):
+        return QtCore.QSize( self.width,self.height)
