@@ -26,6 +26,9 @@ class Test_test_wencaidao(unittest.TestCase):
         cond = [('pe',0,5)]
         ret = dao.filter(cond)
         self.assertGreater(len(ret),1)
+        stock = Stock(*ret[0])
+        self.assertGreater(stock.pe,0)
+        self.assertGreater(5,stock.pe)
 
 if __name__ == '__main__':
     unittest.main()
