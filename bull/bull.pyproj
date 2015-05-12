@@ -31,11 +31,10 @@
     <Compile Include="dao\__init__.py" />
     <Compile Include="model\stock.py" />
     <Compile Include="model\__init__.py" />
-    <Compile Include="service\dataprocess.py" />
     <Compile Include="service\spider.py" />
     <Compile Include="service\wencaispider.py" />
     <Compile Include="service\__init__.py" />
-    <Compile Include="test\test_dataprocess.py" />
+    <Compile Include="test\test_titledao.py" />
     <Compile Include="test\test_wencaidao.py">
       <SubType>Code</SubType>
     </Compile>
