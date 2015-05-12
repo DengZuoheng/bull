@@ -15,7 +15,9 @@ from model.stock import Stock
 from spider import Spider
 
 class WencaiSpider(Spider):
-    def __init__(self, base_url='http://www.iwencai.com/stockpick'):
+    def __init__(self, 
+                 base_url='http://www.iwencai.com/stockpick',
+                 auto_perform = True):
         
         self.base_url = base_url
         self.buf_1 = StringIO.StringIO()
@@ -27,11 +29,10 @@ class WencaiSpider(Spider):
         self.curl.setopt(pycurl.COOKIEFILE,'')
         self.curl.setopt(pycurl.FAILONERROR,True)
         self.save = []
-    def store_title(self,str):
-        import json
-        with open('title.json', 'w') as f:
-            f.write(json.dumps(str))
-    def results(self):
+        if auto_perform:
+            self.perform()
+
+    def perform(self):
         values = {
             'typed':'1',
             'preParams':'',
@@ -64,13 +65,12 @@ class WencaiSpider(Spider):
         url = self.base_url+'/cache?%s'%(urllib.urlencode(args))
         self.curl.setopt(pycurl.URL, url)
         self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#设置回调
-        self.curl.perform()
-        
+        self.curl.perform() 
         response = self.buf_2.getvalue()
-        all_result = json.loads(response)
-        data = all_result['list']
-        title = all_result['title']
-        self.store_title(title)
+        self.all_result = json.loads(response)
+
+    def results(self):
+        data = self.all_result['list']
         for item in data:
             arr = []
             item[0] = item[0].split('.')[0]
@@ -81,17 +81,18 @@ class WencaiSpider(Spider):
                 arr.append(item[id])
             self.save.append(Stock(*arr))
         return self.save
-        
-        def detail(ticker):
-            url = 'http://stockpage.10jqka.com.cn/spService/%s/Header/realHeader'%ticker
-            detail_curl = pycurl.curl()
-            curl.setopt(pycurl.CONNECTTIMEOUT,5)
-            curl.setopt(pycurl.TIMEOUT,50)
-            curl.setopt(pycurl.COOKIEFILE,'')
-            curl.setopt(pycurl.FAILONERROR,True)
-            curl.setopt(pycurl.URL,url)
-            print url
+      
+    def titles(self):
+        return self.all_result['title']
+      
+    def detail(self,ticker):
+        base_url = 'http://stockpage.10jqka.com.cn'
+        url = base_url+'/spService/%s/Header/realHeader'%ticker
+        detail_curl = pycurl.curl()
+        curl.setopt(pycurl.CONNECTTIMEOUT,5)
+        curl.setopt(pycurl.TIMEOUT,50)
+        curl.setopt(pycurl.COOKIEFILE,'')
+        curl.setopt(pycurl.FAILONERROR,True)
+        curl.setopt(pycurl.URL,url)
+        print url
             
-        def load_title():
-            f = open('title.json','r')
-            return json.load(f)

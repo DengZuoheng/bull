@@ -48,20 +48,20 @@ class Stock():
         self.circulation_market_value = circulation_market_value
         
         self.attr = (
-        self.ticker,
-        self.title,
-        self.change,
-        self.price,
-        self.pe,
-        self.peg,
-        self.pbv,
-        self.capital,
-        self.trade,
-        self.business_volume,
-        self.turnover,
-        self.market_value,
-        self.aggregate_market_value,
-        self.circulation_market_value)
+            self.ticker,
+            self.title,
+            self.change,
+            self.price,
+            self.pe,
+            self.peg,
+            self.pbv,
+            self.capital,
+            self.trade,
+            self.business_volume,
+            self.turnover,
+            self.market_value,
+            self.aggregate_market_value,
+            self.circulation_market_value)
     def __str__(self):
         ret = {
             'ticker':self.ticker,
