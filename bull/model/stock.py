@@ -80,4 +80,7 @@ class Stock():
             'circulation_market_value':self.circulation_market_value
         }
         return str(ret)
+
+    def __getitem__(self,key):
+        return self.__dict__[key]
   
