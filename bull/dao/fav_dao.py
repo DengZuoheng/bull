@@ -14,9 +14,11 @@ class FavDao():
             for j in range(len(self.fav[i]['condition'])):
                 #将列表转换为tuple, 以便传递给stock_dao
                 self.fav[i]['condition'][j] = tuple(self.fav[i]['condition'][j])
+        f.close()
         return self.fav
 
     def store_fav(self,fav):
         f = open(self.path,'w')
         f.write(json.dumps(fav))
+        f.close()
         
