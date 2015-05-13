@@ -6,162 +6,153 @@ from PyQt4 import Qt
 from PyQt4 import QtCore  
 from qscreeneritem import QScreenerItem
 
-import pycurl
-import StringIO
-import urllib
-import re
-import json
 
 class QScreenerGroup(QtGui.QFrame):
-    def __init__(self,parent,title,title_list,data_list):
+    def __init__(self,
+            parent,
+            header,
+            title_list,
+            data_list,
+            label_text_list,
+            label_width_list,
+            save_btn_alt,
+            cancel_btn_alt,
+            submit_btn_alt,
+            range_btn_img,
+            range_btn_img_active,
+            screener_item_del_icon,
+            screener_item_del_icon_active,
+            ):
         super(QScreenerGroup,self).__init__(parent)
-        self.title = title
+        self.header = header
         self.title_list = title_list
         self.data_list = data_list
         self.screener_list = []
-        inner_frame = QtGui.QWidget()
-        inner_layout = QtGui.QVBoxLayout(inner_frame)
-        for i in range(len(title_list)):
-            screener_item = QScreenerItem(self,
-                self.title_list[i],
-                self.data_list[i],
-                i)
-            inner_layout.addWidget(screener_item)
+        self.label_text_list = label_text_list
+        self.label_width_list = label_width_list
+        self.cancel_btn_alt = cancel_btn_alt
+        self.save_btn_alt = save_btn_alt
+        self.submit_btn_alt = submit_btn_alt
+        self.range_btn_img = range_btn_img
+        self.range_btn_img_active = range_btn_img_active
+        self.screener_item_del_icon = screener_item_del_icon
+        self.screener_item_del_icon_active = screener_item_del_icon_active
+        self.length = len(title_list)
+        self.initUI()
 
-        scroll = QtGui.QScrollArea()
-        scroll.setWidget(inner_frame)
-        scroll.setWidgetResizable(True)
-        scroll.setObjectName('ScreenerScroll')
-        self.setStyleSheet("""
-            QWidget#ScreenerScroll{
-                border:none;
+    def init_inner_frame(self):
+        self.inner_frame = QtGui.QWidget(self)
+        self.inner_layout = QtGui.QFormLayout(self.inner_frame)
+        self.inner_layout.setVerticalSpacing(0)
+        for i in range(self.length):
+            kwargs = {
+                'parent':self,
+                'title':self.title_list[i],
+                'data':self.data_list[i],
+                'id':i,
+                'range_btn_img':self.range_btn_img,
+                'range_btn_img_active':self.range_btn_img_active,
+                'del_btn_img':self.screener_item_del_icon,
+                'del_btn_img_active':self.screener_item_del_icon_active,
             }
-            QScrollBar:horizontal {
-                 border: 0px solid grey;
-                 background: white;
-                height:8px;
-                margin: 0;
-            }
-            QScrollBar::handle:horizontal {
-                background: grey;
-                min-width: 10px;
-            }
-            QScrollBar::handle:horizontal:hover {
-                background: #0066cc;
-                min-width: 10px;
-            }
-            QScrollBar::add-line:horizontal {
-                border: 2px solid grey;
-                background: #32CC99;
-                width: 20px;
-                subcontrol-position: right;
-                subcontrol-origin: margin;
-            }
+            screener_item = QScreenerItem(**kwargs)
+            self.connect(screener_item,
+                QtCore.SIGNAL('close(int)'),
+                self.on_nth_item_close)
+            self.inner_layout.addWidget(screener_item)
+            screener_item.setVisible(False)
+            self.screener_list.append(screener_item)
 
-            QScrollBar::sub-line:horizontal {
-                border: 2px solid grey;
-                background: #32CC99;
-                width: 20px;
-                subcontrol-position: left;
-                subcontrol-origin: margin;
-            }
+    def init_scroll_area(self):
+        self.scroll = QtGui.QScrollArea(self)
+        self.scroll.setWidget(self.inner_frame)
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setObjectName('ScreenerScroll')
 
-            QScrollBar:vertical{
-                 border: 0px solid grey;
-                 background: white;
-                 width: 8px;
-                 margin: 0;
-             }
-             
-             QScrollBar::handle:vertical {
-                 background: grey;
-                 min-height: 20px;
-             }
-             QScrollBar::handle:vertical:hover {
-                 background: #0066cc;
-                 min-height: 20px;
-             }
-             QScrollBar::add-line:vertical {
-                 border: 0px solid grey;
-                 background: #32CC99;
-                 height: 0;
-                 subcontrol-position: bottom;
-                 subcontrol-origin: margin;
-             }
+    def init_title(self):
+        self.title_hbox = QtGui.QHBoxLayout()
+        title_text = self.label_text_list
+        title_width = self.label_width_list
+        self.label_name = QtGui.QLabel(self)
+        self.label_min = QtGui.QLabel(self)
+        self.label_chart = QtGui.QLabel(self)
+        self.label_max = QtGui.QLabel(self)
+        self.label_clode = QtGui.QLabel(self)
+        lblst = [
+            self.label_name,
+            self.label_min,
+            self.label_chart,
+            self.label_max,
+            self.label_clode,
+        ]
+        i = 0
+        for item in lblst:
+            item.setText(title_text[i])
+            item.setMinimumWidth(title_width[i])
+            item.setProperty('cls','title')
+            i = i+1
+            self.title_hbox.addWidget(item)
 
-             QScrollBar::sub-line:vertical {
-                 border: 0px solid grey;
-                 background: #32CC99;
-                 height: 0;
-                 subcontrol-position: top;
-                 subcontrol-origin: margin;
-             }
-             QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-                 border: 0px solid grey;
-                 width: 3px;
-                 height: 0;
-                 background: red;
-             }
+    def init_header(self): 
+        self.header_label = QtGui.QLabel(self.header)
+        self.header_label.setProperty('cls','header')
 
-             QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-                 background: none;
-             }
-             .QPushButton{
-                border-radius:2px;
-                border:1px solid #006aca;
-                background-color:#006aca;
-                color:#fff;
-                padding:6px 12px;
-                margin-right:5px;
-            }
-            .QPushButton:hover{
-                border-radius:2px;
-                border:1px solid #0578eb;
-                background-color:#0578eb;
-                color:#fff;
-                padding:6px 12px;
-                margin-right:5px;
-            }
-            """)
-        #scroll.setStyleSheet('border:none')
-        layout = QtGui.QVBoxLayout()
-        label = QtGui.QLabel(title)
-        label.setStyleSheet('font-weight:bold;padding-left:5px;padding-bottom: 20px')
-        layout.addWidget(label)
-        hbox = QtGui.QHBoxLayout()
-        label_name = QtGui.QLabel(u'条件')
-        label_name.setStyleSheet('font-weight:bold;padding-left:5px;padding-left: 14px')
-        label_name.setMinimumWidth(100)
-        label_min = QtGui.QLabel(u'最小值')
-        label_min.setStyleSheet('font-weight:bold;padding-left:5px;padding-left: 14px')
-        label_min.setMinimumWidth(90)
-        label_chart = QtGui.QLabel(u'条件范围/股票分布')
-        label_chart.setStyleSheet('font-weight:bold;padding-left:5px;padding-left: 14px')
-        label_chart.setMinimumWidth(50)
-        label_chart.setAlignment(QtCore.Qt.AlignCenter)
-        label_max = QtGui.QLabel(u'最大值')
-        label_max.setStyleSheet('font-weight:bold;padding-left:5px;padding-left: 14px')
-        label_max.setMinimumWidth(90)
-        label_clode = QtGui.QLabel(u'删除')
-        label_clode.setStyleSheet('font-weight:bold;padding-left:5px;padding-left: 14px')
-        label_clode.setMinimumWidth(50)
-        hbox.addWidget(label_name)
-        hbox.addWidget(label_min)
-        hbox.addWidget(label_chart)
-        hbox.addWidget(label_max)
-        hbox.addWidget(label_clode)
-        layout.addLayout(hbox) 
-        layout.addWidget(scroll)
-        button_save = QtGui.QPushButton(u'收藏搜索条件')
-        button_cancel = QtGui.QPushButton(u'重置')
-        button_submit = QtGui.QPushButton(u'开始选股')
-        button_layout= QtGui.QHBoxLayout()
-        button_layout.addWidget(button_save)
-        button_layout.addWidget(button_cancel)
-        button_layout.addStretch()
-        button_layout.addWidget(button_submit)
-        layout.addLayout(button_layout)
-        self.setLayout(layout)
+    def init_button_group(self):             
+        self.button_save = QtGui.QPushButton(self.save_btn_alt,self)
+        self.button_cancel = QtGui.QPushButton(self.cancel_btn_alt,self)
+        self.button_submit = QtGui.QPushButton(self.submit_btn_alt,self)
+        self.button_hbox= QtGui.QHBoxLayout()
+        self.button_hbox.addWidget(self.button_save)
+        self.button_hbox.addWidget(self.button_cancel)
+        self.button_hbox.addStretch()
+        self.button_hbox.addWidget(self.button_submit)
+        self.connect(self.button_save,
+            QtCore.SIGNAL('clicked()'),
+            self.on_button_save_clicked)
+        self.connect(self.button_cancel,
+            QtCore.SIGNAL('clicked()'),
+            self.on_button_cancel_clicked)
+        self.connect(self.button_submit,
+            QtCore.SIGNAL('clicked()'),
+            self.on_button_submit_clicked)
+
+    def initUI(self):
+        self.init_inner_frame()
+        self.init_scroll_area()
+        self.init_title()
+        self.init_header()
+        self.init_button_group()
+        self.main_layout = QtGui.QVBoxLayout()
+        self.main_layout.addWidget(self.header_label)
+        self.main_layout.addLayout(self.title_hbox)
+        self.main_layout.addWidget(self.scroll)
+        self.main_layout.addLayout(self.button_hbox)
+        self.setLayout(self.main_layout)
+
+    def on_button_submit_clicked(self):
+        self.emit(QtCore.SIGNAL('submit_event()'))
+
+    def on_button_cancel_clicked(self):
+        self.emit(QtCore.SIGNAL('cancel_event()'))
+
+    def on_nth_item_close(self,id):
+        self.screener_list[id].setVisible(False)
+        self.emit(QtCore.SIGNAL('nth_item_close(int)'),id)
+
+    def on_button_save_clicked(self):
+        self.emit(QtCore.SIGNAL('save_event()'))
+
+    def get_nth_value(self):
+        return self.screener_list[i].get_value()
+
+    def get_all_value(self):
+        ret = []
+        for item in self.screener_list:
+            ret.append(item.get_value)
+        return ret
+
+    def set_nth_item_visible(self,id,flag):
+        self.screener_list[id].setVisible(flag)
 
 class Example(QtGui.QWidget):
     def __init__(self):

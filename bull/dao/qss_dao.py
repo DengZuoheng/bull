@@ -9,3 +9,8 @@ class QSSDao():
         self.qss = f.read()
         f.close()
         return self.qss
+
+    def store_qss(self,qss):
+        f = open(self.path,'w')
+        f.write(qss)
+        f.close()

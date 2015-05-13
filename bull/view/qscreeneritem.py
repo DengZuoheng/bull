@@ -7,110 +7,58 @@ from PyQt4 import QtCore
 from qdistributionslider import QDistributionSlider
 from qhoverbutton import QHoverButton
 
-import pycurl
-import StringIO
-import urllib
-import re
-import json
-
 class QScreenerItem(QtGui.QFrame):
-    def __init__(self,parent,title,data,id):
+    def __init__(self,parent,title,data,id,
+        range_btn_img,
+        range_btn_img_active,
+        del_btn_img,
+        del_btn_img_active):
         super(QScreenerItem,self).__init__(parent)
         self.title = title
         self.data = data
         self.id = id
+        self.range_btn_img = range_btn_img
+        self.range_btn_img_active = range_btn_img_active
+        self.del_btn_img = del_btn_img
+        self.del_btn_img_active = del_btn_img_active
         self.initUI()
 
     def initUI(self):
-        #self.label2 = QtGui.QLabel('test',self)
-        
         self.label = QtGui.QLabel(self.title,self)
-        self.label.setMinimumWidth(100)
-        self.distribution_slider = QDistributionSlider(self.data['data'],
-            self.data['data_max'],
-            self.data['data_min'])
-        self.del_btn_img = QtGui.QImage('images/close_btn.png')
-        self.del_btn_img_active = QtGui.QImage('images/close_btn.png')
-        print(self.del_btn_img.width())
-        self.delete_button = QHoverButton(self,
-            self.del_btn_img,
-            self.del_btn_img_active)
+        self.label.setFixedWidth(100)
+        print('%f %f'%(self.data['data_max'],self.data['data_min']))
+        kwargs ={ 
+            'data':self.data['data'],
+            'data_max':self.data['data_max'],
+            'data_min':self.data['data_min'],
+            'btn_img':self.range_btn_img,
+            'btn_img_active':self.range_btn_img_active
+        }
+        self.distribution_slider = QDistributionSlider(**kwargs)
+        self.delete_button = QHoverButton(
+            self,self.del_btn_img,self.del_btn_img_active)
+
         self.layout = QtGui.QHBoxLayout(self)
         
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.distribution_slider)
         self.layout.addWidget(self.delete_button)
 
-class example_spider():
-    def __init__(self, base_url='http://www.iwencai.com/stockpick'):
-        
-        self.base_url = base_url
-        self.buf_1 = StringIO.StringIO()
-        self.buf_2 = StringIO.StringIO()
-        self.buf_3 = StringIO.StringIO()
-        self.curl = pycurl.Curl()
-        self.curl.setopt(pycurl.CONNECTTIMEOUT,5)
-        self.curl.setopt(pycurl.TIMEOUT,50)
-        self.curl.setopt(pycurl.COOKIEFILE,'')
-        self.curl.setopt(pycurl.FAILONERROR,True)
-        self.save = []
+        self.connect(self.delete_button,
+            QtCore.SIGNAL('clicked()'),
+            self.on_delete_btn_press)
+        self.setFixedWidth(500)
+        self.setFixedHeight(40)
 
-    def result(self):
-        buf1 = StringIO.StringIO()
-        buf2 = StringIO.StringIO()
-        c=pycurl.Curl()
-        base_url = 'http://www.iwencai.com/stockpick'
-        values = {
-            'typed':'1',
-            'preParams':'',
-            'ts':'1',
-            'f':'1',
-            'qs':'1',
-            'selfsectsn':'',
-            'querytype':'',
-            'searchfilter':'',
-            'tid':'stockpick',
-            'w':'pe',
-        }
-        
-        #第一次请求获取含token的JSON
-        url = self.base_url+'/search?%s'%(urllib.urlencode(values))
-        self.curl.setopt(pycurl.URL, url)
-        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_1.write)#设置回调
-        self.curl.perform()
-        
-        res = re.findall(u'var allResult = (.*)?;',self.buf_1.getvalue())
-        assert 1 == len(res)#应该只有一个符合结果
-        token_obj = json.loads(res[0])
-        
-        #获取含token后请求一次拉取所有股票
-        args = {
-            'token': token_obj['token'],#token
-            'p':1,#第几页
-            'perpage':token_obj['total'],#每页多少股票
-        }
-        url = self.base_url+'/cache?%s'%(urllib.urlencode(args))
-        self.curl.setopt(pycurl.URL, url)
-        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#设置回调
-        self.curl.perform()
-        
-        response = self.buf_2.getvalue()
-        all_result = json.loads(response)
-        data = all_result['list']
+    def on_delete_btn_press(self):
+        self.emit(QtCore.SIGNAL('close(int)'),self.id)
 
-        #print all_result['list']
-        return data
+    def get_value(self):
+        return self.distribution_slider.get_value()
 
-def example_result():
+    def set_value(self,lvalue,rvalue):
+        self.distribution_slider.set_value(lvalue,rvalue)
 
-    sp = example_spider()
-    ret = sp.result()
-    l = []
-    for item in ret:
-        if item[3]=='--':
-            continue
-        l.append(float(item[3]))#现价
-    return l
 
 class Example(QtGui.QWidget):
     def __init__(self):
@@ -118,7 +66,7 @@ class Example(QtGui.QWidget):
         self.initUI()
 
     def initUI(self):
-        ret = example_result()
+        ret = [1,4,6,4,2,5,9,4,9]
         max_value = max(ret)
         min_value = min(ret)
         data = {

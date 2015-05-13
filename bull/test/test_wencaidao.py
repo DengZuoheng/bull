@@ -12,17 +12,17 @@ from service.wencaispider import WencaiSpider
 
 class Test_test_wencaidao(unittest.TestCase):
     def test_Constructor(self):
-        dao = WencaiDao('../db_wencai.sqlite3')
+        dao = WencaiDao('../db.sqlite3')
 
     def test_Update(self):
         spider = WencaiSpider()
         ret = spider.results()
-        dao = WencaiDao('../db_wencai.sqlite3')
+        dao = WencaiDao('../db.sqlite3')
         dao.update(ret)
         self.assertEqual(len(ret),len(dao.all()))
 
     def test_Filter(self):
-        dao = WencaiDao('../db_wencai.sqlite3')
+        dao = WencaiDao('../db.sqlite3')
         cond = [('pe',0,5)]
         ret = dao.filter(cond)
         self.assertGreater(len(ret),1)

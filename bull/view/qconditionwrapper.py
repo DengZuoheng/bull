@@ -10,104 +10,28 @@ class QConditionWrapper(QtGui.QFrame):
     def __init__(self,parent,title,title_list):
         super(QConditionWrapper,self).__init__(parent)
         self.checkbox_list = []
-        val = 10
-        inner_frame = QtGui.QWidget()
-        inner_layout = QtGui.QVBoxLayout(inner_frame)
+        self.inner_frame = QtGui.QWidget()
+        inner_layout = QtGui.QFormLayout(self.inner_frame)
+        inner_layout.setVerticalSpacing(10)
         for i in range(len(title_list)):
-            check_box = QIDCheckBox(title_list[i],inner_frame,i)
+            check_box = QIDCheckBox(title_list[i],self.inner_frame,i)
             self.connect(check_box,
                          QtCore.SIGNAL('changed(int,int)'),
                          self.on_nth_checkbox_changed)
             self.checkbox_list.append(check_box)
             inner_layout.addWidget(check_box)
-
         scroll = QtGui.QScrollArea()
-        scroll.setWidget(inner_frame)
+        scroll.setWidget(self.inner_frame)
         scroll.setWidgetResizable(True)
-        #scroll.setFixedHeight(400)
-        self.setStyleSheet("""
-            QScrollBar:horizontal {
-                 border: 1px solid grey;
-                 background: white;
-                height:8px;
-                margin: 0;
-            }
-            QScrollBar::handle:horizontal {
-                background: grey;
-                min-width: 10px;
-            }
-            QScrollBar::handle:horizontal:hover {
-                background: #0066cc;
-                min-width: 10px;
-            }
-            QScrollBar::add-line:horizontal {
-                border: 2px solid grey;
-                background: #32CC99;
-                width: 20px;
-                subcontrol-position: right;
-                subcontrol-origin: margin;
-            }
-
-            QScrollBar::sub-line:horizontal {
-                border: 2px solid grey;
-                background: #32CC99;
-                width: 20px;
-                subcontrol-position: left;
-                subcontrol-origin: margin;
-            }
-
-            QScrollBar:vertical{
-                 border: 1px solid grey;
-                 background: white;
-                 width: 8px;
-                 margin: 0;
-             }
-             
-             QScrollBar::handle:vertical {
-                 background: grey;
-                 min-height: 20px;
-             }
-             QScrollBar::handle:vertical:hover {
-                 background: #0066cc;
-                 min-height: 20px;
-             }
-             QScrollBar::add-line:vertical {
-                 border: 0px solid grey;
-                 background: #32CC99;
-                 height: 0;
-                 subcontrol-position: bottom;
-                 subcontrol-origin: margin;
-             }
-
-             QScrollBar::sub-line:vertical {
-                 border: 0px solid grey;
-                 background: #32CC99;
-                 height: 0;
-                 subcontrol-position: top;
-                 subcontrol-origin: margin;
-             }
-             QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-                 border: 0px solid grey;
-                 width: 3px;
-                 height: 0;
-                 background: red;
-             }
-
-             QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-                 background: none;
-             }
-            """)
-        scroll.setStyleSheet('border:none')
         layout = QtGui.QVBoxLayout()
         label = QtGui.QLabel(title)
-        label.setStyleSheet('font-weight:bold;padding-left:5px;padding-bottom: 20px')
+        label.setProperty('cls','header')
         layout.addWidget(label)
         layout.addWidget(scroll)
         self.setLayout(layout)
 
-
     def on_nth_checkbox_changed(self,state,id):
-        self.emit(QtCore.SIGNAL('changed()'))
+        self.emit(QtCore.SIGNAL('nth_changed(int,int)'),state,id)
 
     def get_state_list(self):
         ret = []
@@ -117,6 +41,12 @@ class QConditionWrapper(QtGui.QFrame):
 
     def get_nth_state(self,n):
         return self.checkbox_list[n].checkState()
+
+    def set_nth_state(self,n,flag):
+        if flag == True:
+            self.checkbox_list[n].setCheckState(QtCore.Qt.Checked)
+        else:
+            self.checkbox_list[n].setCheckState(QtCore.Qt.Unchecked)
 
     def set_state_by_list(self,l):
         for i in range(len(l)):

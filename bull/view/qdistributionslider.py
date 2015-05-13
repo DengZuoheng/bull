@@ -9,12 +9,15 @@ class QDistributionSlider(QtGui.QFrame):
             data,
             data_max,
             data_min,
+            btn_img,
+            btn_img_active,
             range_slider_width = 160,
             line_edit_width = 80,
             width = 335,
             height = 30,
             lvalue = 0.0,
-            rvalue = 1.0):
+            rvalue = 1.0,
+        ):
         super(QDistributionSlider,self).__init__()
         self.width = width
         self.height = height
@@ -25,6 +28,8 @@ class QDistributionSlider(QtGui.QFrame):
         self.data_min = data_min
         self.range_slider_width = range_slider_width
         self.line_edit_width = line_edit_width
+        self.btn_img = btn_img
+        self.btn_img_active = btn_img_active
         self.__initUI()
 
     def __uniformization(self):
@@ -47,8 +52,8 @@ class QDistributionSlider(QtGui.QFrame):
             distribution = dis,
             lvalue = self.lvalue,
             rvalue = self.rvalue,
-            lbtn_image=QtGui.QImage('c:/Projects/bull/bull/images/drag_btn.png'),
-            lbtn_image_active=QtGui.QImage('c:/Projects/bull/bull/images/drag_btn_active.png'))
+            lbtn_image=self.btn_img,
+            lbtn_image_active=self.btn_img_active)
         
         self.left_edit = QtGui.QLineEdit(self)
         self.left_edit.setFixedWidth(self.line_edit_width)
@@ -84,22 +89,39 @@ class QDistributionSlider(QtGui.QFrame):
             QtCore.SIGNAL('textEdited(const QString&)'),
             self.right_edit_press)
 
+    def set_value(self,lvalue,rvalue):
+        self.__set_text(lvalue,rvalue)
+        self.lvalue = self.__cal_by_val(lvalue)
+        self.rvalue = slef.__cal_by_val(rvalue)
+        self.range_slider.setValue(self.lvalue,self.rvalue)
+
+    def get_value(self):
+        return (self.lvalue,self.rvalue)
+
+    def __cal_by_val(self,val):
+        return (val-self.data_min)/(self.data_max-self.data_min)
+
+    def __cal_by_str(self,qstr):
+        val = float(qstr)
+        return self.__cal_by_val(val)
+
     def left_edit_press(self, qstr):
         if(qstr==''):
             self.lvalue = 0
         else:
-            self.lvalue = float(qstr)
+            self.lvalue = self.__cal_by_str(qstr)
         if(self.lvalue>self.rvalue):
             if(self.lvalue>=1):
                 self.lvalue = 1
             self.rvalue = self.lvalue
+
         self.range_slider.setValue(self.lvalue,self.rvalue)
 
     def right_edit_press(self, qstr):
         if(qstr==''):
             self.rvalue = 0
         else:
-            self.rvalue = float(qstr)
+            self.rvalue = self.__cal_by_str(qstr)
         if(self.rvalue<self.lvalue):
             if(self.rvalue<=0):
                 self.rvalue = 0
@@ -116,8 +138,13 @@ class QDistributionSlider(QtGui.QFrame):
     def __set_text(self,lvalue,rvalue):
         _left_text = lvalue*(self.data_max-self.data_min)+self.data_min
         _right_text = rvalue*(self.data_max-self.data_min)+self.data_min
-        self.left_edit.setText('%f'%_left_text)
-        self.right_edit.setText('%f'%_right_text)
+        if(_left_text>10000000):
+            _left_text = _left_text/100000000
+
+        if(_right_text>10000000):
+            _right_text = _right_text/100000000
+        self.left_edit.setText('%.4f'%_left_text)
+        self.right_edit.setText('%.4f'%_right_text)
 
 
 

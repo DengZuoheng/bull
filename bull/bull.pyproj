@@ -25,8 +25,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="bull.py" />
+    <Compile Include="controller\conditon_wrapper_ctrl.py" />
+    <Compile Include="controller\qss_ctrl.py" />
+    <Compile Include="controller\screener_group_ctrl.py" />
+    <Compile Include="controller\setting_ctrl.py" />
+    <Compile Include="controller\stock_ctrl.py" />
     <Compile Include="controller\__init__.py" />
     <Compile Include="dao\fav_dao.py" />
+    <Compile Include="dao\qss_dao.py" />
+    <Compile Include="dao\setting_dao.py" />
     <Compile Include="dao\stock_dao.py" />
     <Compile Include="dao\title_dao.py" />
     <Compile Include="dao\wencai_dao.py" />
@@ -36,7 +43,11 @@
     <Compile Include="service\spider.py" />
     <Compile Include="service\wencaispider.py" />
     <Compile Include="service\__init__.py" />
+    <Compile Include="setting.py" />
+    <Compile Include="setup.py" />
     <Compile Include="test\test_favdao.py" />
+    <Compile Include="test\test_qssdao.py" />
+    <Compile Include="test\test_stock.py" />
     <Compile Include="test\test_titledao.py" />
     <Compile Include="test\test_wencaidao.py">
       <SubType>Code</SubType>
@@ -61,6 +72,7 @@
     <Compile Include="view\qlistitem.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="view\qmainwindow.py" />
     <Compile Include="view\qrangeslider.py" />
     <Compile Include="view\qscreenergroup.py" />
     <Compile Include="view\qscreeneritem.py" />
@@ -79,6 +91,8 @@
     <Folder Include="view\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="db.sqlite3" />
+    <Content Include="fav.json" />
     <Content Include="images\close_btn.png" />
     <Content Include="images\close_btn_active.png" />
     <Content Include="images\drag_btn.png" />
@@ -87,6 +101,8 @@
     <Content Include="images\icon_menu_stock_filter_2.png" />
     <Content Include="images\mini_btn.png" />
     <Content Include="images\mini_btn_active.png" />
+    <Content Include="setting.json" />
+    <Content Include="title.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

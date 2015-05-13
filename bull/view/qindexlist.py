@@ -14,20 +14,18 @@ class QIndexList(QtGui.QWidget):
         self.image_list = image_list
         self.button_list = []
         self.selected_index = 0
-        self.initUI()
-        
+        self.initUI()      
         
     def initUI(self):
         self.title_label = QtGui.QLabel(self.title,self)
-        self.title_label.setStyleSheet('font-weight: bold;padding-bottom: 20px;border-right: 1px solid #ccc;')
+        self.title_label.setProperty('cls','header')
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.title_label)
         #init ui
         for i in range(len(self.index_list)):
-            print(i)
             list_item = QListItem(self,
                                   self.index_list[i],
-                                  self.image_list[i],
+                                  QtGui.QPixmap(self.image_list[i]),
                                   i)
             self.connect(list_item,
                          QtCore.SIGNAL('clicked(int)'),
@@ -40,24 +38,18 @@ class QIndexList(QtGui.QWidget):
     def resetStyleSheet(self):
         for i in range(len(self.index_list)):
             if i==self.selected_index:
-                self.button_list[i].setStyleSheet("""
-                .QListItem{
-                    border: 1px solid #ccc;
-                    border-right: none;
-                    background: #ffffff;
-                    border-top-left-radius: 5px;
-                    border-bottom-left-radius: 5px;
-                    }
-                    """)
+                print("selected")
+                self.button_list[i].setProperty('states','selected')
             else:
-                self.button_list[i].setStyleSheet("""
-                .QListItem{
-                    border-right: 1px solid #ccc;
-                    }
-                    """)
+                print("unselected")
+                self.button_list[i].setProperty('states','unselected')
+            self.button_list[i].update()
+            self.button_list[i].style().unpolish(self.button_list[i]);
+            self.button_list[i].style().polish(self.button_list[i]);
 
     def on_nth_btn_press(self,id):
          self.selected_index = id
+         print(id)
          self.resetStyleSheet()
 
 class Example(QtGui.QWidget):
