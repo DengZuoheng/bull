@@ -31,6 +31,7 @@ class QDistributionSlider(QtGui.QFrame):
         self.btn_img = btn_img
         self.btn_img_active = btn_img_active
         self.__initUI()
+        self.changeRange(lvalue,rvalue)
 
     def __uniformization(self):
         dis = [0]*(self.range_slider_width+1)
@@ -89,14 +90,22 @@ class QDistributionSlider(QtGui.QFrame):
             QtCore.SIGNAL('textEdited(const QString&)'),
             self.right_edit_press)
 
+    def reset(self):
+        self.changeRange(0,1)
+        self.range_slider.setValue(0,1)
+
     def set_value(self,lvalue,rvalue):
         self.__set_text(lvalue,rvalue)
         self.lvalue = self.__cal_by_val(lvalue)
-        self.rvalue = slef.__cal_by_val(rvalue)
+        self.rvalue = self.__cal_by_val(rvalue)
         self.range_slider.setValue(self.lvalue,self.rvalue)
 
     def get_value(self):
         return (self.lvalue,self.rvalue)
+        """
+        return (self.__cal_by_per(self.lvalue),
+            self.__cal_by_per(self.rvalue))
+        """
 
     def __cal_by_val(self,val):
         return (val-self.data_min)/(self.data_max-self.data_min)
@@ -104,6 +113,10 @@ class QDistributionSlider(QtGui.QFrame):
     def __cal_by_str(self,qstr):
         val = float(qstr)
         return self.__cal_by_val(val)
+
+    #通过百分比计算出值
+    def __cal_by_per(self,per):
+        return self.data_min+per*(self.data_max-self.data_min)
 
     def left_edit_press(self, qstr):
         if(qstr==''):
@@ -133,11 +146,13 @@ class QDistributionSlider(QtGui.QFrame):
         self.right_edit.clearFocus()
 
     def changeRange(self,lvalue,rvalue):
+        self.lvalue = self.__cal_by_per(lvalue)
+        self.rvalue = self.__cal_by_per(rvalue)
         self.__set_text(lvalue,rvalue)
 
     def __set_text(self,lvalue,rvalue):
-        _left_text = lvalue*(self.data_max-self.data_min)+self.data_min
-        _right_text = rvalue*(self.data_max-self.data_min)+self.data_min
+        _left_text = self.__cal_by_per(lvalue)
+        _right_text = self.__cal_by_per(rvalue)
         if(_left_text>10000000):
             _left_text = _left_text/100000000
 

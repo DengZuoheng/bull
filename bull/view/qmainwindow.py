@@ -53,11 +53,14 @@ class QMainWindow(QtGui.QDialog):
             QtCore.SIGNAL('nth_item_close(int)'),
             self.on_nth_screener_close)
         self.connect(self.screener_group,
-            QtCore.SIGNAL('submit_event()'),self.on_submit_event)
+            QtCore.SIGNAL('submit_event()'),
+            self.screener_group_ctrl.on_submit_event)
         self.connect(self.screener_group,
-            QtCore.SIGNAL('cancel_event()'),self.on_cancel_event)
+            QtCore.SIGNAL('cancel_event()'),
+            self.screener_group_ctrl.on_cancel_event)
         self.connect(self.screener_group,
-            QtCore.SIGNAL('save_event()'),self.on_save_event)
+            QtCore.SIGNAL('save_event()'),
+            self.screener_group_ctrl.on_save_event)
 
     def init_close_group(self):
         setting = self.setting
@@ -84,16 +87,15 @@ class QMainWindow(QtGui.QDialog):
                     self.onCloseButtonClick)
 
     def on_cancel_event(self):
-        print("cancel")
+        pass
 
     def on_save_event(self):
-        print("save")
+        pass
 
     def on_submit_event(self):
-        print("submit")
+        pass
 
     def on_nth_screener_close(self,id):
-        print(id)
         self.condition_wrapper.set_nth_state(id,False)
        
     def on_nth_checkbox_change(self,state,id):

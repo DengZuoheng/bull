@@ -14,8 +14,8 @@ class ScreenerGroupCtrl():
         self.view = view
 
     def get_data_list(self,setting):
-        ctrl = StockCtrl(WencaiDao(setting['db_path']))
-        all_stock = ctrl.all()
+        self.stock_ctrl = StockCtrl(WencaiDao(setting['db_path']))
+        all_stock = self.stock_ctrl.all()
         title_dict = setting['condition_wrapper_title_dict']
         length = len(title_dict)
         ret = []
@@ -56,3 +56,23 @@ class ScreenerGroupCtrl():
             QtGui.QImage(setting['screener_item_del_icon_active']),
         ]
         return args
+
+    def on_submit_event(self):
+        id_map = self.view.condition_wrapper_ctrl.id_map
+        condition_list = []
+        for key in id_map:
+            #2表示checked
+            if self.view.condition_wrapper.get_nth_state(id_map[key]) == 2:
+                ret = self.view.screener_group.get_nth_value(id_map[key])
+                tu = (key,ret[0],ret[1])
+                condition_list.append(tu)
+        result = self.stock_ctrl.filter(condition_list)
+        print(condition_list)
+        print(len(result))
+
+    def on_cancel_event(self):
+        self.view.condition_wrapper.reset()
+        self.view.screener_group.reset()
+
+    def on_save_event(self):
+        print("save")

@@ -26,7 +26,7 @@ class QScreenerItem(QtGui.QFrame):
     def initUI(self):
         self.label = QtGui.QLabel(self.title,self)
         self.label.setFixedWidth(100)
-        print('%f %f'%(self.data['data_max'],self.data['data_min']))
+        self.label.setFixedHeight(30)
         kwargs ={ 
             'data':self.data['data'],
             'data_max':self.data['data_max'],
@@ -37,7 +37,6 @@ class QScreenerItem(QtGui.QFrame):
         self.distribution_slider = QDistributionSlider(**kwargs)
         self.delete_button = QHoverButton(
             self,self.del_btn_img,self.del_btn_img_active)
-
         self.layout = QtGui.QHBoxLayout(self)
         
         self.layout.addWidget(self.label)
@@ -58,6 +57,9 @@ class QScreenerItem(QtGui.QFrame):
 
     def set_value(self,lvalue,rvalue):
         self.distribution_slider.set_value(lvalue,rvalue)
+
+    def reset(self):
+        self.distribution_slider.reset()
 
 
 class Example(QtGui.QWidget):

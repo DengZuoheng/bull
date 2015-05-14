@@ -10,15 +10,19 @@ from dao.title_dao import TitleDao
 from service.wencaispider import WencaiSpider
 
 class Test_test_title_dao(unittest.TestCase):
-    def test_Load(self):
+    def test_LoadTitle(self):
         dao = TitleDao()
         spider = WencaiSpider()
         titles = spider.titles()
         dao.store_title(titles)
         titles = dao.load_title()
         self.assertEqual(len(titles),9)
+        for item in titles:
+            if not ininstance(item,str):
+                raise Exception('title item is not a string')
 
-    def test_Store(self):
+
+    def test_StoreTitle(self):
         dao = TitleDao()
         spider = WencaiSpider()
         titles = spider.titles()

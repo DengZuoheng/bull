@@ -52,6 +52,10 @@ class QConditionWrapper(QtGui.QFrame):
         for i in range(len(l)):
             self.checkbox_list[i].setCheckState(l[i])
 
+    def reset(self):
+        for item in self.checkbox_list:
+            item.setCheckState(QtCore.Qt.Unchecked)
+
 class Example(QtGui.QWidget):
     def __init__(self):
         super(Example,self).__init__()

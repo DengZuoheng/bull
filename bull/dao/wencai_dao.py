@@ -25,8 +25,8 @@ class WencaiDao(StockDao):
         if len(cond)!=0:
             sql = 'SELECT * FROM wencai WHERE '
             for i in range(len(cond )):
-                t= (cond[i][0],cond[i][1],cond[i][0],cond[i][2])
-                str_sql = '%s > %f AND %s < %f'%t
+                t= (cond[i][0],cond[i][1],cond[i][2])
+                str_sql = '( %s BETWEEN %f AND %f )'%t
                 if(i!=len(cond)-1):
                     str_sql = str_sql + ' AND '
                 sql = sql + str_sql

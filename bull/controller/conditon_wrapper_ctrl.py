@@ -22,7 +22,9 @@ class ConditionWrapperCtrl():
         title_list = []
         i = 0
         for key in title_dict :
-            title_list.append(raw_title[title_dict[key]])
+            temp = '%s'%(raw_title[title_dict[key]])
+            #title_list.append(raw_title[title_dict[key]])
+            title_list.append(temp)
             self.add2id_map(key,i)
             i = i+1
         return title_list

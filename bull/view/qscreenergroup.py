@@ -142,8 +142,8 @@ class QScreenerGroup(QtGui.QFrame):
     def on_button_save_clicked(self):
         self.emit(QtCore.SIGNAL('save_event()'))
 
-    def get_nth_value(self):
-        return self.screener_list[i].get_value()
+    def get_nth_value(self,n):
+        return self.screener_list[n].get_value()
 
     def get_all_value(self):
         ret = []
@@ -153,6 +153,11 @@ class QScreenerGroup(QtGui.QFrame):
 
     def set_nth_item_visible(self,id,flag):
         self.screener_list[id].setVisible(flag)
+
+    def reset(self):
+        for item in self.screener_list:
+            item.reset()
+            item.setVisible(False)
 
 class Example(QtGui.QWidget):
     def __init__(self):
