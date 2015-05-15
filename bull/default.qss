@@ -26,7 +26,7 @@ QWidget#ScreenerScroll{
 }
 
 QScrollBar:horizontal {
-     border: 1px solid grey;
+     border: 0px solid grey;
      background: white;
     height:8px;
     margin: 0;
@@ -40,7 +40,7 @@ QScrollBar::handle:horizontal:hover {
     min-width: 10px;
 }
 QScrollBar::add-line:horizontal {
-    border: 2px solid grey;
+    border: 0px solid grey;
     background: #32CC99;
     width: 20px;
     subcontrol-position: right;
@@ -48,7 +48,7 @@ QScrollBar::add-line:horizontal {
 }
 
 QScrollBar::sub-line:horizontal {
-    border: 2px solid grey;
+    border: 0px solid grey;
     background: #32CC99;
     width: 20px;
     subcontrol-position: left;
@@ -56,7 +56,7 @@ QScrollBar::sub-line:horizontal {
 }
 
 QScrollBar:vertical{
-     border: 1px solid grey;
+     border: 0px solid grey;
      background: white;
      width: 8px;
      margin: 0;
@@ -95,7 +95,6 @@ QScrollBar:vertical{
  QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      background: none;
  }
-
 
  .QPushButton{
     border-radius:2px;
@@ -143,4 +142,11 @@ QScrollBar:vertical{
 
 .QListItem[states="unselected"]{
     border-right: 1px solid #ccc;
+}
+
+QTableView{
+    gridline-color:#fff;
+    selection-background-color:#a0cee4;
+    selection-color:#fff;
+    border:none;
 }
