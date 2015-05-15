@@ -6,8 +6,8 @@
     "close_btn_image_active_path":"images/close_btn_active.png",
     "mini_btn_image_path":"images/mini_btn.png",
     "mini_btn_image_active":"images/mini_btn_active.png",
-    "close_btn_geometry":[845,1,24,24],
-    "mini_btn_geometry":[821,1,24,24],
+    "close_btn_geometry":[846,1,24,24],
+    "mini_btn_geometry":[822,1,24,24],
     "close_btn_width":24,
     "close_btn_height":24,
     "mini_btn_width":24,
@@ -55,6 +55,29 @@
     "screener_cancel_text":"重置",
     "screener_submit_text":"开始选股",
     "db_path":"db.sqlite3",
-    "fav_path":"fav.json"
+    "fav_path":"fav.json",
+    "result_color":{
+                "near_selected_str":"#efefef",
+                "normal_str":"#ffffff",
+                "null_double":"#ffe5e5",
+                "normal_double":"#f2e5ff",
+                "near_selected_double":"#e2d5ef",
+                "near_selected_null_double":"#efd5d5",
+                "selected_double":"#a0cee4",
+                "selected_str":"#a0cee4",
+                "selected_null":"#a0cee4"
+            },
+    "result_index_map":["ticker","title","change","price",
+            "pe","peg","pbv","capital"],
+    "result_header":["股票代码","股票简称","涨跌幅",
+            "现价","市盈率","动态市盈率","市净率","总股本(亿)"],
+    "result_label":"符合条件股票<strong style=\"color:red\"> %d </strong>只",
+    "result_dialog_width":871,
+    "result_dialog_height":490,
+    "result_label_geometry":[15,15,190,30],
+    "result_table_geometry":[15,50,841,405],
+    "result_table_row_height":20,
+    "no_result_warning_text":"没有找到符合条件的股票",
+    "no_result_warning_geometry":[1,220,869,30]
 
 }

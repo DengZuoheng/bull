@@ -38,10 +38,8 @@ class QIndexList(QtGui.QWidget):
     def resetStyleSheet(self):
         for i in range(len(self.index_list)):
             if i==self.selected_index:
-                print("selected")
                 self.button_list[i].setProperty('states','selected')
             else:
-                print("unselected")
                 self.button_list[i].setProperty('states','unselected')
             self.button_list[i].update()
             self.button_list[i].style().unpolish(self.button_list[i]);

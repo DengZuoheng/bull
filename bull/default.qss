@@ -1,6 +1,7 @@
  *{
     background: #ffffff;
     margin:0px; 
+    font-family: "microsoft yahei";
 }
 .QMainWindow{
     border: 1px solid #ccc;
@@ -124,7 +125,7 @@ QScrollBar:vertical{
     font-family: "Microsoft YaHei";
     font-weight:550;
     padding-left:5px;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
     font-size:14px;
 }
 
@@ -149,4 +150,8 @@ QTableView{
     selection-background-color:#a0cee4;
     selection-color:#fff;
     border:none;
+}
+
+QResultDialog{
+    border:1px solid #0578eb;
 }

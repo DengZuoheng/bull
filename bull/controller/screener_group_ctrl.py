@@ -11,7 +11,11 @@ from controller.stock_ctrl import StockCtrl
 from view.qresultdialog import QResultDialog
 
 class ScreenerGroupCtrl():
-    def __init__(self,view):
+    def __init__(self,view,setting=None):
+        if setting is None:
+            self.setting = view.setting
+        else:
+            self.setting = setting
         self.view = view
 
     def get_data_list(self,setting):
@@ -69,29 +73,16 @@ class ScreenerGroupCtrl():
                 condition_list.append(tu)
         result = self.stock_ctrl.filter(condition_list)
         dlg_data = {
-            'header':[u'股票代码',u'股票简称',u'涨跌幅',
-            u'现价',u'市盈率',u'动态市盈率',u'市净率',u'总股本(亿)'],
+            'header':self.setting['result_header'],
             'data':result,
-            'index_map':['ticker','title','change','price',
-            'pe','peg','pbv','capital'],
+            'index_map':self.setting['result_index_map'],
             'row':len(result),#行
-            'col':8,#列
-            'color':{
-                'near_selected_str':'#efefef',
-                'normal_str':'#ffffff',
-                'null_double':'#ffe5e5',
-                'normal_double':'#f2e5ff',
-                'near_selected_double':'#e2d5ef',
-                'near_selected_null_double':'#efd5d5',
-                'selected_double':'#a0cee4',
-                'selected_str':'#a0cee4',
-                'selected_null':'#a0cee4',
-            }
+            'col':len(self.setting['result_header']),#列
+            'color':self.setting['result_color'],
+            'setting':self.setting,
         }
         dlg = QResultDialog(self.view,dlg_data)
-        if dlg.exec_():
-            print "dlg finish"
-        print 'GGGGGGGGGGGGG'
+        dlg.exec_()
 
     def on_cancel_event(self):
         self.view.condition_wrapper.reset()

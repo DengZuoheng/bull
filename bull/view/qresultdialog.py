@@ -4,23 +4,56 @@ import sys
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 from qtabledataitem import QTableDataItem
+from qhoverbutton import QHoverButton
 
 class QResultDialog(QtGui.QDialog):
     def __init__(self,parent=None,data=None):
         super(QResultDialog,self).__init__(parent)
         self.data = data
-        self.init_color()
-        self.init_table()
-        hbox = QtGui.QHBoxLayout(self)
-        hbox.addWidget(self.table)
-        self.setFixedWidth(871)
-        self.setFixedHeight(490)
-        
-        self.press_col = None
-        self.press_row = None
-        self.connect(self.table,
+        setting = self.data['setting']
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint |QtCore.Qt.Dialog)
+        self.setFixedWidth(setting['main_frame_width'])
+        self.setFixedHeight(setting['main_frame_height'])
+        self.init_close_group() 
+        self.init_label()
+        if self.data['row'] == 0:
+            self.init_no_result_warning()
+        else:
+            self.init_color()
+            self.init_table()
+            self.press_col = None
+            self.press_row = None
+            self.connect(self.table,
             QtCore.SIGNAL('cellPressed(int,int)'),
-            self.on_cell_press)
+                self.on_cell_press)
+        #hbox = QtGui.QHBoxLayout(self)
+        #hbox.addWidget(self.table)
+        self.setFixedWidth(setting['result_dialog_width'])
+        self.setFixedHeight(setting['result_dialog_height'])
+
+    def init_no_result_warning(self):
+        text = self.data['setting']['no_result_warning_text']
+        geometry = self.data['setting']['no_result_warning_geometry']
+        self.no_result_label = QtGui.QLabel(text,self)
+        self.no_result_label.setGeometry(*geometry)
+        self.no_result_label.setAlignment(QtCore.Qt.AlignCenter)
+
+    def init_label(self):
+        total = self.data['row']
+        setting = self.data['setting']
+        self.label = QtGui.QLabel(setting['result_label']%total,self)
+        self.label.setGeometry(*setting['result_label_geometry'])
+
+    def init_close_group(self):
+        setting = self.data['setting']
+        close_btn_image = QtGui.QImage(setting['close_btn_image_path'])
+        close_btn_image_active = QtGui.QImage(setting['close_btn_image_active_path'])
+        self.close_btn = QHoverButton(self,close_btn_image,close_btn_image_active)
+        self.close_btn.setGeometry(*setting['close_btn_geometry'])
+        self.close_btn.setToolTip(setting['close_btn_tool_tip'])
+        self.connect(self.close_btn,
+                    QtCore.SIGNAL('clicked()'),
+                    self.onCloseButtonClick)
 
     def init_color(self):
         self.color_map = {
@@ -39,7 +72,8 @@ class QResultDialog(QtGui.QDialog):
 
     def init_table(self):
         data = self.data
-        self.table = QtGui.QTableWidget(data['row'],data['col'])
+        setting = self.data['setting']
+        self.table = QtGui.QTableWidget(data['row'],data['col'],self)
         for n ,row in enumerate(data['data']):
             stock = data['data'][n]
 
@@ -55,7 +89,9 @@ class QResultDialog(QtGui.QDialog):
                 item_change = QTableDataItem('double',str(stock.change))
             else:
                 item_change = QTableDataItem('null','')
-            item_change.setTextAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+            item_change.setTextAlignment(
+                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+
             self.table.setItem(n,2,item_change)
             self.reset_color(item_change)
 
@@ -63,7 +99,9 @@ class QResultDialog(QtGui.QDialog):
                 item_price = QTableDataItem('double',str(stock.price))
             else:
                 item_price = QTableDataItem('null','')
-            item_price.setTextAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+            item_price.setTextAlignment(
+                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+
             self.table.setItem(n,3,item_price)
             self.reset_color(item_price)
 
@@ -71,7 +109,9 @@ class QResultDialog(QtGui.QDialog):
                 item_pe = QTableDataItem('double','%.04f'%stock.pe)
             else:
                 item_pe  = QTableDataItem('null','')
-            item_pe.setTextAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+            item_pe.setTextAlignment(
+                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+
             self.table.setItem(n,4,item_pe)
             self.reset_color(item_pe)
 
@@ -79,7 +119,9 @@ class QResultDialog(QtGui.QDialog):
                 item_peg = QTableDataItem('double','%.04f'%stock.peg)
             else:
                 item_peg = QTableDataItem('null','')
-            item_peg.setTextAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+            item_peg.setTextAlignment(
+                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+
             self.table.setItem(n,5,item_peg)
             self.reset_color(item_peg)
 
@@ -87,7 +129,9 @@ class QResultDialog(QtGui.QDialog):
                 item_pbv = QTableDataItem('double','%.04f'%stock.pbv)
             else:
                 item_pbv = QTableDataItem('null','')
-            item_pbv.setTextAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+            item_pbv.setTextAlignment(
+                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+
             self.table.setItem(n,6,item_pbv)
             self.reset_color(item_pbv)
 
@@ -96,16 +140,19 @@ class QResultDialog(QtGui.QDialog):
                 if temp > 10000000:#大于千万
                     temp  = temp/100000000#除以亿
                 item_capital = QTableDataItem('double','%.04f'%temp)
-            item_capital.setTextAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+            item_capital.setTextAlignment(
+                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+
             self.table.setItem(n,7,item_capital)
             self.reset_color(item_capital)
 
-            self.table.setRowHeight(n,20)
+            self.table.setRowHeight(n,setting['result_table_row_height'])
 
         self.table.setHorizontalHeaderLabels(data['header'])
         self.table.verticalHeader().setVisible(False)
         self.table.setFocusPolicy(QtCore.Qt.NoFocus)
-            
+        #self.table.resizeColumnsToContents()
+        self.table.setGeometry(*setting['result_table_geometry'])
 
     def on_cell_press(self,col,row):#行,列
         #还没被点击过
@@ -193,3 +240,17 @@ class QResultDialog(QtGui.QDialog):
             item.setBackgroundColor(self.color_map['selected_null'])
         else:
             item.setBackgroundColor(self.color_map['selected_double'])
+
+    def onCloseButtonClick(self):
+        self.close()
+        
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            self.dragPosition = event.globalPos() - self.frameGeometry().topLeft()
+            QtGui.QApplication.postEvent(self, QtCore.QEvent(174))
+            event.accept()
+ 
+    def mouseMoveEvent(self, event):
+        if event.buttons() == QtCore.Qt.LeftButton:
+            self.move(event.globalPos() - self.dragPosition)
+            event.accept()

@@ -17,6 +17,9 @@ class QMainWindow(QtGui.QDialog):
         self.initUI()
 
     def initUI(self):
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint |QtCore.Qt.Dialog)
+        self.setFixedWidth(self.setting['main_frame_width'])
+        self.setFixedHeight(self.setting['main_frame_height'])
         self.init_close_group()    
         self.init_condition_wrapper()
         self.init_screener_group()
@@ -64,10 +67,6 @@ class QMainWindow(QtGui.QDialog):
 
     def init_close_group(self):
         setting = self.setting
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint |QtCore.Qt.Dialog)
-        self.setFixedWidth(setting['main_frame_width'])
-        self.setFixedHeight(setting['main_frame_height'])
-
         close_btn_image = QtGui.QImage(setting['close_btn_image_path'])
         close_btn_image_active = QtGui.QImage(setting['close_btn_image_active_path'])
         mini_btn_image = QtGui.QImage(setting['mini_btn_image_path'])
