@@ -1,5 +1,5 @@
 #!/usr/bin/python  
-#-*-coding:utf-8-*-
+# -*- coding: utf-8 -*-
 import json
 class SettingDao():
     def __init__(self,path='setting.json'):

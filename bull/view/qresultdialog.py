@@ -215,7 +215,6 @@ class QResultDialog(QtGui.QDialog):
         self.set_selected_color(selected_item)
         self.press_col = col
         self.press_row = row
-        print col,row
 
     def set_near_selected_color(self,item):
         if item.data_type() == 'str':

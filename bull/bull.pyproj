@@ -74,8 +74,10 @@
     </Compile>
     <Compile Include="view\qmainwindow.py" />
     <Compile Include="view\qrangeslider.py" />
+    <Compile Include="view\qresultdialog.py" />
     <Compile Include="view\qscreenergroup.py" />
     <Compile Include="view\qscreeneritem.py" />
+    <Compile Include="view\qtabledataitem.py" />
     <Compile Include="view\__init__.py" />
   </ItemGroup>
   <ItemGroup>

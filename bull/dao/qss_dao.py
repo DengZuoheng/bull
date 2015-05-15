@@ -1,5 +1,5 @@
 #!/usr/bin/python  
-#-*-coding:utf-8-*-
+# -*- coding: utf-8 -*-
 class QSSDao():
     def __init__(self,path="default.qss"):
         self.path = path
