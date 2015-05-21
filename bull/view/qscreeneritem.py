@@ -61,6 +61,10 @@ class QScreenerItem(QtGui.QFrame):
     def reset(self):
         self.distribution_slider.reset()
 
+    def update_data(self,data):
+        self.distribution_slider.update_data(data['data'],
+            data['data_max'],data['data_min'])
+
 
 class Example(QtGui.QWidget):
     def __init__(self):

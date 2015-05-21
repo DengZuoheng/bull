@@ -12,7 +12,7 @@ from view.qresultdialog import QResultDialog
 
 class ScreenerGroupCtrl():
     def __init__(self,view,setting=None):
-        if setting is None:
+        if setting == None:
             self.setting = view.setting
         else:
             self.setting = setting
@@ -90,3 +90,7 @@ class ScreenerGroupCtrl():
 
     def on_save_event(self):
         print("save")
+
+    def update_data(self):
+        data_list = self.get_data_list(self.setting)
+        self.view.screener_group.update_data_list(data_list)

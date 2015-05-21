@@ -161,7 +161,13 @@ class QDistributionSlider(QtGui.QFrame):
         self.left_edit.setText('%.4f'%_left_text)
         self.right_edit.setText('%.4f'%_right_text)
 
-
+    def update_data(self,data,data_max,data_min):
+        self.data = data
+        self.data_max = data_max
+        self.data_min = data_min
+        dis = self.__uniformization()
+        self.range_slider.set_distribution(dis)
+        self.update()
 
 class Example(QtGui.QWidget):
     def __init__(self):

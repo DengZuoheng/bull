@@ -3,6 +3,7 @@
 from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore  
+
 class QListItem(QtGui.QFrame):
     def __init__(self,parent,title,image,id):
         super(QListItem,self).__init__(parent)

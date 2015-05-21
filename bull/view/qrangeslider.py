@@ -278,6 +278,9 @@ class QRangeSlider(QtGui.QFrame):
             self.lposx = 0
             self.rposx = self._lw
 
+    def set_distribution(self,dis):
+        self.distribution = dis
+
     def mouseMoveEvent(self, event):
         p = QtCore.QPointF(event.pos())
         if self.__in_btn_area(p) or self.__btn_press():

@@ -61,9 +61,7 @@ class WencaiDao(StockDao):
         str_sql = 'INSERT INTO wencai(%s%s)VALUES(%s?)'%t
         sql = str_sql%tuple(attrs)
 
-        insert_attr = []
-        for item in stocks:
-            insert_attr.append(item.attr)
+        insert_attr = [item.attr for item in stocks]
         self.cursor.executemany(sql, insert_attr)
         self.conn.commit()
 

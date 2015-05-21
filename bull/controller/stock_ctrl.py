@@ -24,5 +24,8 @@ class StockCtrl():
         spider = WencaiSpider()
         self.stock_dao.update(spider.results())
 
+    def update_by_result(self,result):
+        self.stock_dao.update(result)
+
     def all(self):
         return self.filter([])

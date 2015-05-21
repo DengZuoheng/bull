@@ -36,9 +36,9 @@
             "capital":7
         },
     "wrapperable_indicator":["change","price","pe","peg","pbv","capital"],
-    "index_list_geometry":[20,33,180,150],
-    "condition_wrapper_geometry":[130,33,180,440],
-    "screener_group_geometry":[310,33,560,440],
+    "index_list_geometry":[20,43,180,150],
+    "condition_wrapper_geometry":[130,43,180,430],
+    "screener_group_geometry":[310,43,560,430],
     "range_slider_btn":"images/drag_btn.png",
     "range_slider_btn_active":"images/drag_btn_active.png",
     "screener_item_del_icon":"images/close_btn.png",

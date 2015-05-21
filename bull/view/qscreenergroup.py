@@ -159,6 +159,10 @@ class QScreenerGroup(QtGui.QFrame):
             item.reset()
             item.setVisible(False)
 
+    def update_data_list(self,data_list):
+        for i,item in enumerate(self.screener_list):
+            item.update_data(data_list[i])
+
 class Example(QtGui.QWidget):
     def __init__(self):
         super(Example,self).__init__()

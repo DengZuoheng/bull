@@ -9,6 +9,8 @@ from view.qconditionwrapper import QConditionWrapper
 from view.qscreenergroup import QScreenerGroup
 from controller.conditon_wrapper_ctrl import ConditionWrapperCtrl
 from controller.screener_group_ctrl import ScreenerGroupCtrl
+from view.qrefreshwidget import QRefreshWidget
+from controller.refresh_ctrl import RefreshCtrl
 
 class QMainWindow(QtGui.QDialog):
     def __init__(self,setting,parent=None):
@@ -24,6 +26,19 @@ class QMainWindow(QtGui.QDialog):
         self.init_condition_wrapper()
         self.init_screener_group()
         self.init_index_list()
+        self.init_refresh_group()
+
+    def init_refresh_group(self):
+        setting = self.setting
+        self.refresh_ctrl = RefreshCtrl(self)
+        text = u'更新数据'
+        gif = 'images/refresh.gif'
+        movie_size = (14,14)
+        self.refresh_widget = QRefreshWidget(self,text,gif,movie_size)
+        self.refresh_widget.setGeometry(770,25,100,30)
+        self.connect(self.refresh_widget,
+            QtCore.SIGNAL('clicked()'),
+            self.refresh_ctrl.on_refresh_start)
 
     def init_index_list(self):
         setting=self.setting

@@ -29,10 +29,19 @@ class WencaiSpider(Spider):
         self.curl.setopt(pycurl.COOKIEFILE,'')
         self.curl.setopt(pycurl.FAILONERROR,True)
         self.save = []
+        self.ctrl = None
         if auto_perform:
             self.perform()
 
+    def set_call_back(self,ctrl):
+        self.ctrl = ctrl
+
+    def call_back(self):
+        if self.ctrl != None:
+            self.ctrl.call_back()
+
     def perform(self):
+        """
         values = {
             'typed':'1',
             'preParams':'',
@@ -45,6 +54,12 @@ class WencaiSpider(Spider):
             'tid':'stockpick',
             'w':'pe',
         }
+        """
+        values = {
+            'tid':'stockpick',
+            'qs':'box_main_ths',
+            'w':'pe',
+        }
         
         #第一次请求获取含token的JSON
         url = self.base_url+'/search?%s'%(urllib.urlencode(values))
@@ -54,6 +69,7 @@ class WencaiSpider(Spider):
         
         res = re.findall(u'var allResult = (.*)?;',self.buf_1.getvalue())
         assert 1 == len(res)#应该只有一个符合结果
+        self.call_back()
         token_obj = json.loads(res[0])
         
         #获取含token后请求一次拉取所有股票
@@ -66,8 +82,10 @@ class WencaiSpider(Spider):
         self.curl.setopt(pycurl.URL, url)
         self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#设置回调
         self.curl.perform() 
+        self.call_back()
         response = self.buf_2.getvalue()
         self.all_result = json.loads(response)
+        self.call_back()
 
     def results(self):
         data = self.all_result['list']

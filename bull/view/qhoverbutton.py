@@ -5,10 +5,12 @@ from PyQt4 import Qt
 from PyQt4 import QtCore  
 
 class QHoverButton(QtGui.QWidget):
-    def __init__(self,parent, image, image_active, width=24, height=24):
+    def __init__(self,parent, image, image_active=None, width=24, height=24):
         super(QHoverButton, self).__init__(parent)
         self.image = image
         self.image_active = image_active
+        if(self.image_active==None):
+            self.image_active = self.image
         self.__hover = False
         self.width = width
         self.height = height
