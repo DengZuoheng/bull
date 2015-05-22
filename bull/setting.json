@@ -83,6 +83,10 @@
     "refresh_gif":"images/refresh.gif",
     "refresh_gif_size":[14,14],
     "refresh_widget_geometry":[770,25,100,30],
-    "refresh_progress_bar_geomotry":[311,55,559,5]
+    "refresh_progress_bar_geomotry":[311,55,559,5],
+    "icon_path":"images/icon.png",
+    "title_text":"Bull - v1.0",
+    "icon_size":[24,24],
+    "icon_geomotry":[1,1,240,44]
 
 }

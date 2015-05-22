@@ -29,11 +29,6 @@ class QRefreshWidget(QtGui.QFrame):
         self.movie_screen.setMovie(self.movie)
         self.movie.start()
         self.movie.setPaused(True)
-        self.setStyleSheet("""
-            .QLabel{
-                color:#0578eb;
-            }
-            """)
         self.clickable = True
         self.movie_paused = True
 

@@ -42,8 +42,8 @@ class QIndexList(QtGui.QWidget):
             else:
                 self.button_list[i].setProperty('states','unselected')
             self.button_list[i].update()
-            self.button_list[i].style().unpolish(self.button_list[i]);
-            self.button_list[i].style().polish(self.button_list[i]);
+            self.button_list[i].style().unpolish(self.button_list[i])
+            self.button_list[i].style().polish(self.button_list[i])
 
     def on_nth_btn_press(self,id):
          self.selected_index = id

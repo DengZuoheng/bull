@@ -169,3 +169,7 @@ QProgressBar::chunk[states="normal"]{
 QProgressBar::chunk[states="danger"]{
     background-color: #d43f3a;
 }
+
+.QRefreshWidget QLabel,.QIconWidget QLabel{
+    color:#0578eb;  
+}

@@ -10,6 +10,7 @@ from view.qscreenergroup import QScreenerGroup
 from controller.conditon_wrapper_ctrl import ConditionWrapperCtrl
 from controller.screener_group_ctrl import ScreenerGroupCtrl
 from view.qrefreshwidget import QRefreshWidget
+from view.qiconwidget import QIconWidget
 from controller.refresh_ctrl import RefreshCtrl
 
 class QMainWindow(QtGui.QDialog):
@@ -27,6 +28,15 @@ class QMainWindow(QtGui.QDialog):
         self.init_screener_group()
         self.init_index_list()
         self.init_refresh_group()
+        self.init_icon_group()
+
+    def init_icon_group(self):
+        setting = self.setting
+        icon = setting['icon_path']
+        title_text = setting['title_text']
+        icon_size = setting['icon_size']
+        self.icon_widget = QIconWidget(self,title_text,icon,icon_size)
+        self.icon_widget.setGeometry(*setting['icon_geomotry'])
 
     def init_refresh_group(self):
         setting = self.setting
