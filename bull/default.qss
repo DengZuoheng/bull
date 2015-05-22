@@ -155,3 +155,17 @@ QTableView{
 QResultDialog{
     border:1px solid #0578eb;
 }
+
+QProgressBar{
+    border: none;
+    text-align: center;
+    background:#e5e8ea;
+}
+
+QProgressBar::chunk[states="normal"]{
+    background-color: #4d89c1;
+}
+
+QProgressBar::chunk[states="danger"]{
+    background-color: #d43f3a;
+}

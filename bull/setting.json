@@ -36,9 +36,9 @@
             "capital":7
         },
     "wrapperable_indicator":["change","price","pe","peg","pbv","capital"],
-    "index_list_geometry":[20,43,180,150],
-    "condition_wrapper_geometry":[130,43,180,430],
-    "screener_group_geometry":[310,43,560,430],
+    "index_list_geometry":[20,53,180,150],
+    "condition_wrapper_geometry":[130,53,180,420],
+    "screener_group_geometry":[310,53,560,420],
     "range_slider_btn":"images/drag_btn.png",
     "range_slider_btn_active":"images/drag_btn_active.png",
     "screener_item_del_icon":"images/close_btn.png",
@@ -78,6 +78,11 @@
     "result_table_geometry":[15,50,841,405],
     "result_table_row_height":20,
     "no_result_warning_text":"没有找到符合条件的股票",
-    "no_result_warning_geometry":[1,220,869,30]
+    "no_result_warning_geometry":[1,220,869,30],
+    "refresh_text":"更新数据",
+    "refresh_gif":"images/refresh.gif",
+    "refresh_gif_size":[14,14],
+    "refresh_widget_geometry":[770,25,100,30],
+    "refresh_progress_bar_geomotry":[311,55,559,5]
 
 }

@@ -31,14 +31,20 @@ class QMainWindow(QtGui.QDialog):
     def init_refresh_group(self):
         setting = self.setting
         self.refresh_ctrl = RefreshCtrl(self)
-        text = u'更新数据'
-        gif = 'images/refresh.gif'
-        movie_size = (14,14)
+        text = setting['refresh_text']
+        gif = setting['refresh_gif']
+        movie_size = setting['refresh_gif_size']
         self.refresh_widget = QRefreshWidget(self,text,gif,movie_size)
-        self.refresh_widget.setGeometry(770,25,100,30)
+        self.refresh_widget.setGeometry(*setting['refresh_widget_geometry'])
         self.connect(self.refresh_widget,
             QtCore.SIGNAL('clicked()'),
             self.refresh_ctrl.on_refresh_start)
+        self.refresh_progress_bar = QtGui.QProgressBar(self)
+        self.refresh_progress_bar.setGeometry(*setting['refresh_progress_bar_geomotry'])
+        #self.refresh_progress_bar.setGeometry(1,484,869,5)
+        self.refresh_progress_bar.setTextVisible (False)
+        self.refresh_progress_bar.setRange(0,4)
+        self.refresh_progress_bar.setVisible(False)
 
     def init_index_list(self):
         setting=self.setting
