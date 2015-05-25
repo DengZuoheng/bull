@@ -66,11 +66,11 @@ class QDistributionSlider(QtGui.QFrame):
         self.right_edit.setFixedHeight(self.height)
         self.right_edit.setAlignment(QtCore.Qt.AlignCenter)
 
-        regexp = QtCore.QRegExp('^[0-9]*\.[0-9]*$')
+        regexp = QtCore.QRegExp('^-*[0-9]*\.*[0-9]*$')
         validator = QtGui.QRegExpValidator(regexp)
         self.left_edit.setValidator(validator)
         self.right_edit.setValidator(validator)
-        self.__set_text(0,1)
+        #self.__set_text(0,1)
         hbox = QtGui.QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.addWidget(self.left_edit)
@@ -83,12 +83,28 @@ class QDistributionSlider(QtGui.QFrame):
         self.connect(self.range_slider, 
             QtCore.SIGNAL('valueChanged(float,float)'),
             self.changeRange)
+        """
         self.connect(self.left_edit,
             QtCore.SIGNAL('textEdited(const QString&)'),
             self.left_edit_press)
         self.connect(self.right_edit,
             QtCore.SIGNAL('textEdited(const QString&)'),
             self.right_edit_press)
+        """
+        self.connect(self.right_edit,
+            QtCore.SIGNAL('returnPressed()'),
+            self.right_edit_return)
+        self.connect(self.left_edit,
+            QtCore.SIGNAL('returnPressed()'),
+            self.left_edit_return)
+
+    def right_edit_return(self):
+        qstr = self.right_edit.text()
+        self.right_edit_press(qstr)
+
+    def left_edit_return(self):
+        qstr = self.left_edit.text()
+        self.left_edit_press(qstr)
 
     def reset(self):
         self.changeRange(0,1)
@@ -120,26 +136,41 @@ class QDistributionSlider(QtGui.QFrame):
 
     def left_edit_press(self, qstr):
         if(qstr==''):
-            self.lvalue = 0
+            self.lvalue = self.data_min
         else:
-            self.lvalue = self.__cal_by_str(qstr)
+            self.lvalue = float(qstr)
         if(self.lvalue>self.rvalue):
-            if(self.lvalue>=1):
-                self.lvalue = 1
+            if(self.lvalue>=self.data_max):
+                self.lvalue = self.data_max
             self.rvalue = self.lvalue
-
-        self.range_slider.setValue(self.lvalue,self.rvalue)
+            self.__set_text(self.lvalue,self.rvalue)
+        if(self.lvalue<self.data_min):
+            self.lvalue = self.data_min
+            self.__set_text(self.lvalue,self.rvalue)
+        rl = self.__cal_by_val(self.lvalue)
+        rr = self.__cal_by_val(self.rvalue)
+        self.range_slider.setValue(rl,rr)
 
     def right_edit_press(self, qstr):
         if(qstr==''):
-            self.rvalue = 0
+            self.rvalue = self.data_min
         else:
-            self.rvalue = self.__cal_by_str(qstr)
+            self.rvalue = float(qstr)
+            print(self.rvalue)
         if(self.rvalue<self.lvalue):
-            if(self.rvalue<=0):
-                self.rvalue = 0
+            if(self.rvalue<=self.data_min):
+                self.rvalue = self.data_min
             self.lvalue = self.rvalue
-        self.range_slider.setValue(self.lvalue,self.rvalue)
+            self.__set_text(self.lvalue,self.rvalue)
+        if(self.rvalue>self.data_max):
+            self.rvalue = self.data_max
+            self.__set_text(self.lvalue,self.rvalue)
+        if(self.rvalue<self.data_min):
+            self.lvalue=self.rvalue=self.data_min
+            self.__set_text(self.lvalue,self.rvalue)
+        rl = self.__cal_by_val(self.lvalue)
+        rr = self.__cal_by_val(self.rvalue)
+        self.range_slider.setValue(rl,rr)
 
     def range_slider_focused(self):
         self.left_edit.clearFocus()
@@ -148,11 +179,13 @@ class QDistributionSlider(QtGui.QFrame):
     def changeRange(self,lvalue,rvalue):
         self.lvalue = self.__cal_by_per(lvalue)
         self.rvalue = self.__cal_by_per(rvalue)
-        self.__set_text(lvalue,rvalue)
+        self.__set_text(self.lvalue,self.rvalue)
 
     def __set_text(self,lvalue,rvalue):
-        _left_text = self.__cal_by_per(lvalue)
-        _right_text = self.__cal_by_per(rvalue)
+        #_left_text = self.__cal_by_per(lvalue)
+        #_right_text = self.__cal_by_per(rvalue)
+        _left_text = lvalue
+        _right_text = rvalue
         if(_left_text>10000000):
             _left_text = _left_text/100000000
 

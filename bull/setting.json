@@ -36,7 +36,7 @@
             "capital":7
         },
     "wrapperable_indicator":["change","price","pe","peg","pbv","capital"],
-    "index_list_geometry":[20,53,180,150],
+    "index_list_geometry":[20,50,180,150],
     "condition_wrapper_geometry":[130,53,180,420],
     "screener_group_geometry":[310,53,560,420],
     "range_slider_btn":"images/drag_btn.png",

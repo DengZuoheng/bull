@@ -93,7 +93,7 @@ class QRangeSlider(QtGui.QFrame):
         pass
 
     def __calposx_by_value(self):
-        self.lposx = int(self.width*self.lvalue)
+        self.lposx = int((self.width - self._rw - self._lw)*self.lvalue)
         self.rposx = self._lw+int((self.width - self._rw -self._lw)*self.rvalue)
 
     def __calvalue_by_posx(self):
