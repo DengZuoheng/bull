@@ -22,6 +22,8 @@ class QScreenerGroup(QtGui.QFrame):
             range_btn_img_active,
             screener_item_del_icon,
             screener_item_del_icon_active,
+            no_select_warning_main="",
+            no_select_warning_tip="",
             ):
         super(QScreenerGroup,self).__init__(parent)
         self.header = header
@@ -38,6 +40,9 @@ class QScreenerGroup(QtGui.QFrame):
         self.screener_item_del_icon = screener_item_del_icon
         self.screener_item_del_icon_active = screener_item_del_icon_active
         self.length = len(title_list)
+        self.selected_screener_num = 0
+        self.no_select_warning_main = no_select_warning_main
+        self.no_select_warning_tip = no_select_warning_tip
         self.initUI()
 
     def init_inner_frame(self):
@@ -116,18 +121,32 @@ class QScreenerGroup(QtGui.QFrame):
             QtCore.SIGNAL('clicked()'),
             self.on_button_submit_clicked)
 
+    def init_select_nothing_warning(self):
+        self.select_nothing_label = QtGui.QLabel(self.no_select_warning_main,self)
+        self.select_nothing_tip_label = QtGui.QLabel(self.no_select_warning_tip,self) 
+        self.select_nothing_label.setFixedHeight(100)
+        self.select_nothing_label.setProperty('cls','big1')
+        self.select_nothing_label.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignHCenter)
+        self.select_nothing_tip_label.setAlignment(QtCore.Qt.AlignHCenter)
+        self.select_nothing_vbox = QtGui.QVBoxLayout()
+        self.select_nothing_vbox.addWidget(self.select_nothing_label)
+        self.select_nothing_vbox.addWidget(self.select_nothing_tip_label)
+
     def initUI(self):
         self.init_inner_frame()
         self.init_scroll_area()
         self.init_title()
         self.init_header()
         self.init_button_group()
+        self.init_select_nothing_warning()
         self.main_layout = QtGui.QVBoxLayout()
         self.main_layout.addWidget(self.header_label)
         self.main_layout.addLayout(self.title_hbox)
+        self.main_layout.addLayout(self.select_nothing_vbox)
         self.main_layout.addWidget(self.scroll)
         self.main_layout.addLayout(self.button_hbox)
         self.setLayout(self.main_layout)
+        self.change_no_select_warning_visible()
 
     def on_button_submit_clicked(self):
         self.emit(QtCore.SIGNAL('submit_event()'))
@@ -152,9 +171,11 @@ class QScreenerGroup(QtGui.QFrame):
         return ret
 
     def set_nth_item_visible(self,id,flag):
+        self.change_no_select_warning_status(flag)
         self.screener_list[id].setVisible(flag)
 
     def reset(self):
+        self.selected_screener_num = 0
         for item in self.screener_list:
             item.reset()
             item.setVisible(False)
@@ -162,6 +183,32 @@ class QScreenerGroup(QtGui.QFrame):
     def update_data_list(self,data_list):
         for i,item in enumerate(self.screener_list):
             item.update_data(data_list[i])
+
+    def change_no_select_warning_status(self,flag):
+        if flag == False:
+            self.selected_screener_num -= 1
+        else:
+            self.selected_screener_num += 1
+        self.change_no_select_warning_visible()
+
+    def change_no_select_warning_visible(self):
+        if self.selected_screener_num > 0:
+            self.label_name.setVisible(True) 
+            self.label_min.setVisible(True) 
+            self.label_chart.setVisible(True) 
+            self.label_max.setVisible(True) 
+            self.label_clode.setVisible(True) 
+            self.select_nothing_label.setVisible(False) 
+            self.select_nothing_tip_label.setVisible(False) 
+            self.update()
+        else:
+            self.select_nothing_label.setVisible(True) 
+            self.select_nothing_tip_label.setVisible(True) 
+            self.label_name.setVisible(False) 
+            self.label_min.setVisible(False) 
+            self.label_chart.setVisible(False) 
+            self.label_max.setVisible(False) 
+            self.label_clode.setVisible(False) 
 
 class Example(QtGui.QWidget):
     def __init__(self):

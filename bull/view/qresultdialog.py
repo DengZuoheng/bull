@@ -33,6 +33,7 @@ class QResultDialog(QtGui.QDialog):
         text = self.data['setting']['no_result_warning_text']
         geometry = self.data['setting']['no_result_warning_geometry']
         self.no_result_label = QtGui.QLabel(text,self)
+        self.no_result_label.setProperty('cls','big2')
         self.no_result_label.setGeometry(*geometry)
         self.no_result_label.setAlignment(QtCore.Qt.AlignCenter)
 

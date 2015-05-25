@@ -177,3 +177,11 @@ QProgressBar::chunk[states="danger"]{
 .QWarningMessageBox{
     border: 1px solid #d9534f;
 }
+
+.QLabel[cls="big1"]{
+    font-size:24px;
+}
+
+.QLabel[cls="big2"]{
+    font-size:18px;
+}

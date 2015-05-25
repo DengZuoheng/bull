@@ -99,6 +99,8 @@
     "warning_msg_confirm_btn_label":"确定",
     "warning_msg_confirm_btn_geometry":[215,130,80,30],
     "warning_msg_box_title_geometry":[5,5,100,18],
-    "warning_msg_close_btn_geometry":[295,1,24,24]
+    "warning_msg_close_btn_geometry":[295,1,24,24],
+    "no_select_warning_main":"您没有选择任何筛选条件",
+    "no_select-warning_tip":"您可以从左边选择筛选条件, 由当前状态点击开始选股将取出所有股票数据"
 
 }

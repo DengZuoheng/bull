@@ -59,6 +59,8 @@ class ScreenerGroupCtrl():
             QtGui.QImage(setting['range_slider_btn_active']),
             QtGui.QImage(setting['screener_item_del_icon']),
             QtGui.QImage(setting['screener_item_del_icon_active']),
+            setting['no_select_warning_main'],
+            setting['no_select-warning_tip'],
         ]
         return args
 

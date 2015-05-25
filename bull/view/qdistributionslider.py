@@ -139,6 +139,10 @@ class QDistributionSlider(QtGui.QFrame):
             self.lvalue = self.data_min
         else:
             self.lvalue = float(qstr)
+        #大于千万的特殊处理
+        if self.data_min >= 10000000:
+            self.lvalue*=100000000
+
         if(self.lvalue>self.rvalue):
             if(self.lvalue>=self.data_max):
                 self.lvalue = self.data_max
@@ -156,7 +160,10 @@ class QDistributionSlider(QtGui.QFrame):
             self.rvalue = self.data_min
         else:
             self.rvalue = float(qstr)
-            print(self.rvalue)
+        #大于千万的特殊处理
+        if self.data_min >= 10000000:
+            self.rvalue*=100000000 
+
         if(self.rvalue<self.lvalue):
             if(self.rvalue<=self.data_min):
                 self.rvalue = self.data_min
