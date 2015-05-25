@@ -57,16 +57,16 @@
     "db_path":"db.sqlite3",
     "fav_path":"fav.json",
     "result_color":{
-                "near_selected_str":"#efefef",
-                "normal_str":"#ffffff",
-                "null_double":"#ffe5e5",
-                "normal_double":"#f2e5ff",
-                "near_selected_double":"#e2d5ef",
-                "near_selected_null_double":"#efd5d5",
-                "selected_double":"#a0cee4",
-                "selected_str":"#a0cee4",
-                "selected_null":"#a0cee4"
-            },
+            "near_selected_str":"#efefef",
+            "normal_str":"#ffffff",
+            "null_double":"#ffe5e5",
+            "normal_double":"#f2e5ff",
+            "near_selected_double":"#e2d5ef",
+            "near_selected_null_double":"#efd5d5",
+            "selected_double":"#a0cee4",
+            "selected_str":"#a0cee4",
+            "selected_null":"#a0cee4"
+        },
     "result_index_map":["ticker","title","change","price",
             "pe","peg","pbv","capital"],
     "result_header":["股票代码","股票简称","涨跌幅",
@@ -87,6 +87,18 @@
     "icon_path":"images/icon.png",
     "title_text":"Bull - v1.0",
     "icon_size":[24,24],
-    "icon_geomotry":[1,1,240,44]
+    "icon_geomotry":[1,1,240,44],
+    "warning_img_path":"images/error_warning_alert_attention.png",
+    "warning_msgbox_title":"Bull warning",
+    "warning_msg_box_width":320,
+    "warning_msg_box_height":180,
+    "warning_msg_icon_scaled":[64,64],
+    "warning_msg_icon_geometry":[40,30,96,96],
+    "refresh_error_text":"数据更新失败, 请检查网络连接并稍后重试 !",
+    "warning_msg_text_geometry":[150,30,150,80],
+    "warning_msg_confirm_btn_label":"确定",
+    "warning_msg_confirm_btn_geometry":[215,130,80,30],
+    "warning_msg_box_title_geometry":[5,5,100,18],
+    "warning_msg_close_btn_geometry":[295,1,24,24]
 
 }

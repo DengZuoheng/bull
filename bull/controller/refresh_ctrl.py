@@ -7,6 +7,7 @@ parent_path = os.path.dirname(path)
 sys.path.insert(0,(parent_path))
 from PyQt4 import QtCore
 from service.refresh_thread import RefreshThread
+from view.qwarningmessagebox import QWarningMessageBox
 
 class RefreshCtrl(QtCore.QObject):
     def __init__(self,view,setting=None):
@@ -50,6 +51,16 @@ class RefreshCtrl(QtCore.QObject):
             self.view.refresh_widget.set_movie_paused_status(True)
             self.view.refresh_progress_bar.setVisible(False)
         else:
+            try:     
+                data = {
+                    'setting':self.setting,
+                    'warning_text':self.setting['refresh_error_text']
+                }
+                #这个消息框得传一个data字典, 包括setting和警告字符串
+                messagebox = QWarningMessageBox(self.view,data)
+                messagebox.exec_()
+            except Exception as e:
+                print(str(e))
             self.view.refresh_widget.set_clickable(True)
             self.view.refresh_widget.set_movie_paused_status(True)
             self.view.refresh_progress_bar.setVisible(False)
@@ -66,8 +77,7 @@ class RefreshCtrl(QtCore.QObject):
         self.view.refresh_progress_bar.update()
         self.view.refresh_progress_bar.style().unpolish(self.view.refresh_progress_bar)
         self.view.refresh_progress_bar.style().polish(self.view.refresh_progress_bar)
-        messagebox = RefreshFailedMessageBox(self)
-        messagebox.exec_()
+        
 
 
     def update_view(self):

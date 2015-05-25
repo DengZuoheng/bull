@@ -173,3 +173,7 @@ QProgressBar::chunk[states="danger"]{
 .QRefreshWidget QLabel,.QIconWidget QLabel{
     color:#0578eb;  
 }
+
+.QWarningMessageBox{
+    border: 1px solid #d9534f;
+}

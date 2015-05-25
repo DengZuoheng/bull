@@ -12,8 +12,6 @@ class QResultDialog(QtGui.QDialog):
         self.data = data
         setting = self.data['setting']
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint |QtCore.Qt.Dialog)
-        self.setFixedWidth(setting['main_frame_width'])
-        self.setFixedHeight(setting['main_frame_height'])
         self.init_close_group() 
         self.init_label()
         if self.data['row'] == 0:
