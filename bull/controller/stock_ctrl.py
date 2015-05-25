@@ -12,6 +12,8 @@ from service.wencaispider import WencaiSpider
 class StockCtrl():
     def __init__(self,stock_dao):
         self.stock_dao = stock_dao
+        if stock_dao.empty():
+            self.update()
 
     def filter(self,condition):
         result = self.stock_dao.filter(condition)

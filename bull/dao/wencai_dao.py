@@ -69,6 +69,9 @@ class WencaiDao(StockDao):
     def all(self):
         return self.filter([])
 
+    def empty(self):
+        return len(self.all()) == 0
+
     def __gen_sql(self):
         parameter = [
             {'key_name':'ticker','type':'VARCHAR[20]','primary_key':True},
