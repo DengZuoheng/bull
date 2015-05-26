@@ -29,7 +29,7 @@ class FavCtrl():
         new_fav_item = {
             'favid':new_fav_id,
             'condition':condition_list,
-            'title':str(title),
+            'title':unicode(title),
         }
         self.fav_list.append(new_fav_item)
         self.fav_dao.store_fav(self.fav_list)

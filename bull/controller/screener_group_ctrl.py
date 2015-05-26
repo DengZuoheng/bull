@@ -107,7 +107,7 @@ class ScreenerGroupCtrl():
         if value != None and value != False:
             condition_list = self.get_condition_list()
             fav_ctrl = self.view.fav_ctrl
-            fav_ctrl.new_fav(value,condition_list)
+            fav_ctrl.new_fav(unicode(value),condition_list)
 
     def update_data(self):
         data_list = self.get_data_list(self.setting)

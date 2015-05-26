@@ -10,7 +10,7 @@ class QFavItem(QtGui.QFrame):
     def __init__(self,parent,fav_id,title,close_btn_img):
         super(QFavItem, self).__init__(parent)
         self.fav_id = fav_id
-        self.title = title.decode('utf-8')
+        self.title = unicode(title)
         self.close_btn_img = close_btn_img
 
         self.title_label = QtGui.QLabel(self.title)
