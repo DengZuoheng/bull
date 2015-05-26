@@ -92,10 +92,10 @@ class QDistributionSlider(QtGui.QFrame):
             self.right_edit_press)
         """
         self.connect(self.right_edit,
-            QtCore.SIGNAL('returnPressed()'),
+            QtCore.SIGNAL('editingFinished()'),
             self.right_edit_return)
         self.connect(self.left_edit,
-            QtCore.SIGNAL('returnPressed()'),
+            QtCore.SIGNAL('editingFinished()'),
             self.left_edit_return)
 
     def right_edit_return(self):
