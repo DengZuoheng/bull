@@ -76,11 +76,11 @@ class QResultDialog(QtGui.QDialog):
         for n ,row in enumerate(data['data']):
             stock = data['data'][n]
 
-            item_ticker = QTableDataItem('str',stock.ticker.decode('UTF-8'))
+            item_ticker = QTableDataItem('str',stock.ticker)
             self.table.setItem(n,0,item_ticker)
             self.reset_color(item_ticker)
 
-            item_title = QTableDataItem('str',stock.title.decode('UTF-8'))
+            item_title = QTableDataItem('str',stock.title)
             self.table.setItem(n,1,item_title)
             self.reset_color(item_title)
 
