@@ -4,15 +4,22 @@ import sys
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 from qtabledataitem import QTableDataItem
-from qhoverbutton import QHoverButton
+from view.qbullwindow import QBullWindow
 
-class QResultDialog(QtGui.QDialog):
+class QResultDialog(QBullWindow):
     def __init__(self,parent=None,data=None):
-        super(QResultDialog,self).__init__(parent)
+        setting = data['setting']
+        kwargs = {
+            'parent':parent,
+            'width':setting['result_dialog_width'],
+            'height':setting['result_dialog_height'],
+            'has_close':True,
+            'has_mini':False,
+            'setting':setting
+        }
+        super(QResultDialog,self).__init__(**kwargs)
         self.data = data
-        setting = self.data['setting']
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint |QtCore.Qt.Dialog)
-        self.init_close_group() 
+        self.setting = setting
         self.init_label()
         if self.data['row'] == 0:
             self.init_no_result_warning()
@@ -24,10 +31,6 @@ class QResultDialog(QtGui.QDialog):
             self.connect(self.table,
             QtCore.SIGNAL('cellPressed(int,int)'),
                 self.on_cell_press)
-        #hbox = QtGui.QHBoxLayout(self)
-        #hbox.addWidget(self.table)
-        self.setFixedWidth(setting['result_dialog_width'])
-        self.setFixedHeight(setting['result_dialog_height'])
 
     def init_no_result_warning(self):
         text = self.data['setting']['no_result_warning_text']
@@ -42,17 +45,6 @@ class QResultDialog(QtGui.QDialog):
         setting = self.data['setting']
         self.label = QtGui.QLabel(setting['result_label']%total,self)
         self.label.setGeometry(*setting['result_label_geometry'])
-
-    def init_close_group(self):
-        setting = self.data['setting']
-        close_btn_image = QtGui.QImage(setting['close_btn_image_path'])
-        close_btn_image_active = QtGui.QImage(setting['close_btn_image_active_path'])
-        self.close_btn = QHoverButton(self,close_btn_image,close_btn_image_active)
-        self.close_btn.setGeometry(*setting['close_btn_geometry'])
-        self.close_btn.setToolTip(setting['close_btn_tool_tip'])
-        self.connect(self.close_btn,
-                    QtCore.SIGNAL('clicked()'),
-                    self.onCloseButtonClick)
 
     def init_color(self):
         self.color_map = {
@@ -238,17 +230,3 @@ class QResultDialog(QtGui.QDialog):
             item.setBackgroundColor(self.color_map['selected_null'])
         else:
             item.setBackgroundColor(self.color_map['selected_double'])
-
-    def onCloseButtonClick(self):
-        self.close()
-        
-    def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
-            self.dragPosition = event.globalPos() - self.frameGeometry().topLeft()
-            QtGui.QApplication.postEvent(self, QtCore.QEvent(174))
-            event.accept()
- 
-    def mouseMoveEvent(self, event):
-        if event.buttons() == QtCore.Qt.LeftButton:
-            self.move(event.globalPos() - self.dragPosition)
-            event.accept()

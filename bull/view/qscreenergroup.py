@@ -170,11 +170,31 @@ class QScreenerGroup(QtGui.QFrame):
             ret.append(item.get_value)
         return ret
 
+    def set_header(self,new_header):
+        self.header_label.setText(new_header)
+
+    def set_nth_item_value(self,id,lvalue,rvalue):
+        self.screener_list[id].set_value(lvalue,rvalue)
+
     def set_nth_item_visible(self,id,flag):
         self.change_no_select_warning_status(flag)
         self.screener_list[id].setVisible(flag)
 
+    def set_save_button_text(self,text):
+        self.button_save.setText(text)
+
+    def set_cancel_button_text(self,text):
+        self.button_cancel.setText(text)
+
+    def reset_header(self):
+        self.header_label.setText(self.header)
+
+    def reset_button_group(self):
+        self.button_save.setText(self.save_btn_alt)
+        self.button_cancel.setText(self.cancel_btn_alt)
+
     def reset(self):
+        self.reset_header()
         self.selected_screener_num = 0
         for item in self.screener_list:
             item.reset()
@@ -197,7 +217,9 @@ class QScreenerGroup(QtGui.QFrame):
             self.label_min.setVisible(True) 
             self.label_chart.setVisible(True) 
             self.label_max.setVisible(True) 
-            self.label_clode.setVisible(True) 
+            self.label_clode.setVisible(True)
+            self.button_save.setVisible(True)
+            self.button_cancel.setVisible(True)
             self.select_nothing_label.setVisible(False) 
             self.select_nothing_tip_label.setVisible(False) 
             self.update()
@@ -209,6 +231,8 @@ class QScreenerGroup(QtGui.QFrame):
             self.label_chart.setVisible(False) 
             self.label_max.setVisible(False) 
             self.label_clode.setVisible(False) 
+            self.button_save.setVisible(False)
+            self.button_cancel.setVisible(False)
 
 class Example(QtGui.QWidget):
     def __init__(self):

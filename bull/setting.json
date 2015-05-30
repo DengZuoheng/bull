@@ -2,6 +2,7 @@
 
     "main_frame_width":871,
     "main_frame_height":490,
+    "close_icon_path":"images/close_icon.png",
     "close_btn_image_path":"images/close_btn.png",
     "close_btn_image_active_path":"images/close_btn_active.png",
     "mini_btn_image_path":"images/mini_btn.png",
@@ -89,9 +90,9 @@
     "icon_size":[24,24],
     "icon_geomotry":[1,1,240,44],
     "warning_img_path":"images/error_warning_alert_attention.png",
-    "warning_msgbox_title":"Bull warning",
-    "warning_msg_box_width":320,
-    "warning_msg_box_height":180,
+    "warning_msgbox_title":"警告",
+    "bull_msg_box_width":320,
+    "bull_msg_box_height":180,
     "warning_msg_icon_scaled":[64,64],
     "warning_msg_icon_geometry":[40,30,96,96],
     "refresh_error_text":"数据更新失败, 请检查网络连接并稍后重试 !",
@@ -101,6 +102,18 @@
     "warning_msg_box_title_geometry":[5,5,100,18],
     "warning_msg_close_btn_geometry":[295,1,24,24],
     "no_select_warning_main":"您没有选择任何筛选条件",
-    "no_select-warning_tip":"您可以从左边选择筛选条件, 由当前状态点击开始选股将取出所有股票数据"
-
+    "no_select-warning_tip":"您可以从左边选择筛选条件, 由当前状态点击开始选股将取出所有股票数据",
+    "fav_wrapper_header":"可选分组",
+    "fav_scanner_header_text":"当前分组",
+    "fav_scanner_save_button_text":"保存搜索条件",
+    "fav_scanner_cancel_button_text":"取消",
+    "fav_delete_dlg_title_text":"删除指标",
+    "fav_delete_confirm_text":"你确定删除该指标吗?",
+    "fav_delete_confirm_tips":"删除该指标后会清空指标下的所有筛选条件",
+    "bull_msg_box_geometry":[25,40,270,130],
+    "bull_msg_box_submit_text":"确定",
+    "bull_msg_box_cancel_text":"取消",
+    "new_fav_dlg_title":"新建指标",
+    "new_fav_input_label_text":"指标名称:",
+    "new_fav_no_input_warning":"请输入指标名"
 }

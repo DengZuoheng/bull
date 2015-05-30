@@ -112,9 +112,11 @@ class QDistributionSlider(QtGui.QFrame):
 
     def set_value(self,lvalue,rvalue):
         self.__set_text(lvalue,rvalue)
-        self.lvalue = self.__cal_by_val(lvalue)
-        self.rvalue = self.__cal_by_val(rvalue)
-        self.range_slider.setValue(self.lvalue,self.rvalue)
+        self.lvalue = lvalue
+        self.rvalue = rvalue
+        rl = self.__cal_by_val(self.lvalue)
+        rr = self.__cal_by_val(self.rvalue)
+        self.range_slider.setValue(rl,rr)
 
     def get_value(self):
         return (self.lvalue,self.rvalue)
@@ -147,13 +149,9 @@ class QDistributionSlider(QtGui.QFrame):
             if(self.lvalue>=self.data_max):
                 self.lvalue = self.data_max
             self.rvalue = self.lvalue
-            self.__set_text(self.lvalue,self.rvalue)
         if(self.lvalue<self.data_min):
             self.lvalue = self.data_min
-            self.__set_text(self.lvalue,self.rvalue)
-        rl = self.__cal_by_val(self.lvalue)
-        rr = self.__cal_by_val(self.rvalue)
-        self.range_slider.setValue(rl,rr)
+        self.set_value(self.lvalue,self.rvalue)
 
     def right_edit_press(self, qstr):
         if(qstr==''):
@@ -168,16 +166,11 @@ class QDistributionSlider(QtGui.QFrame):
             if(self.rvalue<=self.data_min):
                 self.rvalue = self.data_min
             self.lvalue = self.rvalue
-            self.__set_text(self.lvalue,self.rvalue)
         if(self.rvalue>self.data_max):
             self.rvalue = self.data_max
-            self.__set_text(self.lvalue,self.rvalue)
         if(self.rvalue<self.data_min):
             self.lvalue=self.rvalue=self.data_min
-            self.__set_text(self.lvalue,self.rvalue)
-        rl = self.__cal_by_val(self.lvalue)
-        rr = self.__cal_by_val(self.rvalue)
-        self.range_slider.setValue(rl,rr)
+        self.set_value(self.lvalue,self.rvalue)
 
     def range_slider_focused(self):
         self.left_edit.clearFocus()

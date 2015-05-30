@@ -9,6 +9,7 @@ from PyQt4 import QtGui
 from dao.wencai_dao import WencaiDao
 from controller.stock_ctrl import StockCtrl
 from view.qresultdialog import QResultDialog
+from view.qnewfavdlg import QNewFavDlg
 
 class ScreenerGroupCtrl():
     def __init__(self,view,setting=None):
@@ -64,7 +65,7 @@ class ScreenerGroupCtrl():
         ]
         return args
 
-    def on_submit_event(self):
+    def get_condition_list(self):
         id_map = self.view.condition_wrapper_ctrl.id_map
         condition_list = []
         for key in id_map:
@@ -73,6 +74,11 @@ class ScreenerGroupCtrl():
                 ret = self.view.screener_group.get_nth_value(id_map[key])
                 tu = (key,ret[0],ret[1])
                 condition_list.append(tu)
+        return condition_list
+
+    def on_submit_event(self):
+        id_map = self.view.condition_wrapper_ctrl.id_map
+        condition_list = self.get_condition_list()
         result = self.stock_ctrl.filter(condition_list)
         dlg_data = {
             'header':self.setting['result_header'],
@@ -91,7 +97,17 @@ class ScreenerGroupCtrl():
         self.view.screener_group.reset()
 
     def on_save_event(self):
-        print("save")
+        dlg_data = {
+            'title':self.setting['new_fav_dlg_title'],
+            'setting':self.setting,
+        }
+        dlg = QNewFavDlg(self.view,dlg_data)
+        dlg.exec_()
+        value = dlg.get_value()
+        if value != None and value != False:
+            condition_list = self.get_condition_list()
+            fav_ctrl = self.view.fav_ctrl
+            fav_ctrl.new_fav(value,condition_list)
 
     def update_data(self):
         data_list = self.get_data_list(self.setting)

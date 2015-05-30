@@ -47,8 +47,8 @@ class QIndexList(QtGui.QWidget):
 
     def on_nth_btn_press(self,id):
          self.selected_index = id
-         print(id)
          self.resetStyleSheet()
+         self.emit(QtCore.SIGNAL('nth_btn_press(int)'),id)
 
 class Example(QtGui.QWidget):
     def __init__(self):

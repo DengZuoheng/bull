@@ -6,7 +6,7 @@
 .QMainWindow{
     border: 1px solid #ccc;
 }
-.QConditionWrapper{
+.QConditionWrapper, .QFavWrapper{
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     background: #ffffff;
@@ -104,6 +104,7 @@ QScrollBar:vertical{
     color:#fff;
     padding:6px 12px;
     margin-right:5px;
+    height:14px;
 }
 
 .QPushButton:hover{
@@ -113,6 +114,26 @@ QScrollBar:vertical{
     color:#fff;
     padding:6px 12px;
     margin-right:5px;
+}
+
+.QPushButton[cls="default"]{
+    border-radius:2px;
+    border:1px solid #ccc;
+    background-color:#fff;
+    color:#000;
+    padding:6px 12px;
+    margin-right:5px;
+    height:14px;
+}
+
+.QPushButton[cls="default"]:hover{
+    border-radius:2px;
+    border:1px solid #adadad;
+    background-color: #e6e6e6;
+    color:#000;
+    padding:6px 12px;
+    margin-right:5px;
+    height:14px;
 }
 
 .QLabel[cls="title"]{
@@ -184,4 +205,43 @@ QProgressBar::chunk[states="danger"]{
 
 .QLabel[cls="big2"]{
     font-size:18px;
+}
+
+.QLabel[cls="text_danger"]{
+    color:#c9302c;
+}
+
+.QLabel[cls="dlg_title"]{
+    font-weight:bold;
+    padding-left:5px;
+    font-size:14px;
+}
+
+.QNewFavDlg{
+    border:1px solid #0578eb;
+}
+
+.QFavItem{
+    border: 1px solid #e4f2ff;
+    background-color:#f7fbff;
+    border-radius: 3px;
+    padding:0;
+    margin:0;
+}
+
+.QFavItem:hover{
+    border: 1px solid #006aca;
+}
+
+.QConfirmMessageBox{
+    border: 1px solid #d9534f;
+}
+
+.QLabel[cls="main_confirm_label"]{
+    font-size:14px;
+}
+
+.QLabel[cls="confirm_tips"]{
+    color: #999;
+    font-size:12px;
 }

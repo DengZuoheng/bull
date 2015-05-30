@@ -10,8 +10,10 @@ from dao.title_dao import TitleDao
 class ConditionWrapperCtrl():
     def __init__(self,view):
         self.view = view
+        #id_map是指标简称和所分配的id的字典
         self.id_map = {}
 
+    #将一个key和id加到id_map去
     def add2id_map(self,key,id):
         self.id_map[key]=id
 
