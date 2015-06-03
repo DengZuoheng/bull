@@ -26,6 +26,7 @@
   <ItemGroup>
     <Compile Include="bull.py" />
     <Compile Include="controller\conditon_wrapper_ctrl.py" />
+    <Compile Include="controller\fav_ctrl.py" />
     <Compile Include="controller\qss_ctrl.py" />
     <Compile Include="controller\refresh_ctrl.py" />
     <Compile Include="controller\screener_group_ctrl.py" />
@@ -49,8 +50,17 @@
     <Compile Include="setting.py" />
     <Compile Include="setup.py" />
     <Compile Include="test\test_favdao.py" />
+    <Compile Include="test\test_fav_ctrl.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test\test_qssdao.py" />
+    <Compile Include="test\test_refresh_thread.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test\test_stock.py" />
+    <Compile Include="test\test_stock_ctrl.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test\test_titledao.py" />
     <Compile Include="test\test_wencaidao.py">
       <SubType>Code</SubType>
@@ -59,10 +69,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="test\__init__.py" />
+    <Compile Include="view\qbullmessagebox.py" />
+    <Compile Include="view\qbullwindow.py" />
     <Compile Include="view\qconditionwrapper.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="view\qconfirmmessagebox.py" />
     <Compile Include="view\qdistributionslider.py" />
+    <Compile Include="view\qfavitem.py" />
+    <Compile Include="view\qfavwrapper.py" />
+    <Compile Include="view\qfocuslineedit.py" />
     <Compile Include="view\qhoverbutton.py">
       <SubType>Code</SubType>
     </Compile>
@@ -77,6 +93,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="view\qmainwindow.py" />
+    <Compile Include="view\qnewfavdlg.py" />
     <Compile Include="view\qrangeslider.py" />
     <Compile Include="view\qrefreshwidget.py" />
     <Compile Include="view\qresultdialog.py" />
@@ -100,9 +117,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="db.sqlite3" />
+    <Content Include="default.qss" />
     <Content Include="fav.json" />
     <Content Include="images\close_btn.png" />
     <Content Include="images\close_btn_active.png" />
+    <Content Include="images\close_icon.png" />
     <Content Include="images\drag_btn.png" />
     <Content Include="images\drag_btn_active.png" />
     <Content Include="images\error_warning_alert_attention.png" />

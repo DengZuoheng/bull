@@ -18,7 +18,8 @@ class Test_test_title_dao(unittest.TestCase):
         titles = dao.load_title()
         self.assertEqual(len(titles),9)
         for item in titles:
-            if not ininstance(item,str):
+            print(item)
+            if not isinstance(item,unicode):
                 raise Exception('title item is not a string')
 
 

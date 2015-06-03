@@ -7,7 +7,7 @@ parent_path = os.path.dirname(path)
 sys.path.insert(0,(parent_path))
 
 from model.stock import Stock
-from service.wencaispider import WencaiSpider
+from service.spider_factory import create_spider
 
 class StockCtrl():
     def __init__(self,stock_dao):
@@ -23,7 +23,7 @@ class StockCtrl():
         return ret
 
     def update(self):
-        spider = WencaiSpider()
+        spider = create_spider()
         self.stock_dao.update(spider.results())
 
     def update_by_result(self,result):

@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 from dao.fav_dao import FavDao
 class FavCtrl():
-    def __init__(self,view,path):
+    def __init__(self,view,path='',dao=None):
         self.view = view
-        self.fav_dao = FavDao(path)
+        if dao == None:
+            self.fav_dao = FavDao(path)
+        else :
+            self.fav_dao = dao
         self.fav_list = self.fav_dao.load_fav()
 
     def set_fav(self,favid,condition_list):
@@ -33,8 +36,12 @@ class FavCtrl():
         }
         self.fav_list.append(new_fav_item)
         self.fav_dao.store_fav(self.fav_list)
-        self.view.fav_wrapper.add_fav_item(new_fav_item)
+        try:
+            self.view.fav_wrapper.add_fav_item(new_fav_item)
+        except:
+            pass
 
+    #这是用来生成新fav的id的, 并不适用与找当前最大的id
     def find_max_id(self):
         if len(self.fav_list)==0:
             return 0;

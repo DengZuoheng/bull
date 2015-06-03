@@ -26,6 +26,7 @@ class RefreshThread(QtCore.QThread):
             self.succeed = False
             self.emit(QtCore.SIGNAL('except(const QString&)'),unicode(e))
 
+    #回调是用来通知进度的, 每次回调之间的操作应该都是原子的
     def call_back(self):
         self.emit(QtCore.SIGNAL('callback()'))
 
