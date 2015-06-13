@@ -3,7 +3,7 @@
 import sys
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-from qbullmessagebox import QBullMessageBox
+from qbull_message_box import QBullMessageBox
 
 class QConfirmMessageBox(QBullMessageBox):
     def __init__(self,parent=None,data=None):

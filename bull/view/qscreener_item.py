@@ -4,8 +4,8 @@ import sys
 from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore  
-from qdistributionslider import QDistributionSlider
-from qhoverbutton import QHoverButton
+from qdistribution_slider import QDistributionSlider
+from qhover_button import QHoverButton
 
 class QScreenerItem(QtGui.QFrame):
     def __init__(self,parent,title,data,id,
@@ -49,7 +49,15 @@ class QScreenerItem(QtGui.QFrame):
         self.setFixedWidth(500)
         self.setFixedHeight(40)
 
+    def visible(self,new_status=None):
+        if new_status == None:
+            pass
+        else:
+            self.closed = new_status
+        return self.closed
+
     def on_delete_btn_press(self):
+        self.closed = True
         self.emit(QtCore.SIGNAL('close(int)'),self.id)
 
     def get_value(self):

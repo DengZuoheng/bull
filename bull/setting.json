@@ -102,7 +102,7 @@
     "warning_msg_box_title_geometry":[5,5,100,18],
     "warning_msg_close_btn_geometry":[295,1,24,24],
     "no_select_warning_main":"您没有选择任何筛选条件",
-    "no_select-warning_tip":"您可以从左边选择筛选条件, 由当前状态点击开始选股将取出所有股票数据",
+    "no_select_warning_tip":"您可以从左边选择筛选条件, 由当前状态点击开始选股将取出所有股票数据",
     "fav_wrapper_header":"可选分组",
     "fav_scanner_header_text":"当前分组",
     "fav_scanner_save_button_text":"保存搜索条件",

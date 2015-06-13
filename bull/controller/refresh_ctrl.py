@@ -6,30 +6,33 @@ path = sys.path[0]
 parent_path = os.path.dirname(path) 
 sys.path.insert(0,(parent_path))
 from PyQt4 import QtCore
-from service.refresh_thread import RefreshThread
-from view.qwarningmessagebox import QWarningMessageBox
+from service.refresh_thread_factory import RefreshThreadFactory
 
 class RefreshCtrl(QtCore.QObject):
-    def __init__(self,view,setting=None):
+    def __init__(self,view,main_ctrl,setting=None):
         super(RefreshCtrl,self).__init__()
         if setting == None:
             self.setting = view.setting
         else:
             self.setting = setting
         self.view = view
+        self.main_ctrl = main_ctrl
         self.progress = 0
 
     def on_refresh_start(self):
         self.progress = 0
-        self.view.refresh_progress_bar.setProperty('states','normal')
-        self.view.refresh_progress_bar.update()
-        self.view.refresh_progress_bar.style().unpolish(self.view.refresh_progress_bar)
-        self.view.refresh_progress_bar.style().polish(self.view.refresh_progress_bar)
-        self.view.refresh_progress_bar.setRange(0,4)
-        self.view.refresh_progress_bar.setValue(0)
-        self.view.refresh_progress_bar.setVisible(True)
+        progress_bar = self.view.refresh_progress_bar
+        progress_bar.setProperty('states','normal')
+        progress_bar.update()
+        progress_bar.style().unpolish(progress_bar)
+        progress_bar.style().polish(progress_bar)
+        progress_bar.setRange(0,4)
+        progress_bar.setValue(0)
+        progress_bar.setVisible(True)
         self.on_callback()
-        self.refresh_thread = RefreshThread(self)
+        screener_id = self.main_ctrl.get_screener_id()
+        factory = RefreshThreadFactory(self.setting)
+        self.refresh_thread = factory.create_refresh_thread(screener_id,self)
         self.connect(self.refresh_thread,
             QtCore.SIGNAL('finished()'),
             self.on_finish)
@@ -43,9 +46,7 @@ class RefreshCtrl(QtCore.QObject):
 
     def on_finish(self):
         if(self.refresh_thread.succeed):
-            stock_ctrl = self.get_stock_ctrl()
-            stock_ctrl.update_by_result(self.refresh_thread.get_results())
-            self.view.screener_group_ctrl.update_data()
+            self.main_ctrl.update_data()
             self.on_callback()
             self.view.refresh_widget.set_clickable(True)
             self.view.refresh_widget.set_movie_paused_status(True)
@@ -68,17 +69,13 @@ class RefreshCtrl(QtCore.QObject):
     def on_callback(self):
         self.progress += 1
         self.view.refresh_progress_bar.setValue(self.progress)
-        
-    def get_stock_ctrl(self):
-        return self.view.screener_group_ctrl.stock_ctrl
 
     def on_except(self,err_str):
-        self.view.refresh_progress_bar.setProperty('states','danger')
-        self.view.refresh_progress_bar.update()
-        self.view.refresh_progress_bar.style().unpolish(self.view.refresh_progress_bar)
-        self.view.refresh_progress_bar.style().polish(self.view.refresh_progress_bar)
-        
-
+        progress_bar = self.view.refresh_progress_bar
+        progress_bar.setProperty('states','danger')
+        progress_bar.update()
+        progress_bar.style().unpolish(progress_bar)
+        progress_bar.style().polish(progress_bar)
 
     def update_view(self):
         print('update view')

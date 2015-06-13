@@ -5,9 +5,10 @@ from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore 
 from qfavitem import QFavItem
-from qconfirmmessagebox import QConfirmMessageBox
+from qconfirm_message_box import QConfirmMessageBox
+from qbase_wrapper 
 
-class QFavWrapper(QtGui.QFrame):
+class QFavWrapper(QBaseWrapper):
     def __init__(self,parent,title,fav_list,setting,delete_btn_image):
         super(QFavWrapper, self).__init__(parent)
         self.fav_list = fav_list
@@ -39,8 +40,19 @@ class QFavWrapper(QtGui.QFrame):
         layout.addWidget(scroll)
         self.setLayout(layout)
 
+    def get_condition(self):
+        for item in self.fav_list:
+            if item['favid'] == self.selected_id:
+                return item['condition'] 
+
+    def set_condition(self,condition):
+        for item in self.fav_list:
+            if item['favid'] == self.selected_id:
+                item['condition'] = condition
+
     def on_nth_click(self,_id):
-        self.emit(QtCore.SIGNAL('nth_click(int)'),_id)
+        self.selected_id = _id
+        self.emit(QtCore.SIGNAL('changed()'))
 
     def on_nth_close(self,_id):
         dlg_data={
@@ -75,6 +87,14 @@ class QFavWrapper(QtGui.QFrame):
         self.favitem_list.append(favitem)
         self.inner_layout.addWidget(favitem)
         self.update()
+
+    def should_connect_other(self):
+        return True
+
+    def connect_other_list(self):
+        #返回当前收藏的网站id, 如'xueqiu','wencai'
+        #TODO
+        pass
 
 
 class Example(QtGui.QWidget):

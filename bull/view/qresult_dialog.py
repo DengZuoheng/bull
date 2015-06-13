@@ -3,8 +3,8 @@
 import sys
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-from qtabledataitem import QTableDataItem
-from view.qbullwindow import QBullWindow
+from qtable_data_item import QTableDataItem
+from view.qbull_window import QBullWindow
 
 class QResultDialog(QBullWindow):
     def __init__(self,parent=None,data=None):

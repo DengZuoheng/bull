@@ -3,7 +3,7 @@
 import sys
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-from view.qbullwindow import QBullWindow
+from view.qbull_window import QBullWindow
 
 class QWarningMessageBox(QBullWindow):
     def __init__(self, parent=None, data=None):

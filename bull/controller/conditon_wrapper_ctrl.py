@@ -7,6 +7,7 @@ parent_path = os.path.dirname(path)
 sys.path.insert(0,(parent_path))
 from dao.title_dao import TitleDao
 
+#这是原来的controller, 已经废弃了
 class ConditionWrapperCtrl():
     def __init__(self,view):
         self.view = view

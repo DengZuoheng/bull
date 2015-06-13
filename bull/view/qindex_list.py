@@ -4,16 +4,17 @@ import sys
 from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore  
-from qlistitem import QListItem
+from qlist_item import QListItem
 
 class QIndexList(QtGui.QWidget):
-    def __init__(self,parent,title,index_list,image_list):
+    def __init__(self,parent,title,index_list,id_list,image_list):
         super(QIndexList,self).__init__(parent)
         self.title = title
+        self.id_list = id_list
         self.index_list = index_list
         self.image_list = image_list
         self.button_list = []
-        self.selected_index = 0
+        self.wrapper_id = id_list[0]
         self.initUI()      
         
     def initUI(self):
@@ -26,18 +27,21 @@ class QIndexList(QtGui.QWidget):
             list_item = QListItem(self,
                                   self.index_list[i],
                                   QtGui.QPixmap(self.image_list[i]),
-                                  i)
+                                  self.id_list[i])
             self.connect(list_item,
-                         QtCore.SIGNAL('clicked(int)'),
+                         QtCore.SIGNAL('clicked(QString)'),
                          self.on_nth_btn_press)
             self.button_list.append(list_item)
             vbox.addWidget(list_item)
         self.setLayout(vbox)
         self.resetStyleSheet()
 
+    def start(self):
+        self.resetStyleSheet()
+
     def resetStyleSheet(self):
         for i in range(len(self.index_list)):
-            if i==self.selected_index:
+            if self.button_list[i].id == self.wrapper_id:
                 self.button_list[i].setProperty('states','selected')
             else:
                 self.button_list[i].setProperty('states','unselected')
@@ -45,10 +49,10 @@ class QIndexList(QtGui.QWidget):
             self.button_list[i].style().unpolish(self.button_list[i])
             self.button_list[i].style().polish(self.button_list[i])
 
-    def on_nth_btn_press(self,id):
-         self.selected_index = id
+    def on_nth_btn_press(self,_id):
+         self.wrapper_id = str(_id)
          self.resetStyleSheet()
-         self.emit(QtCore.SIGNAL('nth_btn_press(int)'),id)
+         self.emit(QtCore.SIGNAL('nth_btn_press(QString)'),_id )
 
 class Example(QtGui.QWidget):
     def __init__(self):

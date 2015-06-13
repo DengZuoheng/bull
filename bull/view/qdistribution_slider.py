@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from PyQt4 import QtCore,QtGui
-from qrangeslider import QRangeSlider
+from qrange_slider import QRangeSlider
 
 class QDistributionSlider(QtGui.QFrame):
     def __init__(self,
@@ -111,6 +111,10 @@ class QDistributionSlider(QtGui.QFrame):
         self.range_slider.setValue(0,1)
 
     def set_value(self,lvalue,rvalue):
+        if lvalue == None:
+            lvalue = self.data_min
+        if rvalue == None:
+            rvalue = self.data_max
         self.__set_text(lvalue,rvalue)
         self.lvalue = lvalue
         self.rvalue = rvalue
