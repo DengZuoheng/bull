@@ -4,15 +4,18 @@ import sys
 from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore  
-from qscreeneritem import QScreenerItem
+from qscreener_item import QScreenerItem
+from util.composite import composite
 
-
-class QScreenerGroup(QtGui.QFrame):
+#TODO: 还差一个id列表
+class QScreener(QtGui.QFrame):
     def __init__(self,
             parent,
+            screener_id,
             header,
             title_list,
             data_list,
+            id_list,
             label_text_list,
             label_width_list,
             save_btn_alt,
@@ -25,11 +28,13 @@ class QScreenerGroup(QtGui.QFrame):
             no_select_warning_main="",
             no_select_warning_tip="",
             ):
-        super(QScreenerGroup,self).__init__(parent)
+        super(QScreener,self).__init__(parent)
+        self.screener_id = screener_id
         self.header = header
         self.title_list = title_list
         self.data_list = data_list
-        self.screener_list = []
+        self.id_list = id_list
+        self.screener_item_list = []
         self.label_text_list = label_text_list
         self.label_width_list = label_width_list
         self.cancel_btn_alt = cancel_btn_alt
@@ -54,7 +59,7 @@ class QScreenerGroup(QtGui.QFrame):
                 'parent':self,
                 'title':self.title_list[i],
                 'data':self.data_list[i],
-                'id':i,
+                'id':self.id_list[i],
                 'range_btn_img':self.range_btn_img,
                 'range_btn_img_active':self.range_btn_img_active,
                 'del_btn_img':self.screener_item_del_icon,
@@ -62,11 +67,11 @@ class QScreenerGroup(QtGui.QFrame):
             }
             screener_item = QScreenerItem(**kwargs)
             self.connect(screener_item,
-                QtCore.SIGNAL('close(int)'),
-                self.on_nth_item_close)
+                QtCore.SIGNAL('close(QString)'),
+                self.on_item_close)
             self.inner_layout.addWidget(screener_item)
             screener_item.setVisible(False)
-            self.screener_list.append(screener_item)
+            self.screener_item_list.append(screener_item)
 
     def init_scroll_area(self):
         self.scroll = QtGui.QScrollArea(self)
@@ -154,19 +159,23 @@ class QScreenerGroup(QtGui.QFrame):
     def on_button_cancel_clicked(self):
         self.emit(QtCore.SIGNAL('cancel_event()'))
 
-    def on_nth_item_close(self,id):
-        self.screener_list[id].setVisible(False)
-        self.emit(QtCore.SIGNAL('nth_item_close(int)'),id)
+    def on_item_close(self,_id):
+        _id = str(_id)
+        for item in self.screener_item_list:
+            if item.id == _id:
+                item.setVisible(False)
+                self.emit(QtCore.SIGNAL('item_close(QString)'),_id)
+                return
 
     def on_button_save_clicked(self):
         self.emit(QtCore.SIGNAL('save_event()'))
 
     def get_nth_value(self,n):
-        return self.screener_list[n].get_value()
+        return self.screener_item_list[n].get_value()
 
     def get_all_value(self):
         ret = []
-        for item in self.screener_list:
+        for item in self.screener_item_list:
             ret.append(item.get_value)
         return ret
 
@@ -174,11 +183,11 @@ class QScreenerGroup(QtGui.QFrame):
         self.header_label.setText(new_header)
 
     def set_nth_item_value(self,id,lvalue,rvalue):
-        self.screener_list[id].set_value(lvalue,rvalue)
+        self.screener_item_list[id].set_value(lvalue,rvalue)
 
     def set_nth_item_visible(self,id,flag):
         self.change_no_select_warning_status(flag)
-        self.screener_list[id].setVisible(flag)
+        self.screener_item_list[id].setVisible(flag)
 
     def set_save_button_text(self,text):
         self.button_save.setText(text)
@@ -196,12 +205,12 @@ class QScreenerGroup(QtGui.QFrame):
     def reset(self):
         self.reset_header()
         self.selected_screener_num = 0
-        for item in self.screener_list:
+        for item in self.screener_item_list:
             item.reset()
             item.setVisible(False)
 
     def update_data_list(self,data_list):
-        for i,item in enumerate(self.screener_list):
+        for i,item in enumerate(self.screener_item_list):
             item.update_data(data_list[i])
 
     def change_no_select_warning_status(self,flag):
@@ -212,27 +221,18 @@ class QScreenerGroup(QtGui.QFrame):
         self.change_no_select_warning_visible()
 
     def change_no_select_warning_visible(self):
+        args = [self.label_name, self.label_min, self.label_chart, self.label_max,
+            self.label_clode, self.button_save, self.button_cancel]
+
         if self.selected_screener_num > 0:
-            self.label_name.setVisible(True) 
-            self.label_min.setVisible(True) 
-            self.label_chart.setVisible(True) 
-            self.label_max.setVisible(True) 
-            self.label_clode.setVisible(True)
-            self.button_save.setVisible(True)
-            self.button_cancel.setVisible(True)
+            composite(*args).call(QtGui.QLabel.setVisible,True)
             self.select_nothing_label.setVisible(False) 
             self.select_nothing_tip_label.setVisible(False) 
             self.update()
         else:
             self.select_nothing_label.setVisible(True) 
             self.select_nothing_tip_label.setVisible(True) 
-            self.label_name.setVisible(False) 
-            self.label_min.setVisible(False) 
-            self.label_chart.setVisible(False) 
-            self.label_max.setVisible(False) 
-            self.label_clode.setVisible(False) 
-            self.button_save.setVisible(False)
-            self.button_cancel.setVisible(False)
+            composite(*args).call(QtGui.QLabel.setVisible,False)
 
 class Example(QtGui.QWidget):
     def __init__(self):

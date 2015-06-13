@@ -3,7 +3,7 @@
 import sys
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-from qhoverbutton import QHoverButton
+from qhover_button import QHoverButton
 
 class QBullWindow(QtGui.QDialog):
     def __init__(self,parent,width,height,has_close=True,has_mini=False,setting={}):

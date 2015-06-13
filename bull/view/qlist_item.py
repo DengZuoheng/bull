@@ -20,7 +20,7 @@ class QListItem(QtGui.QFrame):
         self.setLayout(hbox)
     
     def mousePressEvent(self,QMouseEvent):
-        self.emit(QtCore.SIGNAL('clicked(int)'),self.id)
+        self.emit(QtCore.SIGNAL('clicked(QString)'),self.id)
         return super(QListItem,self).mousePressEvent(QMouseEvent)
 
     def enterEvent(self,QEvent):

@@ -3,8 +3,8 @@
 import sys
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-from qbullmessagebox import QBullMessageBox
-from qfocuslineedit import QFocusLineEdit
+from qbull_message_box import QBullMessageBox
+from qfocus_line_edit import QFocusLineEdit
 
 class QNewFavDlg(QBullMessageBox):
     def __init__(self, parent=None, data=None):

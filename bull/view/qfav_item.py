@@ -4,7 +4,7 @@ import sys
 from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore 
-from qhoverbutton import QHoverButton
+from qhover_button import QHoverButton
 
 class QFavItem(QtGui.QFrame):
     def __init__(self,parent,fav_id,title,close_btn_img):

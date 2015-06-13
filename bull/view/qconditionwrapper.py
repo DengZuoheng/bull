@@ -4,7 +4,7 @@ import sys
 from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore 
-from qidcheckbox import QIDCheckBox
+from qid_checkbox import QIDCheckBox
 
 class QConditionWrapper(QtGui.QFrame):
     def __init__(self,parent,title,title_list):

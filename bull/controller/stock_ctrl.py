@@ -10,8 +10,9 @@ from model.stock import Stock
 from service.spider_factory import create_spider
 
 class StockCtrl():
-    def __init__(self,stock_dao):
+    def __init__(self,stock_dao,stock_cls):
         self.stock_dao = stock_dao
+        self.stock_cls = stock_cls
         if stock_dao.empty():
             self.update()
 
@@ -19,7 +20,7 @@ class StockCtrl():
         result = self.stock_dao.filter(condition)
         ret = []
         for item in result:
-            ret.append(Stock(*item))
+            ret.append(self.stock_cls(*item))
         return ret
 
     def update(self):
