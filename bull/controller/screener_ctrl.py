@@ -1,3 +1,10 @@
+#!/usr/bin/python  
+# -*- coding: utf-8 -*-
+from PyQt4 import QtCore 
+from controller.stock_ctrl_factory import StockCtrlFactory
+from controller.title_ctrl_factory import TitleCtrlFactory
+from view.screener_factory import ScreenerFactory
+from view.qresult_dialog import QResultDialog
 
 class ScreenerCtrl(QtCore.QObject):
     def __init__(self,screener_id,main_ctrl,setting):
@@ -55,24 +62,29 @@ class ScreenerCtrl(QtCore.QObject):
                 item.visible(True)
                 item.setVisible(True)
             else:
+                item.visible(False)
                 item.setVisible(False)
-
-     def on_submit_event(self):
-        condition = self.get_condition()
+        self.screener.change_no_select_warning_visible()
+        
+    def on_submit_event(self):
+        raw_condition = self.get_condition()
+        prefix = self.title_ctrl.get_prefix()
+        condition = []
+        for item in raw_condition:
+            key = item[0].replace('%s_'%prefix,'')
+            condition.append((key,item[1],item[2]))
         result = self.stock_ctrl.filter(condition)
         dlg_data = {
-            'header':self.setting['result_header'],
+            'title_ctrl':self.title_ctrl,
             'data':result,
-            'index_map':self.setting['result_index_map'],
-            'row':len(result),#行
-            'col':len(self.setting['result_header']),#列
             'color':self.setting['result_color'],
             'setting':self.setting,
         }
-        dlg = QResultDialog(self.view,dlg_data)
+        dlg = QResultDialog(self.main_ctrl.main_window,dlg_data)
         dlg.exec_()
 
     def on_cancel_event(self):
+        print('screener_ctrl.on_cancel_event')
         self.emit(QtCore.SIGNAL('cancel_event()'))
 
     def on_save_event(self):
@@ -82,7 +94,23 @@ class ScreenerCtrl(QtCore.QObject):
         self.emit(QtCore.SIGNAL('changed()'))
 
     def update_data(self):
-        data_list = self.get_data_list(self.setting)
-        self.view.screener_group.update_data_list(data_list)
+        data_list = self.stock_ctrl.get_data_list(self.title_ctrl)
+        self.screener.update_data_list(data_list)
+
+    def set_header(self,header):
+        self.screener.set_header(header)
+
+    def set_save_btn_text(self,save_btn_text):
+        self.screener.set_save_btn_text(save_btn_text)
+
+    def set_cancel_btn_text(self,cancel_btn_text):
+        self.screener.set_cancel_btn_text(cancel_btn_text)
+
+    def reset_button_group(self):
+        self.screener.reset_button_group()
+
+    def reset_header(self):
+        self.screener.reset_header()
+
 
 

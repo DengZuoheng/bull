@@ -4,9 +4,10 @@ from PyQt4 import QtCore
 
 class WrapperGroupCtrl(QtCore.QObject):
     def __init__(self, wrapper_ctrl_list, main_ctrl):
-        super(WrapperGroupCtrl, self).__init()
+        super(WrapperGroupCtrl, self).__init__()
         self.wrapper_ctrl_list = wrapper_ctrl_list
         self.main_ctrl = main_ctrl
+        main_ctrl.wrapper_group_ctrl = self
         self.current_index = 0
         #响应每一个wrapper的changed消息
         for item in self.wrapper_ctrl_list:
@@ -17,6 +18,7 @@ class WrapperGroupCtrl(QtCore.QObject):
     def start(self):
         self.wrapper_ctrl_list[self.current_index].set_wrapper_visible(True)
         self.wrapper_id = self.wrapper_ctrl_list[self.current_index].wrapper_id
+        self.set_wrapper_id(self.wrapper_id)
 
     def set_wrapper_id(self, wrapper_id):
         self.wrapper_id = wrapper_id
@@ -26,20 +28,18 @@ class WrapperGroupCtrl(QtCore.QObject):
                 self.current_index = i
             else:
                 ctrl.set_wrapper_visible(False)
-        self.reset_connect()
 
     def get_screener_id(self):
         return self.wrapper_ctrl_list[self.current_index].get_screener_id()
 
     def on_wrapper_changed(self):
-        #这里响应wrapper的变化信号
-        pass
+        self.emit(QtCore.SIGNAL("changed()"))
 
     def get_condition(self):
         return self.wrapper_ctrl_list[self.current_index].get_condition()
 
     def set_condition(self,condition):
         #每个都set_condition一下
-        for item in self.connected_wrapper_ctrl_list:
+        for item in self.wrapper_ctrl_list:
             item.set_condition(condition)
         

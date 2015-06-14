@@ -11,7 +11,7 @@ import StringIO
 import urllib
 import re
 import json
-from model.stock import Stock
+from model.wencai_stock import WencaiStock
 from spider import Spider
 
 class WencaiSpider(Spider):
@@ -88,7 +88,7 @@ class WencaiSpider(Spider):
         self.call_back()
 
     def results(self):
-        data = self.all_result['list']
+        data = self.all_result['result']
         for item in data:
             arr = []
             item[0] = item[0].split('.')[0]
@@ -97,7 +97,7 @@ class WencaiSpider(Spider):
                 if cmp('--',item[id]) == 0:
                     item[id] = None
                 arr.append(item[id])
-            self.save.append(Stock(*arr))
+            self.save.append(WencaiStock(*arr))
         return self.save
       
     def titles(self):

@@ -20,8 +20,12 @@ class QResultDialog(QBullWindow):
         super(QResultDialog,self).__init__(**kwargs)
         self.data = data
         self.setting = setting
+        self.title_ctrl = data['title_ctrl']
+        self.row = len(self.data['data'])
+        self.col = len(self.title_ctrl.get_header_list())
         self.init_label()
-        if self.data['row'] == 0:
+        
+        if self.row == 0:
             self.init_no_result_warning()
         else:
             self.init_color()
@@ -41,7 +45,7 @@ class QResultDialog(QBullWindow):
         self.no_result_label.setAlignment(QtCore.Qt.AlignCenter)
 
     def init_label(self):
-        total = self.data['row']
+        total = self.row
         setting = self.data['setting']
         self.label = QtGui.QLabel(setting['result_label']%total,self)
         self.label.setGeometry(*setting['result_label_geometry'])
@@ -64,82 +68,38 @@ class QResultDialog(QBullWindow):
     def init_table(self):
         data = self.data
         setting = self.data['setting']
-        self.table = QtGui.QTableWidget(data['row'],data['col'],self)
+        header_title_list = self.title_ctrl.get_header_title_list()
+        header_list = self.title_ctrl.get_header_list()
+        header_prefix = self.title_ctrl.get_prefix()
+        self.table = QtGui.QTableWidget(self.row,self.col,self)
         for n ,row in enumerate(data['data']):
             stock = data['data'][n]
-
-            item_ticker = QTableDataItem('str',stock.ticker)
-            self.table.setItem(n,0,item_ticker)
-            self.reset_color(item_ticker)
-
-            item_title = QTableDataItem('str',stock.title)
-            self.table.setItem(n,1,item_title)
-            self.reset_color(item_title)
-
-            if stock.change is not None:
-                item_change = QTableDataItem('double',str(stock.change))
-            else:
-                item_change = QTableDataItem('null','')
-            item_change.setTextAlignment(
-                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
-
-            self.table.setItem(n,2,item_change)
-            self.reset_color(item_change)
-
-            if stock.price is not None:
-                item_price = QTableDataItem('double',str(stock.price))
-            else:
-                item_price = QTableDataItem('null','')
-            item_price.setTextAlignment(
-                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
-
-            self.table.setItem(n,3,item_price)
-            self.reset_color(item_price)
-
-            if stock.pe is not None:
-                item_pe = QTableDataItem('double','%.04f'%stock.pe)
-            else:
-                item_pe  = QTableDataItem('null','')
-            item_pe.setTextAlignment(
-                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
-
-            self.table.setItem(n,4,item_pe)
-            self.reset_color(item_pe)
-
-            if stock.peg is not None:
-                item_peg = QTableDataItem('double','%.04f'%stock.peg)
-            else:
-                item_peg = QTableDataItem('null','')
-            item_peg.setTextAlignment(
-                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
-
-            self.table.setItem(n,5,item_peg)
-            self.reset_color(item_peg)
-
-            if stock.pbv is not None:
-                item_pbv = QTableDataItem('double','%.04f'%stock.pbv)
-            else:
-                item_pbv = QTableDataItem('null','')
-            item_pbv.setTextAlignment(
-                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
-
-            self.table.setItem(n,6,item_pbv)
-            self.reset_color(item_pbv)
-
-            if stock.capital is not None:
-                temp = stock.capital
-                if temp > 10000000:#大于千万
-                    temp  = temp/100000000#除以亿
-                item_capital = QTableDataItem('double','%.04f'%temp)
-            item_capital.setTextAlignment(
-                QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
-
-            self.table.setItem(n,7,item_capital)
-            self.reset_color(item_capital)
+            for m, raw_key in enumerate(header_list):
+                #raw_key是这种:"wencai_pe", 所以要将"wencai_"替换掉
+                key = raw_key.replace('%s_'%header_prefix,'')
+                #让model自己判断type
+                _type = stock.get_type_by_key(key)
+                #如果_type是null的话, 就是空字符串了
+                _str = ''
+                raw_data = stock[key]
+                if _type == 'double':
+                    #如果是double, 只打印4位小数
+                    if raw_data > 10000000:#大于千万
+                        raw_data = raw_data/100000000#除以亿
+                    _str = '%.4f'%raw_data
+                elif _type == 'str':
+                    _str = raw_data
+                table_data_item = QTableDataItem(_type,_str)
+                if _type == 'double':
+                    #double型要右对齐
+                    table_data_item.setTextAlignment(
+                        QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+                self.table.setItem(n,m,table_data_item)
+                self.reset_color(table_data_item)
 
             self.table.setRowHeight(n,setting['result_table_row_height'])
 
-        self.table.setHorizontalHeaderLabels(data['header'])
+        self.table.setHorizontalHeaderLabels(header_title_list)
         self.table.verticalHeader().setVisible(False)
         self.table.setFocusPolicy(QtCore.Qt.NoFocus)
         #self.table.resizeColumnsToContents()
@@ -151,11 +111,11 @@ class QResultDialog(QBullWindow):
             self.press_col = col
             self.press_row = row
             #将同一行设为指定颜色
-            for i in range(self.data['col']):
+            for i in range(self.col):
                 item = self.table.item(col,i)
                 self.set_near_selected_color(item)
             #将同一列设为指定颜色
-            for i in range(self.data['row']):
+            for i in range(self.row):
                 item = self.table.item(i,row)
                 self.set_near_selected_color(item)
 
@@ -164,7 +124,7 @@ class QResultDialog(QBullWindow):
             pass
         #点击了同一行, 但不同一列
         elif self.press_col == col and self.press_row != row:
-            for i in range(self.data['row']):
+            for i in range(self.row):
                 #还原上一列的颜色设置
                 item_old = self.table.item(i,self.press_row)
                 self.reset_color(item_old)
@@ -175,7 +135,7 @@ class QResultDialog(QBullWindow):
             self.set_near_selected_color(old_selected_item)
         #点击了同一列, 但是不同行
         elif self.press_col != col and self.press_row == row:
-            for i in range(self.data['col']):
+            for i in range(self.col):
                 #还原上一行的颜色设置
                 item_old = self.table.item(self.press_col,i)
                 self.reset_color(item_old)
@@ -186,19 +146,19 @@ class QResultDialog(QBullWindow):
             self.set_near_selected_color(old_selected_item)
         #行和列都不同了
         else:
-            for i in range(self.data['row']):
+            for i in range(self.row):
                 #还原上一列的颜色设置
                 item_old = self.table.item(i,self.press_row)
                 self.reset_color(item_old)          
-            for i in range(self.data['col']):
+            for i in range(self.col):
                 #还原上一行的颜色设置
                 item_old = self.table.item(self.press_col,i)
                 self.reset_color(item_old)             
-            for i in range(self.data['row']):
+            for i in range(self.row):
                 #设置这一列的颜色
                 item_new = self.table.item(i,row)
                 self.set_near_selected_color(item_new) 
-            for i in range(self.data['col']):     
+            for i in range(self.col):     
                 #设置着一行的颜色
                 item_new  = self.table.item(col,i)
                 self.set_near_selected_color(item_new) 

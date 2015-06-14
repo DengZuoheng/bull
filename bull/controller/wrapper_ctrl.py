@@ -1,14 +1,19 @@
 #!/usr/bin/python  
 # -*- coding: utf-8 -*-
 from PyQt4 import QtCore
+from view.wrapper_factory import WrapperFactory
+from controller.title_ctrl_factory import TitleCtrlFactory
 
 class WrapperCtrl(QtCore.QObject):
     def __init__(self,wrapper_id,main_ctrl,setting):
+        super(WrapperCtrl, self).__init__()
         self.wrapper_id = wrapper_id
         self.main_ctrl = main_ctrl
         self.setting = setting
-        wrapper_factory = ConditionWrapperFactory(setting)
-        wrapper_args = [wrapper_id,main_ctrl.main_window]
+        title_ctrl_factory = TitleCtrlFactory(setting)
+        self.title_ctrl = title_ctrl_factory.create_title_ctrl(wrapper_id)
+        wrapper_factory = WrapperFactory(setting)
+        wrapper_args = [wrapper_id,main_ctrl.main_window,self.title_ctrl]
         self.wrapper = wrapper_factory.create_wrapper(*wrapper_args)
         #响应wrapper的changed消息
         self.connect(
@@ -18,10 +23,11 @@ class WrapperCtrl(QtCore.QObject):
         #响应main_ctrl的reset消息
         self.connect(
             self.main_ctrl,
-            QtCore.SIGNAL('reset()'),
+            QtCore.SIGNAL('reset_event()'),
             self.on_reset_event)
 
     def on_reset_event(self):
+        print('wrapper_ctrl.on_reset_event')
         self.set_condition([])
 
     def set_wrapper_visible(self,status):

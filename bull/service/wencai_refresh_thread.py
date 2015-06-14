@@ -1,9 +1,9 @@
 #!/usr/bin/python  
 # -*- coding: utf-8 -*-
-
 import threading
-import spider_factory
 from PyQt4 import QtCore
+from service.wencai_spider import WencaiSpider
+from controller.stock_ctrl_factory import StockCtrlFactory
 
 class WencaiRefreshThread(QtCore.QThread):
     def __init__(self,screener_id,ctrl,setting):
@@ -11,10 +11,10 @@ class WencaiRefreshThread(QtCore.QThread):
         self.ctrl = ctrl
         self.screener_id = screener_id
         self.setting = setting
+        self.progress = 2
 
     def run(self):
         try:
-            #从工厂拿一个spider回来
             spider = WencaiSpider(auto_perform=False)
             stock_ctrl_factory = StockCtrlFactory(self.setting)
             stock_ctrl = stock_ctrl_factory.create_stock_ctrl('wencai')
@@ -34,7 +34,8 @@ class WencaiRefreshThread(QtCore.QThread):
 
     #回调是用来通知进度的, 每次回调之间的操作应该都是原子的
     def call_back(self):
-        self.emit(QtCore.SIGNAL('callback()'))
+        self.progress += 1
+        self.emit(QtCore.SIGNAL('callback(int)'),self.progress*10)
 
     def get_results(self):
         return self.results

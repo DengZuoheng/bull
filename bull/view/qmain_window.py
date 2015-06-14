@@ -29,7 +29,7 @@ class QMainWindow(QBullWindow):
         self.initUI()
 
     def initUI(self):
-        self.main_ctrl = self.main_factory.create_main_ctrl()   
+        self.main_ctrl = self.main_factory.create_main_ctrl(self)   
         self.init_wrapper_group()
         self.init_screener_group()
         self.init_index_list()
@@ -47,7 +47,7 @@ class QMainWindow(QBullWindow):
 
     def init_refresh_group(self):
         setting = self.setting
-        self.refresh_ctrl = RefreshCtrl(self,main_ctrl,setting)
+        self.refresh_ctrl = RefreshCtrl(self,self.main_ctrl,setting)
         text = setting['refresh_text']
         gif = setting['refresh_gif']
         movie_size = setting['refresh_gif_size']
@@ -60,13 +60,11 @@ class QMainWindow(QBullWindow):
         self.refresh_progress_bar.setGeometry(*setting['refresh_progress_bar_geomotry'])
         #self.refresh_progress_bar.setGeometry(1,484,869,5)
         self.refresh_progress_bar.setTextVisible (False)
-        self.refresh_progress_bar.setRange(0,4)
         self.refresh_progress_bar.setVisible(False)
 
     def init_index_list(self):
         factory = self.main_factory
-        self.index_list_list = factory.create_index_list()
-        args = [self.index_list,self.main_ctrl]
+        args = [self.main_ctrl,]
         self.index_list_ctrl = factory.create_index_list_ctrl(*args)
 
     def init_wrapper_group(self):
@@ -79,13 +77,13 @@ class QMainWindow(QBullWindow):
         wrapper_group_ctrl = WrapperGroupCtrl(self.wrapper_ctrl_list,self.main_ctrl)
         self.main_ctrl.wrapper_ctrl_group = wrapper_group_ctrl
 
-    def init_screnner_group(self):
+    def init_screener_group(self):
         self.screener_ctrl_list = []
         factory = self.main_factory
-        for item in self.setting['screnner_id_list']:
+        for item in self.setting['screener_id_list']:
             screener_ctrl_args = [item, self.main_ctrl, self.setting]
             new_screener_ctrl = factory.create_screener_ctrl(*screener_ctrl_args)
-            self.screnner_ctrl_list.append(new_screener_ctrl)
+            self.screener_ctrl_list.append(new_screener_ctrl)
         screener_group_ctrl = ScreenerGroupCtrl(self.screener_ctrl_list,self.main_ctrl)
         self.main_ctrl.screener_group_ctrl = screener_group_ctrl
     

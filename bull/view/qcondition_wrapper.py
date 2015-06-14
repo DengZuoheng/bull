@@ -14,6 +14,7 @@ class QConditionWrapper(QBaseWrapper):
         self.title = title
         self.title_list = title_list
         self.id_list = id_list
+        self.no_signals = False #指定是否发出changed信号
         self.checkbox_list = []
         self.init_condition()
         self.init_gui()
@@ -52,18 +53,21 @@ class QConditionWrapper(QBaseWrapper):
         return self.condition
 
     def refresh_condition(self,state,_id):
-        temp = [_id,None,None]
+        id_list = [item[0] for item in self.condition]
         if state == QtCore.Qt.Checked:
-            if temp in self.condition:
+            if _id in id_list:
                 return 
-            self.condition.append(temp)
+            self.condition.append((_id,None,None))
         else:
-            if temp in self.condition:
-                self.condition.pop(self.condition.index(temp))
+            if _id in id_list:
+                self.condition.pop(id_list.index(_id))
 
     def set_condition(self,condition):
+        #设置condition期间不应该发出信号
+        self.no_signals = True
         self.condition = condition
         self.refresh_checkbox_list()
+        self.no_signals = False
 
     def refresh_checkbox_list(self):
         id_list = [item[0] for item in self.condition]
@@ -74,6 +78,8 @@ class QConditionWrapper(QBaseWrapper):
                 item.setCheckState(QtCore.Qt.Unchecked)
 
     def on_id_checkbox_change(self,state,_id):
+        if self.no_signals:
+            return
         self.refresh_condition(state,str(_id))
         self.emit(QtCore.SIGNAL('changed()'))
 

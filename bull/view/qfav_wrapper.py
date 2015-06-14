@@ -4,9 +4,9 @@ import sys
 from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore 
-from qfavitem import QFavItem
+from qfav_item import QFavItem
 from qconfirm_message_box import QConfirmMessageBox
-from qbase_wrapper 
+from qbase_wrapper import QBaseWrapper
 
 class QFavWrapper(QBaseWrapper):
     def __init__(self,parent,title,fav_list,setting,delete_btn_image):
@@ -52,7 +52,7 @@ class QFavWrapper(QBaseWrapper):
 
     def on_nth_click(self,_id):
         self.selected_id = _id
-        self.emit(QtCore.SIGNAL('changed()'))
+        self.emit(QtCore.SIGNAL('nth_click(int)'),_id)
 
     def on_nth_close(self,_id):
         dlg_data={
@@ -74,8 +74,6 @@ class QFavWrapper(QBaseWrapper):
         self.emit(QtCore.SIGNAL('nth_close(int)'),_id)
 
     def add_fav_item(self,fav):
-        if fav not in self.fav_list:
-            fav_list.append(fav)
         favitem = QFavItem(self,fav['favid'],fav['title'],
                 self.delete_btn_image)
         self.connect(favitem,
@@ -87,14 +85,6 @@ class QFavWrapper(QBaseWrapper):
         self.favitem_list.append(favitem)
         self.inner_layout.addWidget(favitem)
         self.update()
-
-    def should_connect_other(self):
-        return True
-
-    def connect_other_list(self):
-        #返回当前收藏的网站id, 如'xueqiu','wencai'
-        #TODO
-        pass
 
 
 class Example(QtGui.QWidget):

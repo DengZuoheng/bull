@@ -26,8 +26,7 @@ class SqliteStockDao(StockDao):
         if len(cond)!=0:
             sql = 'SELECT * FROM %s WHERE '%self.table
             for i in range(len(cond )):
-                t= (cond[i][0], cond[i][1], cond[i][2])
-                str_sql = '( %s BETWEEN %f AND %f )'%t
+                str_sql = '( %s BETWEEN %f AND %f )'%cond[i]
                 if(i!=len(cond)-1):
                     str_sql = str_sql + ' AND '
                 sql = sql + str_sql
@@ -40,7 +39,7 @@ class SqliteStockDao(StockDao):
 
     #更新所有数据_
     def update(self,stocks):
-        self.conn.execute('DELETE FROM %s')%self.table
+        self.conn.execute('DELETE FROM %s'%self.table)
         attrs = self.get_attrs()
         #根据上面的属性列表构造一个insert语句
         t = (self.table, '%s, '*(len(attrs)-1), '%s', '?,'*(len(attrs)-1))

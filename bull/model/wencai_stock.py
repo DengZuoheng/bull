@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-class Stock():
+class WencaiStock():
     def __init__(self, 
             ticker='', 
             title='', 
@@ -83,4 +83,12 @@ class Stock():
 
     def __getitem__(self,key):
         return self.__dict__[key]
+
+    def get_type_by_key(self,key):
+        if self[key] == None:
+            return 'null'
+        elif key=='ticker' or key=='title':
+            return 'str'
+        else:
+            return 'double'
   

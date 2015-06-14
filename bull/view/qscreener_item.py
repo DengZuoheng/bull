@@ -21,6 +21,7 @@ class QScreenerItem(QtGui.QFrame):
         self.range_btn_img_active = range_btn_img_active
         self.del_btn_img = del_btn_img
         self.del_btn_img_active = del_btn_img_active
+        self.closed = False
         self.initUI()
 
     def initUI(self):
@@ -57,8 +58,8 @@ class QScreenerItem(QtGui.QFrame):
         return self.closed
 
     def on_delete_btn_press(self):
-        self.closed = True
-        self.emit(QtCore.SIGNAL('close(int)'),self.id)
+        self.closed = False
+        self.emit(QtCore.SIGNAL('close(QString)'),self.id)
 
     def get_value(self):
         return self.distribution_slider.get_value()
