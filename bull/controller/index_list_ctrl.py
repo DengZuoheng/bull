@@ -1,3 +1,7 @@
+#!/usr/bin/python  
+# -*- coding: utf-8 -*-
+from PyQt4 import QtCore 
+from view.qindex_list import QIndexList
 
 class IndexListCtrl(QtCore.QObject):
     def __init__(self, main_ctrl, setting):
@@ -26,7 +30,7 @@ class IndexListCtrl(QtCore.QObject):
             self.main_ctrl.main_window,
             setting['index_list_header'],
             setting['index_list_title'],
-            setting['index_list_id'],
+            setting['index_id_list'],
             setting['index_list_icon'])
         index_list.setMaximumWidth(setting['index_list_width'])
         index_list.setGeometry(*setting['index_list_geometry'])

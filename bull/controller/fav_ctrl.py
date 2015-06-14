@@ -1,22 +1,26 @@
 #!/usr/bin/python  
 # -*- coding: utf-8 -*-
+import copy
 from PyQt4 import QtCore
 from view.wrapper_factory import WrapperFactory
 from view.qnew_fav_dlg import QNewFavDlg
 
 class FavCtrl(QtCore.QObject):
     def __init__(self,wrapper_id,main_ctrl,dao,setting):
+        super(FavCtrl, self).__init__()
         self.wrapper_id = wrapper_id
         self.main_ctrl = main_ctrl
         self.fav_dao = dao
         self.setting = setting
         self.fav_list = self.fav_dao.load_fav()
         self.screener_listen_status = False
+        self.read_only = False
+        self.screener_listen_status = False
         wrapper_factory = WrapperFactory(setting)
         wrapper_kwargs = {
             'wrapper_id':wrapper_id,
             'main_window':main_ctrl.main_window,
-            'dao':dao,
+            'dao':self,
         }
         self.fav_wrapper = wrapper_factory.create_wrapper(**wrapper_kwargs)
         #响应fav_wrapper的点击消息
@@ -44,11 +48,12 @@ class FavCtrl(QtCore.QObject):
         self.fav_wrapper.setVisible(status)
 
     def get_condition(self):
-        fav = self.get_fav_by_id(self.current_favid)
-        return fav['condition']
+        fav = self.find_fav_by_id(self.current_favid)
+        #这里要返回深拷贝
+        return copy.deepcopy(fav['condition'])
 
     def set_condition(self,condition):
-        self.set_fav(self.current_favid,condition)
+        pass
 
     def set_fav(self,favid,condition_list):
         idx = self.find_idx_by_id(favid)
@@ -70,17 +75,15 @@ class FavCtrl(QtCore.QObject):
     def new_fav(self,title,condition_list):
         new_fav_id = self.gen_new_id()
         new_fav_item = {
-            'screener':self.get_screener_id(),
+            'screener':self.main_ctrl.get_screener_id(),
             'favid':new_fav_id,
             'condition':condition_list,
             'title':unicode(title),
         }
         self.fav_list.append(new_fav_item)
         self.fav_dao.store_fav(self.fav_list)
-        try:
-            self.view.fav_wrapper.add_fav_item(new_fav_item)
-        except:
-            pass
+        self.fav_wrapper.add_fav_item(new_fav_item)
+
 
     #这是用来生成新fav的id的, 并不适用与找当前最大的id
     def gen_new_id(self):
@@ -112,13 +115,12 @@ class FavCtrl(QtCore.QObject):
             'title':self.setting['new_fav_dlg_title'],
             'setting':self.setting,
         }
-        dlg = QNewFavDlg(self.view,dlg_data)
+        dlg = QNewFavDlg(self.main_ctrl.main_window,dlg_data)
         dlg.exec_()
         value = dlg.get_value()
         if value != None and value != False:
-            condition_list = self.get_condition_list()
-            fav_ctrl = self.view.fav_ctrl
-            fav_ctrl.new_fav(unicode(value),condition_list)
+            condition = self.main_ctrl.get_condition()
+            self.new_fav(unicode(value),condition)
 
     #响应某一个收藏被删除的信号
     def on_nth_close(self,_id):
@@ -147,7 +149,7 @@ class FavCtrl(QtCore.QObject):
         #设置screener的header
         header_text = self.setting['fav_scanner_header_text']
         source_text = self.setting['fav_scanner_source_text']
-        st = [header_text,fav['title'],source_text,fav['screener']]
+        st = (header_text,fav['title'],source_text,fav['screener'])
         screener_group_ctrl.set_header(u'%s-%s %s-%s'%st)
         #设置保存按钮的text
         save_btn_text = self.setting['fav_scanner_save_button_text']
@@ -158,6 +160,10 @@ class FavCtrl(QtCore.QObject):
         #设置main_ctrl的消息转发信号
         self.main_ctrl.set_save_transmit('save_event()')
         self.main_ctrl.set_cancel_transmit('cancel_event()')
+        #设置wrapper_group的condition
+        self.read_only = True
+        self.main_ctrl.wrapper_group_ctrl.set_condition(self.get_condition())
+        self.read_only = False
         #向main_ctrl发送changed消息
         self.emit(QtCore.SIGNAL('changed()'))
         

@@ -3,7 +3,7 @@
 from PyQt4 import QtGui
 from PyQt4 import Qt  
 from PyQt4 import QtCore  
-from view.qmainwindow import QMainWindow
+from view.qmain_window import QMainWindow
 from controller.setting_ctrl import SettingCtrl
 from controller.qss_ctrl import QSSCtrl
 

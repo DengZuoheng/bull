@@ -1,15 +1,13 @@
 #!/usr/bin/python  
 # -*- coding: utf-8 -*-
 from PyQt4 import QtCore
-from util.singleton import singleton
 
-@singleton
 class MainCtrl(QtCore.QObject):
     def __init__(self,main_window):
         super(MainCtrl,self).__init__()
         self.main_window = main_window
-        self.screener_save_transmit = 'save_event()'
-        self.screener_cancel_transmit = 'cancel_event()'
+        self.screener_save_transmit = 'new_fav_event()'
+        self.screener_cancel_transmit = 'reset_event()'
 
     def set_save_transmit(self,transmit):
         self.screener_save_transmit = transmit
@@ -42,13 +40,17 @@ class MainCtrl(QtCore.QObject):
 
         #响应screener的cancel_btn消息
         self.connect(self.screener_group_ctrl,
-            QtCore.SIGNAL('cancel_event()'))
+            QtCore.SIGNAL('cancel_event()'),
+            self.on_screener_group_cancel_event)
 
     def on_screener_group_save_event(self):
         self.emit(QtCore.SIGNAL(self.screener_save_transmit))
 
     def on_screener_group_cancel_event(self):
+        temp_transmit = self.screener_cancel_transmit
         self.emit(QtCore.SIGNAL(self.screener_cancel_transmit))
+        if temp_transmit == 'reset_event()':
+            self.screener_group_ctrl.set_condition([])
 
     def on_index_list_change(self):
         #从index_list_ctrl获取要切换的wrapper_id
@@ -76,8 +78,10 @@ class MainCtrl(QtCore.QObject):
 
     def update_data(self):
         #更新数据完成时的操作
-        #一般就是通知screener通过ctrl或dao更新吧
-        pass
+        self.screener_group_ctrl.update_data()
 
     def get_screener_id(self):
         return self.screener_group_ctrl.screener_id
+
+    def get_condition(self):
+        return self.screener_group_ctrl.get_condition()

@@ -164,6 +164,7 @@ class QScreener(QtGui.QFrame):
         for item in self.screener_item_list:
             if item.id == _id:
                 item.setVisible(False)
+                self.change_no_select_warning_visible()
                 self.emit(QtCore.SIGNAL('item_close(QString)'),_id)
                 return
 
@@ -189,10 +190,10 @@ class QScreener(QtGui.QFrame):
         self.change_no_select_warning_status(flag)
         self.screener_item_list[id].setVisible(flag)
 
-    def set_save_button_text(self,text):
+    def set_save_btn_text(self,text):
         self.button_save.setText(text)
 
-    def set_cancel_button_text(self,text):
+    def set_cancel_btn_text(self,text):
         self.button_cancel.setText(text)
 
     def reset_header(self):
@@ -208,23 +209,24 @@ class QScreener(QtGui.QFrame):
         for item in self.screener_item_list:
             item.reset()
             item.setVisible(False)
+        self.change_no_select_warning_visible()
 
     def update_data_list(self,data_list):
         for i,item in enumerate(self.screener_item_list):
             item.update_data(data_list[i])
 
-    def change_no_select_warning_status(self,flag):
-        if flag == False:
-            self.selected_screener_num -= 1
-        else:
-            self.selected_screener_num += 1
-        self.change_no_select_warning_visible()
+    def get_selected_num(self):
+        ret = 0
+        for item in self.screener_item_list:
+            if item.visible():
+                ret += 1
+        return ret
 
     def change_no_select_warning_visible(self):
         args = [self.label_name, self.label_min, self.label_chart, self.label_max,
             self.label_clode, self.button_save, self.button_cancel]
-
-        if self.selected_screener_num > 0:
+        selected_screener_num = self.get_selected_num()
+        if selected_screener_num > 0:
             composite(*args).call(QtGui.QLabel.setVisible,True)
             self.select_nothing_label.setVisible(False) 
             self.select_nothing_tip_label.setVisible(False) 

@@ -6,9 +6,6 @@ path = sys.path[0]
 parent_path = os.path.dirname(path) 
 sys.path.insert(0,(parent_path))
 
-from model.stock import Stock
-from service.spider_factory import create_spider
-
 class StockCtrl():
     def __init__(self,stock_dao,stock_cls):
         self.stock_dao = stock_dao
@@ -23,12 +20,32 @@ class StockCtrl():
             ret.append(self.stock_cls(*item))
         return ret
 
-    def update(self):
-        spider = create_spider()
-        self.stock_dao.update(spider.results())
-
     def update_by_result(self,result):
         self.stock_dao.update(result)
 
     def all(self):
         return self.filter([])
+
+    def get_data_list(self,title_ctrl):
+        all_stock = self.all()
+        title_dict = title_ctrl.get_indicator_dict()
+        length = len(title_dict)
+        ret = []
+        for key in title_dict:
+            ret.append({'data':[],'data_max':None,'data_min':None})
+        for item in all_stock:
+            i = 0
+            for indicator in title_dict:
+                key = indicator.replace('%s_'%title_ctrl.get_prefix(),'')           
+                if item[key] is not None:
+                    ret[i]['data'].append(item[key]) 
+                    if ret[i]['data_max'] is None:
+                        ret[i]['data_max'] = item[key]
+                    elif ret[i]['data_max'] < item[key]:
+                        ret[i]['data_max'] = item[key]
+                    if ret[i]['data_min'] is None:
+                        ret[i]['data_min'] = item[key]
+                    elif ret[i]['data_min'] >item[key]:
+                        ret[i]['data_min'] = item[key]
+                i = i+1
+        return ret

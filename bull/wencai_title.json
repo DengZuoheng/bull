@@ -1,0 +1,18 @@
+{
+    "prefix":"wencai",
+    "title":{
+        "wencai_ticker":"\u80a1\u7968\u4ee3\u7801", 
+        "wencai_title":"\u80a1\u7968\u7b80\u79f0", 
+        "wencai_change":"\u6da8\u8dcc\u5e45(%)", 
+        "wencai_price":"\u73b0\u4ef7(\u5143)", 
+        "wencai_pe":"\u5e02\u76c8\u7387(pe)", 
+        "wencai_peg":"\u9884\u6d4b\u5e02\u76c8\u7387", 
+        "wencai_pbv":"\u5e02\u51c0\u7387", 
+        "wencai_capital":"\u603b\u80a1\u672c(亿股)"
+    },
+    "indicator":["wencai_change","wencai_price","wencai_pe",
+        "wencai_peg","wencai_pbv","wencai_capital"],
+    "header":["wencai_ticker", "wencai_title", "wencai_change", 
+        "wencai_price", "wencai_pe", "wencai_peg", "wencai_pbv",
+        "wencai_capital"]
+}

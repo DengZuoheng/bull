@@ -7,6 +7,8 @@ from controller.main_ctrl import MainCtrl
 from controller.index_list_ctrl import IndexListCtrl
 from controller.fav_ctrl import FavCtrl
 from controller.wrapper_ctrl import WrapperCtrl
+from controller.stock_ctrl_factory import StockCtrlFactory
+from controller.screener_ctrl import ScreenerCtrl
 from dao.fav_dao import FavDao
    
 @singleton
@@ -20,12 +22,12 @@ class MainFactory():
         main_ctrl = MainCtrl(main_window)
         return main_ctrl
 
-    def create_index_list_ctrl(self, index_list, main_ctrl):
-        index_list_ctrl = IndexListCtrl(main_ctrl, setting)
+    def create_index_list_ctrl(self, main_ctrl):
+        index_list_ctrl = IndexListCtrl(main_ctrl, self.setting)
         return index_list_ctrl
     
     def create_wrapper_ctrl(self, wrapper_id, main_ctrl, setting):
-        if wrapper.id == 'fav':
+        if wrapper_id == 'fav':
             dao = FavDao(setting['fav_path'])
             ctrl = FavCtrl(wrapper_id,main_ctrl, dao, setting)
             return ctrl
@@ -33,9 +35,8 @@ class MainFactory():
             ctrl = WrapperCtrl(wrapper_id, main_ctrl, setting)
             return ctrl
 
-     def create_screener_ctrl(self, screener_id, main_ctrl, setting):
+    def create_screener_ctrl(self, screener_id, main_ctrl, setting):
         setting = self.setting
-        stock_ctrl_factory = StockCtrlFactory(self.setting)
-        stock_ctrl = stock_ctrl_factory.create_stock_ctrl(screener_id)
-        screener_ctrl = ScreenerCtrl(screener_id,main_ctrl,stock_ctrl)
+        screener_ctrl = ScreenerCtrl(screener_id,main_ctrl,setting)
+        return screener_ctrl
 
