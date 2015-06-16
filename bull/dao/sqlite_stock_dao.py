@@ -45,8 +45,13 @@ class SqliteStockDao(StockDao):
         t = (self.table, '%s, '*(len(attrs)-1), '%s', '?,'*(len(attrs)-1))
         str_sql = 'INSERT INTO %s(%s%s)VALUES(%s?)'%t
         sql = str_sql%tuple(attrs)
+        insert_attr = []
+        for item in stocks:
+            sub_attr = []
+            for key in attrs:
+                sub_attr.append(getattr(item,key))
+            insert_attr.append(tuple(sub_attr))
 
-        insert_attr = [item.attr for item in stocks]
         self.cursor.executemany(sql, insert_attr)
         self.conn.commit()
 

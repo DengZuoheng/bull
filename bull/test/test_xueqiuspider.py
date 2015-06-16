@@ -8,7 +8,7 @@ sys.path.insert(0,(parent_path))
 
 from service.spider import Spider
 from service.xueqiu_spider import XueqiuSpider
-from model.stock import Stock
+from model.xueqiu_stock import XueqiuStock
 import unittest
 
 class Test_test_xueqiuspider(unittest.TestCase):
@@ -17,7 +17,7 @@ class Test_test_xueqiuspider(unittest.TestCase):
         r = []
         r = spider.results()
         self.assertGreater(len(r),2000)
-        if not isinstance(r[0],Stock):
+        if not isinstance(r[0],XueqiuStock):
             raise Exception('type error: result item is not Stock instance')
 
 if __name__ == '__main__':

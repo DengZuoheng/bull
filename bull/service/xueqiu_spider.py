@@ -12,6 +12,7 @@ import urllib
 import re
 import json
 from spider import Spider
+from model.xueqiu_stock import XueqiuStock
 
 class XueqiuSpider(Spider):
     def __init__(self, 
@@ -20,14 +21,16 @@ class XueqiuSpider(Spider):
                  auto_perform = True):
         self.prepare_url = prepare_url;
         self.base_url = base_url
+        self.buf_0 = StringIO.StringIO()
         self.buf_1 = StringIO.StringIO()
         self.buf_2 = StringIO.StringIO()
         self.curl = pycurl.Curl()
         self.curl.setopt(pycurl.USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)")
-        self.curl.setopt(pycurl.CONNECTTIMEOUT,5)
-        self.curl.setopt(pycurl.TIMEOUT,50)
+        self.curl.setopt(pycurl.CONNECTTIMEOUT,500)
+        self.curl.setopt(pycurl.TIMEOUT,500)
         self.curl.setopt(pycurl.COOKIEFILE,'')
         self.curl.setopt(pycurl.FAILONERROR,True)
+        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_0.write)
         self.save = []
         self.ctrl = None
         if auto_perform:
@@ -41,38 +44,37 @@ class XueqiuSpider(Spider):
             self.ctrl.call_back()
 
     def perform(self):
-      
-        values = {
+
+        url = self.prepare_url
+        self.curl.setopt(pycurl.URL, url)
+        self.curl.perform() 
+        self.call_back()
+        args = {
+            'size':'1',
             'category':'SH',
             'orderby':'symbol',
             'order':'desc',
         }
-        
-        #µÚÒ»´ÎÇëÇó»ñÈ¡º¬tokenµÄJSON
-        url = self.prepare_url
-        self.curl.setopt(pycurl.URL, url)
-        self.curl.perform()
-        
-        self.call_back()
-        
-        #»ñÈ¡º¬tokenºóÇëÇóÒ»´ÎÀ­È¡ËùÓĞ¹ÉÆ±
-        args = {
-            'size':'1'
-        }
-        args.update(values)
+        request_attrs = XueqiuStock.attr_list()
+        for attr in request_attrs:
+            args[attr]='ALL'
+            pass
+        #å…ˆè¯·æ±‚ä¸€æ¬¡å–å¾—æ€»æ•°
+        print(urllib.urlencode(args))
         url = self.base_url+'/screen.json?%s'%(urllib.urlencode(args))
         self.curl.setopt(pycurl.URL, url)
-        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_1.write)#ÉèÖÃ»Øµ÷
+        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_1.write)#è®¾ç½®å›è°ƒ
         self.curl.perform() 
         self.call_back()
-        
+        #å†è¯·æ±‚ç¬¬äºŒæ¬¡å–å¾—æ‰€æœ‰æ•°æ®
         response = self.buf_1.getvalue()
         self.all_result = json.loads(response)
         args['size'] = self.all_result['count']
+        #args['size'] = '300'
         
         url = self.base_url+'/screen.json?%s'%(urllib.urlencode(args))
         self.curl.setopt(pycurl.URL, url)
-        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#ÉèÖÃ»Øµ÷
+        self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#è®¾ç½®å›è°ƒ
         self.curl.perform() 
         self.call_back()
         
@@ -81,16 +83,10 @@ class XueqiuSpider(Spider):
         self.call_back()
 
     def results(self):
-        data = self.all_result['list']#Ñ©ÇòµÄÊÇlist
-        print data
+        data = self.all_result['list']#é›ªçƒçš„æ˜¯list
         for item in data:
-            arr = []
-            item[0] = item[0].split('.')[0]
-            arr.append(item[0])
-            for id in range(1,8):
-                if cmp('--',item[id]) == 0:
-                    item[id] = None
-                arr.append(item[id])
+            stock = XueqiuStock(**item)
+            self.save.append(stock)
         return self.save
       
   
