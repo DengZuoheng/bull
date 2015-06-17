@@ -5,9 +5,12 @@ import sys
 path = sys.path[0] 
 parent_path = os.path.dirname(path) 
 sys.path.insert(0,(parent_path))
+from service.spider_factory import SpiderFactory
 
 class StockCtrl():
-    def __init__(self,stock_dao,stock_cls):
+    def __init__(self,setting,stock_dao,stock_cls,stock_type):
+        self.setting = setting
+        self.stock_type = stock_type
         self.stock_dao = stock_dao
         self.stock_cls = stock_cls
         if stock_dao.empty():
@@ -25,6 +28,16 @@ class StockCtrl():
 
     def all(self):
         return self.filter([])
+
+    def empty(self):
+        return len(self.all())<=0
+
+    def update(self):
+        spider_factory = SpiderFactory(self.setting)
+        spider = spider_factory.create_spider(self.stock_type)
+        #spider.perform() #auto perform is default
+        ret = spider.results()
+        self.update_by_result(ret)
 
     def get_data_list(self,title_ctrl):
         all_stock = self.all()

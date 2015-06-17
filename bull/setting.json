@@ -17,35 +17,47 @@
     "mini_btn_tool_tip":"Minimize",
     "condition_wrapper_header":"可选条件",
     "wencai_condition_wrapper_header":"可选条件",
+    "xueqiu_condition_wrapper_header":"可选条件",
     "index_list_header":"条件设置",
     "screener_group_header":{
-            "wencai":"筛选条件 - 来源:同花顺"
+            "wencai":"筛选条件 - 来源:同花顺",
+            "xueqiu":"筛选条件 - 来源:雪球"
+        },
+    "screener_group_source":{
+            "wencai":"同花顺",
+            "xueqiu":"雪球"
         },
             
     "index_list_icon":[
             "images/icon_menu_stock_filter_1.png",
+            "images/icon_menu_stock_filter_3.png",
             "images/icon_menu_stock_filter_2.png"
         ],
     "index_list_title":[
             "同花顺指标",
+            "雪球指标",
             "我的收藏"
         ],
     "index_id_list":[
             "wencai",
+            "xueqiu",
             "fav"
         ],
     "screener_id_list":[
-            "wencai"
+            "wencai",
+            "xueqiu"
         ],
     "index_list_width":120,
     "title_path":{
-            "wencai":"wencai_title.json"
+            "wencai":"wencai_title.json",
+            "xueqiu":"xueqiu_title.json"
         },
     "wrapper_id_list":[
             "wencai",
+            "xueqiu",
             "fav"
         ],
-    "index_list_geometry":[20,50,180,150],
+    "index_list_geometry":[20,50,180,200],
     "condition_wrapper_geometry":[130,53,180,420],
     "screener_group_geometry":[310,53,560,420],
     "range_slider_btn":"images/drag_btn.png",

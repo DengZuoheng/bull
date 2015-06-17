@@ -11,6 +11,9 @@ import StringIO
 import urllib
 import re
 import json
+import threading
+import time
+import copy
 from spider import Spider
 from model.xueqiu_stock import XueqiuStock
 
@@ -24,11 +27,13 @@ class XueqiuSpider(Spider):
         self.buf_0 = StringIO.StringIO()
         self.buf_1 = StringIO.StringIO()
         self.buf_2 = StringIO.StringIO()
+        user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)'
         self.curl = pycurl.Curl()
-        self.curl.setopt(pycurl.USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)")
+        self.curl.setopt(pycurl.USERAGENT, user_agent)
         self.curl.setopt(pycurl.CONNECTTIMEOUT,500)
         self.curl.setopt(pycurl.TIMEOUT,500)
-        self.curl.setopt(pycurl.COOKIEFILE,'')
+        self.curl.setopt(pycurl.COOKIEFILE, 'cookie')
+        self.curl.setopt(pycurl.COOKIEJAR, 'cookie')
         self.curl.setopt(pycurl.FAILONERROR,True)
         self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_0.write)
         self.save = []
@@ -44,7 +49,7 @@ class XueqiuSpider(Spider):
             self.ctrl.call_back()
 
     def perform(self):
-
+        #第一次请求取得cookie
         url = self.prepare_url
         self.curl.setopt(pycurl.URL, url)
         self.curl.perform() 
@@ -57,30 +62,26 @@ class XueqiuSpider(Spider):
         }
         request_attrs = XueqiuStock.attr_list()
         for attr in request_attrs:
-            args[attr]='ALL'
-            pass
-        #先请求一次取得总数
-        print(urllib.urlencode(args))
+            args[attr] = 'ALL'
+            
+        #先请求二次取得总数
         url = self.base_url+'/screen.json?%s'%(urllib.urlencode(args))
         self.curl.setopt(pycurl.URL, url)
         self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_1.write)#设置回调
-        self.curl.perform() 
-        self.call_back()
-        #再请求第二次取得所有数据
+        self.curl.perform()
         response = self.buf_1.getvalue()
         self.all_result = json.loads(response)
-        args['size'] = self.all_result['count']
-        #args['size'] = '300'
+        args['size'] = self.all_result['count'] 
+        self.call_back()
         
+        #再请求第三次取得所有数据
         url = self.base_url+'/screen.json?%s'%(urllib.urlencode(args))
         self.curl.setopt(pycurl.URL, url)
         self.curl.setopt(pycurl.WRITEFUNCTION, self.buf_2.write)#设置回调
         self.curl.perform() 
-        self.call_back()
-        
         response = self.buf_2.getvalue()
         self.all_result = json.loads(response)
-        self.call_back()
+        self.call_back()   
 
     def results(self):
         data = self.all_result['list']#雪球的是list
@@ -89,5 +90,5 @@ class XueqiuSpider(Spider):
             self.save.append(stock)
         return self.save
       
-  
+
             

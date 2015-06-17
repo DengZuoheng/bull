@@ -11,13 +11,8 @@ class TitleCtrlFactory():
 
     def create_title_ctrl(self,wrapper_id):
         setting = self.setting
-        if wrapper_id == 'wencai':
-            path = setting['title_path']['wencai']
-            
-        """
-        elif wrapper_id == 'xueqiu':
-            path = setting['xueqiu_title_path']
-        """
+        path = setting['title_path'][wrapper_id]
+        
         dao = TitleDao(path)
         ctrl = TitleCtrl(dao)
         return ctrl

@@ -9,6 +9,7 @@ sys.path.insert(0,(parent_path))
 from service.spider import Spider
 from service.xueqiu_spider import XueqiuSpider
 from model.xueqiu_stock import XueqiuStock
+from dao.xueqiu_dao import XueqiuDao
 import unittest
 
 class Test_test_xueqiuspider(unittest.TestCase):
@@ -16,9 +17,11 @@ class Test_test_xueqiuspider(unittest.TestCase):
         spider = XueqiuSpider()
         r = []
         r = spider.results()
-        self.assertGreater(len(r),2000)
+        self.assertGreater(len(r),1000)
         if not isinstance(r[0],XueqiuStock):
             raise Exception('type error: result item is not Stock instance')
+        dao = XueqiuDao('db.sqlite3','xueqiu')
+        dao.update(r)
 
 if __name__ == '__main__':
     unittest.main()
