@@ -23,17 +23,17 @@ class WrapperFactory():
                 'id_list' : dao.get_indicator_id_list(),
             }
             condition_wrapper = QConditionWrapper(**kwargs)
-            """
+            
         elif wrapper_id == 'xueqiu':#雪球数据
             kwargs = {
-                'id': wrapper_id,
+                'wrapper_id': wrapper_id,
                 'parent': main_window,
                 'title': setting['xueqiu_condition_wrapper_header'],
-                'title_list':dao.get_title_list(),
-                'id_list':dao.get_title_list(),
+                'title_list':dao.get_indicator_title_list(),
+                'id_list':dao.get_indicator_id_list(),
             }
             condition_wrapper = QConditionWrapper(**kwargs)
-            """
+            
         elif wrapper_id == 'fav':#收藏
             kwargs = {
                 'parent':main_window,

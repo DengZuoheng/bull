@@ -61,7 +61,6 @@ class RefreshCtrl(QtCore.QObject):
                 messagebox = QWarningMessageBox(self.view,data)
                 messagebox.exec_()
             except Exception as e:
-                print(str(e))
             self.view.refresh_widget.set_clickable(True)
             self.view.refresh_widget.set_movie_paused_status(True)
             self.view.refresh_progress_bar.setVisible(False)

@@ -135,7 +135,7 @@ class FavCtrl(QtCore.QObject):
 
     def get_screener_id(self):
         try:
-            fav = self.get_fav_by_id(self.current_favid)
+            fav = self.find_fav_by_id(self.current_favid)
             return fav['screener']
         except:
             return None
@@ -145,11 +145,14 @@ class FavCtrl(QtCore.QObject):
         self.screener_listen_status = True
         self.current_favid = _id
         fav = self.find_fav_by_id(_id)
+        #向main_ctrl发送changed消息
+        self.emit(QtCore.SIGNAL('changed()'))
         screener_group_ctrl = self.main_ctrl.screener_group_ctrl
         #设置screener的header
         header_text = self.setting['fav_scanner_header_text']
         source_text = self.setting['fav_scanner_source_text']
-        st = (header_text,fav['title'],source_text,fav['screener'])
+        source = self.setting['screener_group_source']
+        st = (header_text,fav['title'],source_text,source[fav['screener']])
         screener_group_ctrl.set_header(u'%s-%s %s-%s'%st)
         #设置保存按钮的text
         save_btn_text = self.setting['fav_scanner_save_button_text']
@@ -164,8 +167,7 @@ class FavCtrl(QtCore.QObject):
         self.read_only = True
         self.main_ctrl.wrapper_group_ctrl.set_condition(self.get_condition())
         self.read_only = False
-        #向main_ctrl发送changed消息
-        self.emit(QtCore.SIGNAL('changed()'))
+        
         
 
 

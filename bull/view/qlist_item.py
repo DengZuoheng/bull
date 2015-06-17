@@ -18,6 +18,7 @@ class QListItem(QtGui.QFrame):
         hbox.addWidget(icon_label)
         hbox.addWidget(title_label)
         self.setLayout(hbox)
+        self.setFixedHeight(38)
     
     def mousePressEvent(self,QMouseEvent):
         self.emit(QtCore.SIGNAL('clicked(QString)'),self.id)
