@@ -55,11 +55,11 @@ class SqliteStockDao(StockDao):
         self.cursor.executemany(sql, insert_attr)
         self.conn.commit()
 
-    #获取所有结果, 没什么用, 就是测试用的
     def get_attrs(self):
         parameter = self.get_parameter()
         return [item['key_name'] for item in parameter]
 
+    #获取所有结果
     def all(self):
         return self.filter([])
 

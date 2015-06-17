@@ -85,7 +85,7 @@
 		"xueqiu" : "更新雪球数据"
 	},
 	"icon_path" : "images/icon.png",
-	"title_text" : "Bull - v1.0",
+	"title_text" : "Bull - v2.0",
 	"icon_size" : [24, 24],
 	"icon_geomotry" : [1, 1, 240, 44],
 	"warning_img_path" : "images/error_warning_alert_attention.png",

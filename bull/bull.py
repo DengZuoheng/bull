@@ -15,6 +15,6 @@ if __name__ == '__main__':
     qss_ctrl = QSSCtrl()
     app.setStyleSheet(qss_ctrl.get_qss())
     main_window = QMainWindow(setting_ctrl.get_setting())
-    main_window.setWindowTitle('Bull v1.0')
+    main_window.setWindowTitle('Bull v2.0')
     main_window.show()
     sys.exit(app.exec_())

@@ -86,4 +86,5 @@ class RefreshCtrl(QtCore.QObject):
 
     def setToolTip(self):
         screener_id = self.main_ctrl.get_screener_id()
-        self.view.setToolTip(self.setting['refresh_tooltip'][screener_id])
+        tooltip = self.setting['refresh_tooltip'][screener_id]
+        self.view.refresh_widget.setToolTip(tooltip)

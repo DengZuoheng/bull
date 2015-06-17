@@ -12,20 +12,23 @@ class Test_test_fav_dao(unittest.TestCase):
     def test_FavDao(self):
         data = [
             {
+                u"screener":"xueqiu",
                 u"favid":0,
                 u"title":u"我的收藏",
                 u"condition":[[u"pe",0,5],[u"peg",3,200]]
             },
             {
+                u"screener":"wencai",
                 u"favid":1,
                 u"title":u"不知道谁的收藏",
                 u"condition":[[u"pe",2,6],[u"peg",20,30],[u"pbv",55,99]]
             }
         ]
-        dao = FavDao()
+        dao = FavDao('test_fav.json')
         dao.store_fav(data)
         fav = dao.load_fav()
         for i in range(len(data)):
+            self.assertEqual(data[i]['screener'],fav[i]['screener'])
             self.assertEqual(data[i]['favid'],fav[i]['favid'])
             self.assertEqual(data[i]['title'],fav[i]['title'])
             self.assertEqual(len(data[i]['condition']),len(fav[i]['condition']))
