@@ -19,6 +19,11 @@ parts/
 sdist/
 var/
 *.sqlite3
+*/test/*.json
+*/test/*.qss
+cookie
+qss.qss
+test_fav.json
 *.egg-info/
 .installed.cfg
 *.egg

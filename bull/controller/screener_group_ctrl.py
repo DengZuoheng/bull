@@ -78,5 +78,9 @@ class ScreenerGroupCtrl(QtCore.QObject):
         screener = self.get_screener_by_id(self.screener_id)
         screener.update_data()
 
+    def reset(self):
+        for item in self.screener_ctrl_list:
+            item.set_condition([])
+
 
    

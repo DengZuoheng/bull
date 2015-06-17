@@ -25,82 +25,80 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="bull.py" />
-    <Compile Include="controller\conditon_wrapper_ctrl.py" />
     <Compile Include="controller\fav_ctrl.py" />
+    <Compile Include="controller\index_list_ctrl.py" />
+    <Compile Include="controller\main_ctrl.py" />
     <Compile Include="controller\qss_ctrl.py" />
     <Compile Include="controller\refresh_ctrl.py" />
+    <Compile Include="controller\screener_ctrl.py" />
     <Compile Include="controller\screener_group_ctrl.py" />
     <Compile Include="controller\setting_ctrl.py" />
     <Compile Include="controller\stock_ctrl.py" />
+    <Compile Include="controller\stock_ctrl_factory.py" />
+    <Compile Include="controller\title_ctrl.py" />
+    <Compile Include="controller\title_ctrl_factory.py" />
+    <Compile Include="controller\wrapper_ctrl.py" />
+    <Compile Include="controller\wrapper_group_ctrl.py" />
     <Compile Include="controller\__init__.py" />
     <Compile Include="dao\fav_dao.py" />
     <Compile Include="dao\qss_dao.py" />
     <Compile Include="dao\setting_dao.py" />
+    <Compile Include="dao\sqlite_stock_dao.py" />
     <Compile Include="dao\stock_dao.py" />
     <Compile Include="dao\title_dao.py" />
     <Compile Include="dao\wencai_dao.py" />
+    <Compile Include="dao\xueqiu_dao.py" />
     <Compile Include="dao\__init__.py" />
-    <Compile Include="model\stock.py" />
+    <Compile Include="model\wencai_stock.py" />
+    <Compile Include="model\xueqiu_stock.py" />
     <Compile Include="model\__init__.py" />
-    <Compile Include="service\refresh_thread.py" />
+    <Compile Include="service\refresh_thread_factory.py" />
     <Compile Include="service\spider.py" />
     <Compile Include="service\spider_factory.py" />
-    <Compile Include="service\wencaispider.py" />
+    <Compile Include="service\wencai_refresh_thread.py" />
+    <Compile Include="service\wencai_spider.py" />
+    <Compile Include="service\xueqiu_refresh_thread.py" />
+    <Compile Include="service\xueqiu_spider.py" />
     <Compile Include="service\__init__.py" />
     <Compile Include="setting.py" />
     <Compile Include="setup.py" />
-    <Compile Include="test\test_favdao.py" />
-    <Compile Include="test\test_fav_ctrl.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test\test_qssdao.py" />
-    <Compile Include="test\test_refresh_thread.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="test\test_fav_dao.py" />
+    <Compile Include="test\test_qss_dao.py" />
+    <Compile Include="test\test_refresh_thread.py" />
     <Compile Include="test\test_stock.py" />
-    <Compile Include="test\test_stock_ctrl.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test\test_titledao.py" />
-    <Compile Include="test\test_wencaidao.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test\test_wencaispider.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test\__init__.py" />
-    <Compile Include="view\qbullmessagebox.py" />
-    <Compile Include="view\qbullwindow.py" />
-    <Compile Include="view\qconditionwrapper.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="view\qconfirmmessagebox.py" />
-    <Compile Include="view\qdistributionslider.py" />
-    <Compile Include="view\qfavitem.py" />
-    <Compile Include="view\qfavwrapper.py" />
-    <Compile Include="view\qfocuslineedit.py" />
-    <Compile Include="view\qhoverbutton.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="view\qiconwidget.py" />
-    <Compile Include="view\qidcheckbox.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="view\qindexlist.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="view\qlistitem.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="view\qmainwindow.py" />
-    <Compile Include="view\qnewfavdlg.py" />
-    <Compile Include="view\qrangeslider.py" />
-    <Compile Include="view\qrefreshwidget.py" />
-    <Compile Include="view\qresultdialog.py" />
-    <Compile Include="view\qscreenergroup.py" />
-    <Compile Include="view\qscreeneritem.py" />
-    <Compile Include="view\qtabledataitem.py" />
-    <Compile Include="view\qwarningmessagebox.py" />
+    <Compile Include="test\test_stock_ctrl.py" />
+    <Compile Include="test\test_title_ctrl.py" />
+    <Compile Include="test\test_title_dao.py" />
+    <Compile Include="test\test_wencai_dao.py" />
+    <Compile Include="test\test_wencai_spider.py" />
+    <Compile Include="test\test_xueqiu_dao.py" />
+    <Compile Include="test\test_xueqiu_spider.py" />
+    <Compile Include="view\main_factory.py" />
+    <Compile Include="view\qbase_wrapper.py" />
+    <Compile Include="view\qbull_message_box.py" />
+    <Compile Include="view\qbull_window.py" />
+    <Compile Include="view\qcondition_wrapper.py" />
+    <Compile Include="view\qconfirm_message_box.py" />
+    <Compile Include="view\qdistribution_slider.py" />
+    <Compile Include="view\qfav_item.py" />
+    <Compile Include="view\qfav_wrapper.py" />
+    <Compile Include="view\qfocus_line_edit.py" />
+    <Compile Include="view\qhover_button.py" />
+    <Compile Include="view\qicon_widget.py" />
+    <Compile Include="view\qid_checkbox.py" />
+    <Compile Include="view\qindex_list.py" />
+    <Compile Include="view\qlist_item.py" />
+    <Compile Include="view\qmain_window.py" />
+    <Compile Include="view\qnew_fav_dlg.py" />
+    <Compile Include="view\qrange_slider.py" />
+    <Compile Include="view\qrefresh_widget.py" />
+    <Compile Include="view\qresult_dialog.py" />
+    <Compile Include="view\qscreener.py" />
+    <Compile Include="view\qscreener_item.py" />
+    <Compile Include="view\qtable_data_item.py" />
+    <Compile Include="view\qwarning_message_box.py" />
+    <Compile Include="view\screener_factory.py" />
+    <Compile Include="view\wrapper_factory.py" />
     <Compile Include="view\__init__.py" />
   </ItemGroup>
   <ItemGroup>
@@ -128,12 +126,14 @@
     <Content Include="images\icon.png" />
     <Content Include="images\icon_menu_stock_filter_1.png" />
     <Content Include="images\icon_menu_stock_filter_2.png" />
+    <Content Include="images\icon_menu_stock_filter_3.png" />
     <Content Include="images\mini_btn.png" />
     <Content Include="images\mini_btn_active.png" />
     <Content Include="images\refresh.gif" />
     <Content Include="images\refresh.png" />
     <Content Include="setting.json" />
-    <Content Include="title.json" />
+    <Content Include="wencai_title.json" />
+    <Content Include="xueqiu_title.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

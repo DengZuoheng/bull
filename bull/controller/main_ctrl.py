@@ -52,7 +52,7 @@ class MainCtrl(QtCore.QObject):
         temp_transmit = self.screener_cancel_transmit
         self.emit(QtCore.SIGNAL(self.screener_cancel_transmit))
         if temp_transmit == 'reset_event()':
-            self.screener_group_ctrl.set_condition([])
+            self.screener_group_ctrl.reset()
 
     def on_index_list_change(self):
         #从index_list_ctrl获取要切换的wrapper_id
