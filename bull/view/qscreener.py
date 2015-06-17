@@ -109,21 +109,24 @@ class QScreener(QtGui.QFrame):
 
     def init_button_group(self):             
         self.button_save = QtGui.QPushButton(self.save_btn_alt,self)
+        self.button_save.setAutoDefault(False)
         self.button_cancel = QtGui.QPushButton(self.cancel_btn_alt,self)
+        self.button_cancel.setAutoDefault(False)
         self.button_submit = QtGui.QPushButton(self.submit_btn_alt,self)
+        self.button_submit.setAutoDefault(False)
         self.button_hbox= QtGui.QHBoxLayout()
         self.button_hbox.addWidget(self.button_save)
         self.button_hbox.addWidget(self.button_cancel)
         self.button_hbox.addStretch()
         self.button_hbox.addWidget(self.button_submit)
         self.connect(self.button_save,
-            QtCore.SIGNAL('clicked()'),
+            QtCore.SIGNAL('released()'),
             self.on_button_save_clicked)
         self.connect(self.button_cancel,
-            QtCore.SIGNAL('clicked()'),
+            QtCore.SIGNAL('released()'),
             self.on_button_cancel_clicked)
         self.connect(self.button_submit,
-            QtCore.SIGNAL('clicked()'),
+            QtCore.SIGNAL('released()'),
             self.on_button_submit_clicked)
 
     def init_select_nothing_warning(self):

@@ -46,8 +46,9 @@ class QResultDialog(QBullWindow):
 
     def init_label(self):
         total = self.row
+        source = self.data['source']
         setting = self.data['setting']
-        self.label = QtGui.QLabel(setting['result_label']%total,self)
+        self.label = QtGui.QLabel(setting['result_label']%(total,source),self)
         self.label.setGeometry(*setting['result_label_geometry'])
 
     def init_color(self):

@@ -18,6 +18,7 @@ class RefreshCtrl(QtCore.QObject):
             self.setting = setting
         self.view = view
         self.main_ctrl = main_ctrl
+        main_ctrl.refresh_ctrl = self
 
     def on_refresh_start(self):
         self.progress = 0
@@ -61,6 +62,7 @@ class RefreshCtrl(QtCore.QObject):
                 messagebox = QWarningMessageBox(self.view,data)
                 messagebox.exec_()
             except Exception as e:
+                pass
             self.view.refresh_widget.set_clickable(True)
             self.view.refresh_widget.set_movie_paused_status(True)
             self.view.refresh_progress_bar.setVisible(False)
@@ -81,3 +83,7 @@ class RefreshCtrl(QtCore.QObject):
     def except_raise(self,err):
         print(err)
         self.finish()
+
+    def setToolTip(self):
+        screener_id = self.main_ctrl.get_screener_id()
+        self.view.setToolTip(self.setting['refresh_tooltip'][screener_id])

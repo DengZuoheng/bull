@@ -22,6 +22,7 @@ class QIndexList(QtGui.QWidget):
         self.title_label.setProperty('cls','header')
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.title_label)
+        vbox.setSpacing(0)
         #init ui
         for i in range(len(self.index_list)):
             list_item = QListItem(self,

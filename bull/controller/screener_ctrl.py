@@ -79,12 +79,12 @@ class ScreenerCtrl(QtCore.QObject):
             'data':result,
             'color':self.setting['result_color'],
             'setting':self.setting,
+            'source':self.setting['screener_group_source'][self.screener_id]
         }
         dlg = QResultDialog(self.main_ctrl.main_window,dlg_data)
         dlg.exec_()
 
     def on_cancel_event(self):
-        print('screener_ctrl.on_cancel_event')
         self.emit(QtCore.SIGNAL('cancel_event()'))
 
     def on_save_event(self):

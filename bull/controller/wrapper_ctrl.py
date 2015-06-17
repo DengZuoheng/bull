@@ -27,7 +27,6 @@ class WrapperCtrl(QtCore.QObject):
             self.on_reset_event)
 
     def on_reset_event(self):
-        print('wrapper_ctrl.on_reset_event')
         self.set_condition([])
 
     def set_wrapper_visible(self,status):
