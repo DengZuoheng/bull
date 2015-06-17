@@ -42,6 +42,8 @@ class MainCtrl(QtCore.QObject):
         self.connect(self.screener_group_ctrl,
             QtCore.SIGNAL('cancel_event()'),
             self.on_screener_group_cancel_event)
+        #设置refresh组件的tooltip
+        self.refresh_ctrl.setToolTip()
 
     def on_screener_group_save_event(self):
         self.emit(QtCore.SIGNAL(self.screener_save_transmit))
@@ -61,6 +63,8 @@ class MainCtrl(QtCore.QObject):
         screener_id = self.wrapper_group_ctrl.get_screener_id()
         #切换screener
         self.screener_group_ctrl.set_screener_id(screener_id)
+        #设置refresh组件的tooltip
+        self.refresh_ctrl.setToolTip()
 
     def on_screener_group_change(self):
         condition = self.screener_group_ctrl.get_condition()
@@ -75,6 +79,8 @@ class MainCtrl(QtCore.QObject):
         condition = self.wrapper_group_ctrl.get_condition()
         #最后将condition设置到screener去
         self.screener_group_ctrl.set_condition(condition)
+        #设置refresh组件的tooltip
+        self.refresh_ctrl.setToolTip()
 
     def update_data(self):
         #更新数据完成时的操作

@@ -25,7 +25,7 @@ class QConditionWrapper(QBaseWrapper):
     def init_gui(self):
         self.inner_frame = QtGui.QWidget()
         inner_layout = QtGui.QFormLayout(self.inner_frame)
-        inner_layout.setVerticalSpacing(10)
+        inner_layout.setSpacing(10)
         for i in range(len(self.title_list)): 
             check_box = QIDCheckBox(
                 self.title_list[i],
