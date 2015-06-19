@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-class WencaiStock():
+from stock import Stock
+class WencaiStock(Stock):
     def __init__(self, 
             ticker='', 
             title='', 
@@ -18,6 +18,7 @@ class WencaiStock():
             aggregate_market_value=None,
             circulation_market_value=None
             ):
+        super(WencaiStock,self).__init__()
         #股票代码
         self.ticker = ticker
         #股票简称
@@ -65,9 +66,6 @@ class WencaiStock():
             'circulation_market_value':self.circulation_market_value
         }
         return str(ret)
-
-    def __getitem__(self,key):
-        return self.__dict__[key]
 
     def get_type_by_key(self,key):
         if self[key] == None:

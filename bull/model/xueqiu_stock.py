@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from stock import Stock
 
-class XueqiuStock():
+class XueqiuStock(Stock):
     def __init__(self, *args, **kwargs):
+        super(XueqiuStock, self).__init__()
         if args:
             self.symbol = args[0]
             self.name = args[1]
@@ -13,9 +15,6 @@ class XueqiuStock():
         if kwargs:
             for key in kwargs:
                 setattr(self,key,kwargs[key])
-
-    def __getitem__(self,key):
-        return self.__dict__[key]
 
     def get_type_by_key(self,key):
         if self[key] == None:
