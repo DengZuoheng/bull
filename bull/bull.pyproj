@@ -49,6 +49,7 @@
     <Compile Include="dao\wencai_dao.py" />
     <Compile Include="dao\xueqiu_dao.py" />
     <Compile Include="dao\__init__.py" />
+    <Compile Include="model\stock.py" />
     <Compile Include="model\wencai_stock.py" />
     <Compile Include="model\xueqiu_stock.py" />
     <Compile Include="model\__init__.py" />
